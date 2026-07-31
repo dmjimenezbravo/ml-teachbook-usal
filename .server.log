@@ -1,0 +1,151 @@
+::1 - - [30/Jul/2026 14:05:47] "GET /en/intro.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/togglebutton.css?v=9c3e77be HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/copybutton.css?v=76b2166b HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/styles/theme.css?digest=55c26ed414f5f8a31ebb HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/sphinx-thebe.css?v=4fa983c6 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/styles/sphinx-book-theme.css?v=3c74b3bc HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/pygments.css?v=03e43079 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/sphinx-design.min.css?v=95c83b7e HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/custom.css?v=545538b4 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/documentation_options.js?v=9eb32ce0 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/doctools.js?v=9a2dae69 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/basic.css HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/sphinx_highlight.js?v=dc90522c HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/scripts/sphinx-book-theme.js?v=fab101a9 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/design-tabs.js?v=f930bc37 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/copybutton.js?v=f281be69 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/togglebutton.js?v=b8b12719 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] code 404, message File not found
+::1 - - [30/Jul/2026 14:05:47] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/custom.js?v=0454bace HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/clipboard.min.js?v=a7894cd8 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/logo.png HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/searchtools.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/language_data.js HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:47] "GET /_static/sphinx-thebe.js?v=c100c467 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:48] "GET /_static/vendor/fontawesome/webfonts/fa-solid-900.woff2 HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:48] "GET /_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:48] code 404, message File not found
+::1 - - [30/Jul/2026 14:05:48] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:05:48] "GET /_static/languages.json HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:05:48] code 404, message File not found
+::1 - - [30/Jul/2026 14:05:48] "GET /favicon.ico HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:05:54] code 404, message File not found
+::1 - - [30/Jul/2026 14:05:54] "GET /es/intro.html HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:06:51] "GET /en/00_fundamentals/intro.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/pygments.css?v=03e43079 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/sphinx-design.min.css?v=95c83b7e HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/documentation_options.js?v=9eb32ce0 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/copybutton.js?v=f281be69 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/basic.css HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/language_data.js HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/design-tabs.js?v=f930bc37 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:06:51] code 404, message File not found
+::1 - - [30/Jul/2026 14:06:51] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:06:51] code 404, message File not found
+::1 - - [30/Jul/2026 14:06:51] "GET /en/00_fundamentals/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:06:51] code 404, message File not found
+::1 - - [30/Jul/2026 14:06:51] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:06:51] "GET /_static/languages.json HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:21] "GET /_static/CreatingElectronicBooksWithCodeAndArtificialIntelligenceAssistants.pdf HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:07:42] "GET /en/00_fundamentals/01_history_evolution.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/pygments.css?v=03e43079 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/sphinx-design.min.css?v=95c83b7e HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/documentation_options.js?v=9eb32ce0 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/copybutton.js?v=f281be69 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/design-tabs.js?v=f930bc37 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/basic.css HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] "GET /_static/language_data.js HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:42] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:42] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:42] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:42] "GET /en/00_fundamentals/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:43] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:43] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:43] "GET /_static/languages.json HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:07:50] "GET /en/00_fundamentals/02_fundamental_concepts.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:07:50] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:50] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:50] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:50] "GET /en/00_fundamentals/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:50] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:50] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:56] "GET /en/01_supervised_learning/intro.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:07:57] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:57] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:57] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:57] "GET /en/01_supervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:07:57] code 404, message File not found
+::1 - - [30/Jul/2026 14:07:57] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:09] "GET /en/01_supervised_learning/01_regression.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:09] "GET /_static/pygments.css?v=03e43079 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:09] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:09] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:09] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:09] "GET /en/01_supervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:09] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:09] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:12] "GET /en/01_supervised_learning/02_classification.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/styles/theme.css?digest=55c26ed414f5f8a31ebb HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/sphinx-design.min.css?v=95c83b7e HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/documentation_options.js?v=9eb32ce0 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/doctools.js?v=9a2dae69 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/sphinx_highlight.js?v=dc90522c HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/copybutton.js?v=f281be69 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/design-tabs.js?v=f930bc37 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/searchtools.js HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/language_data.js HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:12] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:12] "GET /_static/basic.css HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:12] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:12] "GET /en/01_supervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:13] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:13] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:13] "GET /_static/languages.json HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /en/02_unsupervised_learning/intro.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/styles/sphinx-book-theme.css?v=3c74b3bc HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/togglebutton.css?v=9c3e77be HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/copybutton.css?v=76b2166b HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/sphinx-thebe.css?v=4fa983c6 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/clipboard.min.js?v=a7894cd8 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/scripts/sphinx-book-theme.js?v=fab101a9 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:14] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/togglebutton.js?v=b8b12719 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/sphinx-thebe.js?v=c100c467 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] "GET /_static/vendor/fontawesome/webfonts/fa-solid-900.woff2 HTTP/1.1" 304 -
+::1 - - [30/Jul/2026 14:08:14] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:14] "GET /en/02_unsupervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:14] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:14] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:28] "GET /en/02_unsupervised_learning/01_clustering.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:28] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:28] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:28] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:28] "GET /en/02_unsupervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:28] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:28] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:32] "GET /en/02_unsupervised_learning/02_dimensionality_reduction.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:32] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:32] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:32] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:32] "GET /en/02_unsupervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:32] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:32] "GET /en/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:35] "GET /en/02_unsupervised_learning/03_anomaly_detection.html HTTP/1.1" 200 -
+::1 - - [30/Jul/2026 14:08:35] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:35] "GET /searchindex.js HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:35] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:35] "GET /en/02_unsupervised_learning/_static/languages.json HTTP/1.1" 404 -
+::1 - - [30/Jul/2026 14:08:35] code 404, message File not found
+::1 - - [30/Jul/2026 14:08:35] "GET /en/_static/languages.json HTTP/1.1" 404 -

@@ -1057,7 +1057,7 @@ def build_pdf_for_lang(lang, engine_name):
     finally:
         os.chdir(current_dir)
         if temp_mode and os.path.exists(src_dir):
-            shutil.rmtree(src_dir)
+            shutil.rmtree(src_dir, ignore_errors=True)
 
 
 def sanitize_config(config_path):
