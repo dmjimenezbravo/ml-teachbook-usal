@@ -2,280 +2,189 @@
 
 ## Introducción
 
-Muchos datasets tienen cientos o miles de características. Trabajar con tantas dimensiones es:
-- **Computacionalmente costoso**: algoritmos más lentos
-- **Difícil de visualizar**: no podemos ver datos de 100 dimensiones
-- **Ruidoso**: muchas características irrelevantes
-- **Maldición de la dimensionalidad**: modelos generalizan peor
+En la analítica de datos moderna y el diseño de sistemas de inteligencia artificial, es común enfrentarse a conjuntos de datos caracterizados por cientos o miles de variables predictoras. Sin embargo, trabajar de forma directa en estos espacios multidimensionales presenta graves inconvenientes prácticos y teóricos. La reducción de dimensionalidad aborda de manera sistemática este problema buscando proyectar o comprimir los datos en un espacio de baja dimensión (habitualmente 2D o 3D). Este proceso no solo acelera drásticamente la computación y mitiga el sobreajuste (*overfitting*), sino que es una herramienta indispensable para la visualización de datos (*DataViz*) y la extracción de factores latentes explicables.
 
-La reducción de dimensionalidad **comprime datos complejos** en pocas dimensiones manteniendo información esencial.
+## La maldición de la dimensionalidad (the curse of dimensionality)
 
-## PCA: Principal Component Analysis
+La intuición humana está programada para razonar en tres dimensiones físicas, lo que nos dificulta comprender las propiedades geométricas de los espacios de alta dimensionalidad. Muchas propiedades matemáticas de los algoritmos tradicionales de aprendizaje automático se degradan o colapsan debido a este fenómeno, acuñado formalmente por Richard Bellman como la maldición de la dimensionalidad.  
 
-### Intuición
+  0D (Punto) ── 1D (Intervalo) ── 2D (Cuadrado) ── 3D (Cubo) ──▶ pD (Hypercubo)
+                                                                 (Espacio ultra-disperso y
+                                                                  muestras en la frontera)
 
-Imagina que tienes datos en 3D. Si la mayoría de la variación ocurre en 2 direcciones principales, puedes proyectar a esas 2 dimensiones sin perder mucha información.
+### Pérdida de vecindad y espacio disperso
 
-```
-Datos 3D:            Proyección 2D:
-    z                    y
-    |      • •           |    • •
-    |    •   •           |  •   •
-    |  •       •    →    |•       •
-    +---x    •           +---x
-       y  •
-```
+El principal síntoma de la maldición de la dimensionalidad es que, a medida que aumenta la dimensión $p$, el volumen del espacio crece de forma exponencial con respecto a las características. Esto provoca que cualquier conjunto de datos real, por grande que sea, popule de manera extremadamente dispersa el espacio de entrada. Para ilustrar este hecho:
 
-### Componentes Principales
+- Si en una sola dimensión ($p=1$) un rango local del 10% representa una muestra representativa de vecindad, para capturar el mismo volumen equivalente del 10% en un espacio de 10 dimensiones ($p=10$), un algoritmo local (como $K$-NN) debe extender su búsqueda cubriendo el 80% del rango de cada una de las variables.
+- De este modo, los puntos del vecindario dejan de ser "locales" y el algoritmo pierde su poder estadístico estimador.
+- Para mantener una densidad de muestreo constante al añadir variables predictoras, el tamaño del *dataset* requerido crece exponencialmente ($O(N^p)$). En la práctica, obtener un volumen tal de datos es inviable.
 
-Los "componentes principales" son direcciones donde los datos varían más.
+### La anomalía geométrica de los extremos
 
-- **PC1**: dirección de máxima varianza
-- **PC2**: dirección de segunda mayor varianza, ortogonal a PC1
-- **PC3**: tercera dirección, ortogonal a PC1 y PC2
-- ...
+En espacios de alta dimensionalidad, la geometría se vuelve muy contraintuitiva.
 
-```
-Varianza en diferentes direcciones:
+- **Atracción por la frontera**: en un cuadrado unitario de dos dimensiones (1x1), la probabilidad de que una muestra elegida al azar se sitúe cerca del borde (a menos de 0.001 de distancia) es de apenas un 0.4%6. Sin embargo, en un hipercubo de 10,000 dimensiones, esta probabilidad es superior al 99.9999%. Prácticamente todas las muestras residen de forma natural en los bordes y esquinas exteriores del hipercubo.
+- **Uniformidad de distancias**: la distancia promedio entre dos puntos elegidos al azar en un hipercubo crece drásticamente con la dimensionalidad. Las distancias relativas se igualan, haciendo que todas las muestras parezcan casi a la misma distancia de las demás y neutralizando la eficacia de las métricas estándar como la distancia euclídea. Esto incrementa severamente el riesgo de sobreajuste de los clasificadores, ya que el modelo se vuelve inestable ante ligeras variaciones.
 
-Alta varianza     PC1 (máxima)
-    →
-   /
-  /            PC2 (ortogonal)
-                →
+La {numref}`fig-curse-dimensionality` cuantifica ambos efectos con simulaciones: a la izquierda, el porcentaje de muestras cerca del borde de un hipercubo crece rápidamente con las dimensiones; a la derecha, el ratio entre la distancia mínima y máxima entre puntos aleatorios tiende a 1, es decir, todos los puntos parecen equidistantes.
+
+```{figure} ../../_static/generated/figures/es/curse_of_dimensionality.png
+:name: fig-curse-dimensionality
+:alt: Dos gráficas mostrando cómo el porcentaje de muestras cerca del borde y el ratio de distancias mínima sobre máxima evolucionan al aumentar las dimensiones
+:width: 100%
+:align: center
+
+La maldición de la dimensionalidad, cuantificada mediante simulación.
 ```
 
-### Algoritmo Formal
+## Métodos de proyección lineal: PCA (*Principal Components Analysis*)
 
-1. **Centrar datos**: restar la media
-2. **Calcular matriz de covarianza**: qué características varían juntas
-3. **Descomposición en valores propios**: encontrar direcciones principales
-4. **Proyectar**: multiplicar datos por los vectores propios
+El análisis de componentes principales (PCA), desarrollado originalmente a principios del siglo XX por Pearson y Hotelling, es el algoritmo de reducción de dimensionalidad lineal por excelencia. Su objetivo es proyectar ortogonalmente los datos originales $X \in \mathbb{R}^{D}$ en un subespacio lineal de baja dimensión $Z \in \mathbb{R}^{M}$ (donde $M < D$), minimizando la pérdida de información bajo criterios estadísticos estrictos.
 
-### Varianza Explicada
+### Perspectiva de máxima varianza
 
-Cada componente explica una cierta porcentaje de la varianza total:
+Desde el punto de vista geométrico, la primera componente principal (PC1) se define como la dirección o eje del espacio de características a lo largo de la cual los datos varían más. Al proyectar los datos sobre este eje, se preserva el mayor porcentaje de la dispersión de la información original.
 
-```
-Varianza explicada acumulada:
-    |
- 100|────────────────●
-    |              ╱
-  50|           ●
-    |        ╱
-  10|     ●
-    |
-    +---+---+---+---> Número de componentes
-    0   5   10  15
-```
+                X2 ▲        *     *  (Proyección con máxima varianza: PC1)
+                   │       * ───/─── * 
+                   │      /    /    /
+                   │     * ───/─── * 
+                   │         / 
+                   └─────────┴─────────► X1
 
-**Decisión**: ¿cuántos componentes mantener?
-- Mantener 95% de varianza explicada es típico
-- Reduce dimensionalidad pero conserva estructura
+La segunda componente principal (PC2) busca la dirección que explique la mayor cantidad posible de la varianza restante bajo la restricción estricta de ser completamente ortogonal (y, por tanto, incorrelacionada) a la primera componente.
 
-### Implementación Conceptual
+Este procedimiento se repite de manera sucesiva para generar hasta $D$ componentes distintas.
 
-```python
-import numpy as np
+La {numref}`fig-pca-directions` muestra este concepto sobre datos reales correlacionados: la flecha roja (PC1) señala la dirección de máxima varianza y la verde (PC2), ortogonal a la anterior, captura la varianza restante.
 
-def pca(X, n_components):
-    # 1. Centrar datos
-    X_centered = X - X.mean(axis=0)
-    
-    # 2. Matriz de covarianza
-    cov_matrix = np.cov(X_centered.T)
-    
-    # 3. Descomposición en valores propios
-    eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
-    
-    # 4. Ordenar por valor propio (varianza explicada)
-    idx = eigenvalues.argsort()[::-1]
-    eigenvalues = eigenvalues[idx]
-    eigenvectors = eigenvectors[:, idx]
-    
-    # 5. Seleccionar top n_components
-    components = eigenvectors[:, :n_components]
-    
-    # 6. Proyectar datos
-    X_reduced = X_centered @ components
-    
-    return X_reduced, components, eigenvalues
+```{figure} ../../_static/generated/figures/es/pca_projection.png
+:name: fig-pca-directions
+:alt: Diagrama de dispersión de datos correlacionados con dos flechas mostrando las direcciones de las componentes principales PC1 y PC2
+:width: 65%
+:align: center
+
+Componentes principales: PC1 captura la máxima varianza, PC2 es ortogonal.
 ```
 
-### Interpretación
+### Derivación matemática y la SVD
 
-Aunque PCA reduce dimensiones, las nuevas características (componentes) son **combinaciones de las originales**:
+Para realizar PCA, es imperativo que los datos originales sean previamente centrados (restando la media aritmética de cada variable) y, usualmente, estandarizados para que tengan una varianza unitaria (evitando que variables con escalas métricas arbitrariamente grandes dominen la optimización).
 
-```
-PC1 = 0.7 * Feature1 + 0.3 * Feature2 - 0.1 * Feature3
-PC2 = 0.2 * Feature1 - 0.8 * Feature2 + 0.5 * Feature3
-```
+La matriz de covarianza de los datos se define como:
 
-Es difícil interpretar qué significa cada componente.
+$S = \frac{1}{N} X X^T$ 
 
-### Ventajas y Desventajas
+Mediante la Descomposición en valores propios de la matriz de covarianza (o a través de la Descomposición en Valores Singulares - SVD de la matriz de datos original $X$), se extraen las direcciones principales: 
 
-| Aspecto | PCA |
-|---------|-----|
-| **Rápido** | ✓✓ |
-| **Interpretable** | ✗ (componentes son mezclas) |
-| **Lineal** | Solo captura relaciones lineales |
-| **Óptimo** | Maximiza varianza (no siempre lo correcto) |
+$S = V D^2 V^T$ 
 
-## t-SNE (t-Distributed Stochastic Neighbor Embedding)
+Donde las columnas de la matriz $V$ corresponden a los vectores de carga (*loadings*), que representan las direcciones de las componentes principales. El valor propio $\lambda_m$ correspondiente a cada autovector mide directamente la cantidad de varianza explicada por ese componente específico.
 
-### Problema con PCA
+### Compresión, reconstrucción y perspectiva de autoensamblador lineal
 
-PCA es lineal. Para datos complejos con estructura no lineal, falla:
+PCA puede conceptualizarse matemáticamente como un autoencoder lineal. Consta de dos fases principales:
 
-```
-Datos en espiral       PCA (fallida):       t-SNE (buena):
+- **Codificador** (*encoder*): convierte el vector de entrada $x_n$ en una representación reducida $z_n = B^T x_n$, donde $B$ contiene los autovectores con mayores autovalores asociados.
+- **Decodificador** (*decoder*): reconstruye la proyección aproximada de vuelta al espacio original: $\hat{x}_n = B z_n$.
+ 
+El error promedio de reconstrucción o distorsión cuadrática minimizado por este procedimiento equivale exactamente a la suma de los valores propios de las componentes que han sido descartadas del análisis.
 
-    •••               ••     •••            •••
-  ••   ••            •   ••   •             •••••
- •       •           •••     •            •      •
-  •••••••••    →    • •• •• •       →    •        •
-   •     •             •••                 •     •
-    •   •              •••
-     •••
+Un ejemplo real de la utilidad de PCA aparece en el conjunto de datos *NCI60*, donde cada muestra tiene 6830 genes (dimensiones). La {numref}`fig-islr-nci60-pca` proyecta estas muestras sobre sus tres primeras componentes principales: pese a la enorme dimensionalidad original, las líneas celulares del mismo tipo de cáncer (mismo color) tienden a agruparse en este espacio reducido.
+
+```{figure} ../../_static/book_figures/islr_fig10_15_nci60_pca.png
+:name: fig-islr-nci60-pca
+:alt: Dos diagramas de dispersión mostrando la proyección de las líneas celulares NCI60 sobre las tres primeras componentes principales, tomados del libro An Introduction to Statistical Learning
+:width: 85%
+:align: center
+
+Proyección de las líneas celulares de cáncer *NCI60* (6830 genes) sobre sus tres primeras componentes principales.
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.15. Springer. Libro de libre distribución para uso educativo (statlearning.com).
 ```
 
-### Idea: Conservar Similaridades Locales
+## Métodos no lineales y aprendizaje de variedades (*manifold learning*)
 
-En lugar de conservar varianza global, t-SNE intenta:
-- Puntos similares en espacio alto → cercanos en espacio bajo
-- Puntos disímiles en espacio alto → lejanos en espacio bajo
+Aunque PCA es sumamente robusto y rápido, sufre una limitación obvia: asume que el subespacio interesante de los datos es lineal (un hiperplano plano). Cuando las relaciones de los datos son intrínsecamente no lineales, como en el clásico ejemplo del Swiss roll (un rollo de papel curvo en 3D), la proyección ortogonal lineal de PCA colapsa los puntos distantes y mezcla artificialmente la información.
 
-### Propiedades
+### La hipótesis de la variedad (*the manifold hypothesis*)
 
-- **No lineal**: puede descubrir estructuras complejas
-- **Preserva estructura local**: lo que ves es real localmente
-- **Pero**: distancias globales no son significativas
+El aprendizaje de variedades (*manifold learning*) asume la validez de la hipótesis de la variedad: todos los datos naturales del mundo real (imágenes de MNIST, rostros, voces o textos) yacen en una variedad de baja dimensión embebida dentro del espacio original de alta dimensión.
 
-```
-❌ NO ES CORRECTO decir:
-"Los dos clusters están a distancia X"
-"El cluster A es más grande que B"
+- Una variedad (*manifold*) es una superficie continua y curva que, de manera local, se asemeja a un espacio lineal euclidiano plano.
+- Por ejemplo, el espacio de imágenes de dígitos escritos a mano (28x28 píxeles = 784 dimensiones) está restringido por leyes físicas e invarianzas (grosor del trazo, inclinación, continuidad) que reducen enormemente los grados de libertad reales del sistema, confinando las muestras viables a una variedad continua de muy baja dimensión.
+- El objetivo del *manifold learning* no paramétrico es aprender coordenadas incrustadas para cada punto, de modo que se represente fielmente la topología interna y la distancia a lo largo de la superficie de la variedad.
 
-✓ ES CORRECTO decir:
-"Los puntos A y B están en el mismo vecindario"
-"Hay dos grupos distintos"
-```
+La {numref}`fig-swiss-roll` muestra el ejemplo clásico del Swiss roll: los datos (izquierda) están enrollados en 3D, pero su estructura real es una superficie 2D que puede "desenrollarse" (derecha) preservando las distancias a lo largo de la variedad.
 
-### Parámetros Clave
+```{figure} ../../_static/generated/figures/es/swiss_roll_manifold.png
+:name: fig-swiss-roll
+:alt: Comparación entre los datos del Swiss roll en 3D y su versión desenrollada en 2D, coloreados según su posición a lo largo de la variedad
+:width: 100%
+:align: center
 
-- **perplexity**: número de vecinos a considerar (típicamente 30-50)
-- **learning_rate**: velocidad de optimización
-- **n_iterations**: cuántas iteraciones ejecutar
-
-Estos parámetros afectan el resultado final significativamente.
-
-### Interpretación
-
-```
-t-SNE 2D de dataset MNIST (dígitos 0-9):
-
-0 0 0 0
-0 0 1 1 1
-0   1 1 1 1 1
-  2 2 2 1
- 2 2 2 3 3 3 3 3
- 2 2 3 3 3 3
-4 4 4 4 3
-4 4 4 4 4
-5 5 5 5
-5 5 5 5
-6 6 6 6 6 6
-6 6 6 6
-7 7 7
-7 7 7 7 7
-8 8 8 8
-8 8 8 8 8 8
-9 9 9 9
-9 9 9 9
+El Swiss roll: datos enrollados en 3D (izquierda) y su variedad desenrollada en 2D (derecha).
 ```
 
-Vemos dígitos similares agrupados naturalmente.
+### Algoritmos no lineales clave
 
-## UMAP (Uniform Manifold Approximation and Projection)
+#### *Kernel* PCA (kPCA)
 
-### Mejora sobre t-SNE
+Para extender PCA a problemas no lineales, se utiliza el truco del kernel. kPCA mapea de forma implícita los datos de entrada a un espacio de Hilbert de dimensiones ultra-altas (o infinitas) $\Phi(x)$, donde las relaciones no lineales complejas se vuelven linealmente separables o proyectables.
 
-UMAP es similar a t-SNE pero con ventajas:
-- **Más rápido**: especialmente para datasets grandes
-- **Preserva escala global mejor**: distancias globales más significativas
-- **Más estable**: resultados reproducibles con mismos parámetros
+- Utilizando funciones de kernel comunes como el RBF (Gaussiano), se pueden modelar proyecciones complejas.
+- **Inconveniente**: a diferencia del PCA estándar, kPCA no define un mapeo de proyección directa e invertible para datos fuera de la muestra (*out-of-sample prediction*), y en ocasiones, *kernels* mal ajustados pueden expandir y distorsionar el espacio en lugar de comprimirlo de forma útil.
 
-### Cuándo Usar Qué
+La {numref}`fig-kernel-pca-trick` ilustra el truco del *kernel* con un ejemplo clásico: dos clases dispuestas en círculos concéntricos (izquierda) son imposibles de separar con una línea recta en 2D. Al aplicar el mapeo $\phi(x_1,x_2)=(x_1,x_2,x_1^2+x_2^2)$ (derecha), las clases quedan a alturas distintas y un simple plano horizontal las separa perfectamente.
 
-| Situación | Recomendar |
-|-----------|-----------|
-| **Visualizar datos complejos** | t-SNE o UMAP |
-| **Dataset muy grande (>10k)** | UMAP (más rápido) |
-| **Necesitas interpretación global** | PCA |
-| **Necesitas velocidad** | PCA |
-| **Dataset pequeño (<1k)** | t-SNE |
+```{figure} ../../_static/generated/figures/es/kernel_pca_trick.png
+:name: fig-kernel-pca-trick
+:alt: Dos gráficas mostrando dos círculos concéntricos no separables linealmente en 2D y su transformación a un espacio 3D donde un plano los separa
+:width: 100%
+:align: center
 
-## Aplicaciones de Reducción de Dimensionalidad
-
-### 1. Compresión de Datos
-```
-Imágenes 28×28 = 784 dimensiones
-PCA a 50 componentes = 93% varianza explicada
-Compresión 15x con mínima pérdida visual
+El truco del *kernel*: datos no separables en 2D se vuelven separables al proyectarlos a una dimensión adicional.
 ```
 
-### 2. Visualización para Exploración
-```
-Datos de 100 dimensiones
-Aplicar t-SNE a 2D
-Visualizar y detectar clusters naturales
-```
+#### t-SNE (*t-Distributed Stochastic Neighbor Embedding*)
 
-### 3. Preprocesamiento
-```
-Datos ruidosos 1000D
-Aplicar PCA mantener 95% varianza
-Reduce ruido y acelera algoritmos posteriores
-```
+Propuesto por Maaten y Hinton (2008), t-SNE es la técnica no convexa preferida para la visualización cualitativa de agrupamientos complejos en dos dimensiones.
 
-### 4. Feature Engineering
-```
-Crear nuevas características usando componentes
-Como inputs a modelos posteriores
-```
+1. **Espacio de alta dimensión** (SNE original): convierte las distancias euclidianas entre muestras en probabilidades condicionales Gaussianas $p_{j|i}$ que denotan similitud. Los puntos cercanos reciben altas probabilidades de vecindad y los lejanos probabilidades infinitesimales.
+2. **El problema del hacinamiento** (*crowding problem*): cuando se proyectan datos de alta dimensión a un espacio plano 2D, el volumen del espacio disponible disminuye de forma exponencial. Las distancias medias crecen tanto que, usando aproximaciones normales, las fuerzas de atracción obligan a todos los puntos distantes a agruparse en un núcleo denso e indistinguible en el centro del gráfico.
+3. **La solución de la distribución t de *student***: t-SNE resuelve esta limitación utilizando una distribución t de *student* con un grado de libertad (equivalente a una distribución Cauchy) en el espacio de baja dimensión51. Al tener colas mucho más pesadas e invertidas en el denominador de la ecuación de probabilidad latente $q_{ij}$, se eliminan las fuerzas de atracción no deseadas entre *clusters* distantes: 
 
-## Maldición de la Dimensionalidad
+$q_{ij} = \frac{(1 + \|z_i - z_j\|^2)^{-1}}{\sum_{k \neq l} (1 + \|z_k - z_l\|^2)^{-1}}$
 
-Entender por qué reducción es importante:
+El gradiente actúa de manera similar a una ley física de repulsión-atracción (similar a fuerzas de galaxias y estrellas), permitiendo que los *clusters* se organicen y separen de forma óptima en el plano visual.
 
-```
-En 1D (línea):
-Puntos aleatorios: X - X - - X - X -
-Unos están cercanos, otros lejanos
+La {numref}`fig-pca-vs-tsne` compara ambos métodos sobre un ejemplo clásico: dos "lunas" entrelazadas embebidas en un espacio de 30 dimensiones. PCA (izquierda), al ser una proyección lineal, únicamente rota los datos y no logra separar las dos clases, que siguen entrelazadas. t-SNE (derecha) reorganiza los puntos de forma no lineal preservando las vecindades locales, consiguiendo dos grupos claramente diferenciados.
 
-En 2D (plano):
-Puntos aleatorios: X - - - X - X - -
-                   - - - - - - - - -
-                   X - - - - X - - -
-Ahora más separados
+```{figure} ../../_static/generated/figures/es/pca_vs_tsne.png
+:name: fig-pca-vs-tsne
+:alt: Comparación entre PCA y t-SNE sobre datos en forma de dos lunas entrelazadas embebidas en 30 dimensiones; PCA no separa las clases mientras que t-SNE las separa en dos grupos distintos
+:width: 100%
+:align: center
 
-En 1000D (hipercubo):
-Puntos aleatorios: CASI TODOS estabAn equidistantes
-Distancia entre puntos aleatorios ≈ constante
-No hay información de proximidad
+PCA (proyección lineal) frente a t-SNE (proyección no lineal) sobre datos con estructura no lineal.
 ```
 
-**Conclusión**: en alta dimensión, todos los puntos se vuelven casi equidistantes. La noción de "cercano" desaparece.
+#### UMAP (*Uniform Manifold Approximation and Projection*)
+
+UMAP es una de las técnicas de aprendizaje de variedades más potentes de la actualidad. Fundamentada en la geometría riemanniana clásica y la topología algebraica, UMAP asume que el espacio de los datos es localmente conexo y que la variedad sobre la que yacen es uniforme.
+
+A diferencia de t-SNE, que se enfoca casi exclusivamente en retener vecindades muy locales (relaciones de corto alcance), UMAP es capaz de preservar tanto la estructura local como la estructura global de los datos.
+
+Es matemáticamente mucho más eficiente, lo que se traduce en una velocidad de ejecución sustancialmente mayor sobre conjuntos de datos masivos con millones de muestras.
 
 ## Resumen
 
-- **PCA**: rápido, lineal, interpatable características originales
-- **t-SNE**: visualización excelente, no lineal, lento para datos grandes
-- **UMAP**: balance entre PCA y t-SNE
-- **Varianza explicada**: métrica para elegir número de componentes
-- **Maldición de la dimensionalidad**: motiva reducción
-- **Aplicaciones**: compresión, visualización, preprocesamiento
+- **PCA**: rápido, lineal, interpatable características originales.
+- **t-SNE**: visualización excelente, no lineal, lento para datos grandes.
+- **UMAP**: balance entre PCA y t-SNE.
+- **Varianza explicada**: métrica para elegir número de componentes.
+- **Maldición de la dimensionalidad**: motiva reducción.
+- **Aplicaciones**: compresión, visualización, preprocesamiento.
 
 ---
 

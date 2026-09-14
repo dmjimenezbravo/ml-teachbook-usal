@@ -1,0 +1,20 @@
+flowchart LR
+    D[("Dataset con<br/>pesos iniciales iguales")] --> M1["Modelo débil 1"]
+    M1 --> E1["Errores de M1<br/>reciben más peso"]
+    E1 --> M2["Modelo débil 2<br/>(corrige errores de M1)"]
+    M2 --> E2["Errores de M2<br/>reciben más peso"]
+    E2 --> M3["Modelo débil 3<br/>(corrige errores de M2)"]
+    M3 --> S["Suma ponderada<br/>de todos los modelos"]
+    S --> P["Predicción final"]
+
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef model fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef error fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+    classDef agg fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef final fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class D data
+    class M1,M2,M3 model
+    class E1,E2 error
+    class S agg
+    class P final

@@ -2,6 +2,30 @@
   "generated_by": "scripts/render_diagrams.py",
   "items": [
     {
+      "source": "diagram_sources\\en\\00_fundamentals_01_history_evolution_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\00_fundamentals_01_history_evolution_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\en\\00_fundamentals_02_fundamental_concepts_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\00_fundamentals_02_fundamental_concepts_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\en\\01_supervised_learning_02_classification_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\01_supervised_learning_02_classification_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\en\\01_supervised_learning_02_classification_02.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\01_supervised_learning_02_classification_02.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
       "source": "diagram_sources\\en\\01_tutorial_02_workflow_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\en\\01_tutorial_02_workflow_01.svg",
       "type": "mermaid",
@@ -118,6 +142,30 @@
     {
       "source": "diagram_sources\\en\\05_basic_content_mermaid_05.mermaid",
       "output": "book\\_static\\generated\\diagrams\\en\\05_basic_content_mermaid_05.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\00_fundamentos_01_historia_evolucion_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\00_fundamentos_01_historia_evolucion_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\00_fundamentos_02_conceptos_fundamentales_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\00_fundamentos_02_conceptos_fundamentales_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\01_aprendizaje_supervisado_02_clasificacion_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\01_aprendizaje_supervisado_02_clasificacion_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\01_aprendizaje_supervisado_02_clasificacion_02.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\01_aprendizaje_supervisado_02_clasificacion_02.svg",
       "type": "mermaid",
       "format": "svg"
     },

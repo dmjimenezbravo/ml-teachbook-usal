@@ -35,6 +35,37 @@ from pdf_names import DEFAULT_PDF_FILENAME, pdf_filename_for_lang
 VERBOSE = "--verbose" in sys.argv or "-v" in sys.argv
 
 
+def safe_rmtree(path, retries=5, delay=1.0):
+    """Remove a directory tree, retrying on transient WinError 5
+    (PermissionError) caused by OneDrive/AV briefly holding a file handle
+    open right after Sphinx finishes writing. Falls back to ignore_errors
+    on the last attempt so a stale lock never aborts the whole build."""
+    for attempt in range(retries):
+        try:
+            shutil.rmtree(path)
+            return
+        except PermissionError:
+            if attempt == retries - 1:
+                shutil.rmtree(path, ignore_errors=True)
+                return
+            time.sleep(delay)
+
+
+def safe_write_text(path, content, encoding="utf-8", retries=5, delay=1.0):
+    """Write text to a file, retrying on transient WinError 5
+    (PermissionError) caused by OneDrive briefly locking a just-written
+    file. Re-raises on the final attempt so real errors still surface."""
+    for attempt in range(retries):
+        try:
+            with open(path, "w", encoding=encoding) as f:
+                f.write(content)
+            return
+        except PermissionError:
+            if attempt == retries - 1:
+                raise
+            time.sleep(delay)
+
+
 def write_command_log(cmd, stdout, stderr):
     """Persist full build output so quiet mode never hides errors."""
     log_dir = os.path.join(os.getcwd(), ".build_logs")
@@ -266,8 +297,7 @@ def fix_pdf_paths(build_dir, pdf_filename):
             )
 
             if new_content != content:
-                with open(html_file, "w", encoding="utf-8") as f:
-                    f.write(new_content)
+                safe_write_text(html_file, new_content)
 
 
 def fix_html_asset_paths(html_file):
@@ -302,8 +332,7 @@ def fix_html_asset_paths(html_file):
     content = re.sub(r'(href|src)="(_downloads/)', r'\1="../\2', content)
 
     if content != original:
-        with open(html_file, "w", encoding="utf-8") as f:
-            f.write(content)
+        safe_write_text(html_file, content)
         print(f"   🔧 Fixed asset paths in {os.path.basename(html_file)}")
     else:
         print(f"   ℹ️ No path fixes needed in {os.path.basename(html_file)}")
@@ -336,8 +365,7 @@ def fix_searchindex_paths(searchindex_file, lang):
     content = _re.sub(f'"{_re.escape(prefix)}', '"', content)
 
     if content != original:
-        with open(searchindex_file, "w", encoding="utf-8") as f:
-            f.write(content)
+        safe_write_text(searchindex_file, content)
         print(f"   🔧 Fixed searchindex.js: stripped '{prefix}' prefix from all paths")
     else:
         print(
@@ -374,8 +402,7 @@ def fix_duplicate_thebe_scripts(html_file):
             content = first + "\n" + content
 
     if content != original:
-        with open(html_file, "w", encoding="utf-8") as f:
-            f.write(content)
+        safe_write_text(html_file, content)
         print(f"   🔧 Removed duplicated Thebe script in {os.path.basename(html_file)}")
 
 
@@ -393,7 +420,7 @@ def build_language(lang):
 
         # Standard build logic for default
         if os.path.exists(build_cache_dir):
-            shutil.rmtree(build_cache_dir)
+            safe_rmtree(build_cache_dir)
 
         cmd = [
             get_jupyter_book(),
@@ -430,8 +457,8 @@ def build_language(lang):
     # Use _temp_build_{lang}
     temp_build_root = os.path.abspath(os.path.join(os.getcwd(), f"_temp_build_{lang}"))
     if os.path.exists(temp_build_root):
-        shutil.rmtree(temp_build_root)
-    os.makedirs(temp_build_root)
+        safe_rmtree(temp_build_root)
+    os.makedirs(temp_build_root, exist_ok=True)
 
     # 2. Copy localized content AS A SUBFOLDER to keep paths valid (e.g., temp_en/en/intro.md)
     lang_src_dir = os.path.join(BOOK_DIR, lang)
@@ -444,13 +471,15 @@ def build_language(lang):
 
     print(f"📂 Preparando entorno standalone en: {temp_build_root}")
     print(f"📂 Copiando contenido de '{lang}' a carpeta interna para mantener rutas...")
-    shutil.copytree(lang_src_dir, lang_dst_dir)
+    # dirs_exist_ok=True: a locked leftover from a prior run's safe_rmtree
+    # fallback may still occupy this path; merge over it instead of crashing.
+    shutil.copytree(lang_src_dir, lang_dst_dir, dirs_exist_ok=True)
 
     # 3. Copy _static folder (required for logo, css, js)
     static_src = os.path.join(BOOK_DIR, "_static")
     static_dst = os.path.join(temp_build_root, "_static")
     if os.path.exists(static_src):
-        shutil.copytree(static_src, static_dst)
+        shutil.copytree(static_src, static_dst, dirs_exist_ok=True)
 
     # 4. Copy and rename config/toc
     dest_config = os.path.join(temp_build_root, "_config.yml")
@@ -497,12 +526,14 @@ def build_language(lang):
 
         print(f"🚚 Moviendo de {built_html_path_nested} a {final_dest}")
         if os.path.exists(final_dest):
-            shutil.rmtree(final_dest)
+            safe_rmtree(final_dest)
 
         # Ensure parent dir exists
         os.makedirs(os.path.dirname(final_dest), exist_ok=True)
 
-        shutil.copytree(built_html_path_nested, final_dest)
+        # dirs_exist_ok=True: a locked leftover from a prior run may have
+        # survived safe_rmtree's fallback; merge over it instead of crashing.
+        shutil.copytree(built_html_path_nested, final_dest, dirs_exist_ok=True)
         print(f"✅ Versión {lang} movida correctamente.")
 
         # Fix duplicated inline Thebe config blocks on all generated pages
@@ -594,7 +625,7 @@ def build_language(lang):
     finally:
         # Cleanup temp directory
         if os.path.exists(temp_build_root):
-            shutil.rmtree(temp_build_root, ignore_errors=True)
+            safe_rmtree(temp_build_root)
 
 
 def merge_dir_into(src_dir, dst_dir):
@@ -699,8 +730,8 @@ def main():
     # Start from a clean HTML output tree so deleted assets do not survive
     # between builds. The source assets remain in book/_static.
     if os.path.exists(FINAL_HTML_DIR):
-        shutil.rmtree(FINAL_HTML_DIR)
-    os.makedirs(FINAL_HTML_DIR)
+        safe_rmtree(FINAL_HTML_DIR)
+    os.makedirs(FINAL_HTML_DIR, exist_ok=True)
 
     # Pre-create root _static to avoid race conditions or missing dirs
     final_static = os.path.join(FINAL_HTML_DIR, "_static")

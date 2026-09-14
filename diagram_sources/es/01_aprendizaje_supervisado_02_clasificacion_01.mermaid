@@ -1,0 +1,26 @@
+flowchart TD
+    D[("Dataset original<br/>N muestras")] --> B1["Muestra bootstrap 1<br/>(con reemplazo)"]
+    D --> B2["Muestra bootstrap 2<br/>(con reemplazo)"]
+    D --> B3["Muestra bootstrap 3<br/>(con reemplazo)"]
+    D --> B4["..."]
+    B1 --> T1["Árbol 1<br/>(subconjunto aleatorio<br/>de features)"]
+    B2 --> T2["Árbol 2<br/>(subconjunto aleatorio<br/>de features)"]
+    B3 --> T3["Árbol 3<br/>(subconjunto aleatorio<br/>de features)"]
+    B4 --> T4["Árbol N"]
+    T1 --> V["Votación mayoritaria /<br/>promedio de predicciones"]
+    T2 --> V
+    T3 --> V
+    T4 --> V
+    V --> P["Predicción final"]
+
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef bootstrap fill:#e5e7eb,stroke:#6b7280,color:#374151
+    classDef tree fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef agg fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef final fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class D data
+    class B1,B2,B3,B4 bootstrap
+    class T1,T2,T3,T4 tree
+    class V agg
+    class P final

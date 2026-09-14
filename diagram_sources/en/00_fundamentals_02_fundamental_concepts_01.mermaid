@@ -1,0 +1,23 @@
+flowchart TD
+    A["1. Data<br/>collection"] --> B["2. Exploration<br/>and cleaning"]
+    B --> C["3. Feature<br/>engineering"]
+    C --> D["4. Train / test<br/>split"]
+    D --> E["5. Model<br/>selection"]
+    E --> F["6. Training"]
+    F --> G["7. Evaluation"]
+    G --> H["8. Hyperparameter<br/>tuning"]
+    H -->|retrain| F
+    H --> I["9. Final<br/>evaluation"]
+    I --> J["10. Deployment"]
+
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef split fill:#e5e7eb,stroke:#6b7280,color:#374151
+    classDef model fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef eval fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef deploy fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class A,B,C data
+    class D split
+    class E,F model
+    class G,H,I eval
+    class J deploy

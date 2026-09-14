@@ -6,12 +6,12 @@ parts:
     - file: es/00_fundamentos/intro
     - file: es/00_fundamentos/01_historia_evolucion
     - file: es/00_fundamentos/02_conceptos_fundamentales
-  - caption: Sección 2 - Aprendizaje Supervisado
+  - caption: Sección 2 - Aprendizaje supervisado
     chapters:
     - file: es/01_aprendizaje_supervisado/intro
     - file: es/01_aprendizaje_supervisado/01_regresion
     - file: es/01_aprendizaje_supervisado/02_clasificacion
-  - caption: Sección 3 - Aprendizaje No Supervisado
+  - caption: Sección 3 - Aprendizaje no supervisado
     chapters:
     - file: es/02_aprendizaje_no_supervisado/intro
     - file: es/02_aprendizaje_no_supervisado/01_clustering

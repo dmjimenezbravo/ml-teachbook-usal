@@ -6,6 +6,7 @@ import shutil
 import sys
 import glob
 import re
+import time
 import importlib.metadata as metadata
 from datetime import datetime
 from pathlib import Path
@@ -60,6 +61,22 @@ PDF_REQUIRED_DISTS = [
     "svglib",
     "reportlab",
 ]
+
+
+def safe_rmtree(path, retries=5, delay=1.0):
+    """Remove a directory tree, retrying on transient WinError 5
+    (PermissionError) caused by OneDrive/AV briefly holding a file handle
+    open right after Sphinx finishes writing. Falls back to ignore_errors
+    on the last attempt so a stale lock never aborts the whole export."""
+    for attempt in range(retries):
+        try:
+            shutil.rmtree(path)
+            return
+        except PermissionError:
+            if attempt == retries - 1:
+                shutil.rmtree(path, ignore_errors=True)
+                return
+            time.sleep(delay)
 
 
 def get_languages():
@@ -1057,7 +1074,7 @@ def build_pdf_for_lang(lang, engine_name):
     finally:
         os.chdir(current_dir)
         if temp_mode and os.path.exists(src_dir):
-            shutil.rmtree(src_dir, ignore_errors=True)
+            safe_rmtree(src_dir)
 
 
 def sanitize_config(config_path):

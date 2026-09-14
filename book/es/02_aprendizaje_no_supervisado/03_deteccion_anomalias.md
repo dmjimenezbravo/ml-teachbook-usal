@@ -1,359 +1,136 @@
-# 3.3 Detección de Anomalías
+# 3.3 Detección de anomalías
 
 ## Introducción
 
-Las anomalías son puntos de datos que se desvían significativamente del comportamiento "normal".
+La detección de anomalías es una tarea no supervisada de gran relevancia industrial orientada a identificar patrones inusuales o eventos sospechosos dentro de un flujo continuo de datos. Se aplica ampliamente en la detección de fraudes financieros, la prevención de intrusiones en redes corporativas, el control de calidad en manufactura y la limpieza automatizada de conjuntos de datos.
 
-```
-Datos Normales:        Con Anomalías:
-  X X                    X X
-X   X         →        X   X
-  X X                    X X
-                           ◆ (anomalía)
-```
+## Filosofía de la detección de anomalías
 
-La detección de anomalías tiene aplicaciones críticas:
-- **Seguridad**: fraude en transacciones bancarias
-- **Mantenimiento**: fallos incipientes en maquinaria
-- **Biología**: mutaciones genéticas raras
-- **Astronomía**: eventos cósmicos inusuales
+A nivel conceptual, la detección de anomalías se basa en la premisa de que los comportamientos normales (denominados *inliers*) son altamente frecuentes y comparten patrones de comportamiento consistentes, mientras que las anomalías (*outliers*) son eventos raros cuyas características se desvían de manera significativa de la norma.
 
-## Conceptos Fundamentales
+### *Anomaly detection vs. novelty detection*
 
-### ¿Qué es una Anomalía?
+Aunque en la práctica estos términos se utilicen en ocasiones como sinónimos, la literatura especializada establece una distinción metodológica crítica basada en la contaminación del conjunto de datos de entrenamiento:
 
-Una observación que:
-1. Es rara (ocurre infrequentemente)
-2. Es diferente del patrón normal
-3. Sugiere un proceso generativo diferente
+- **Detección de anomalías** (*anomaly/outlier detection*): el algoritmo se entrena sobre un conjunto de datos que no está depurado y que, por tanto, puede contener un porcentaje desconocido de *outliers* o muestras ruidosas infiltradas de forma natural. El objetivo es tanto identificar estos *outliers* dentro del propio *set* de entrenamiento (limpieza de datos) como clasificar correctamente las nuevas observaciones entrantes.
+- **Detección de novedades** (*novelty detection*): el algoritmo se entrena bajo la premisa estricta de que el *dataset* de entrenamiento está completamente limpio y exento de anomalías. El objetivo aquí es definir de forma precisa la frontera del comportamiento "normal" conocido para catalogar cualquier patrón nuevo o desconocido como una "novedad".
 
-```
-Distribución Normal + Anomalías:
+### El enfoque no supervisado
 
-Densidad
-    |
-    |●●●●●
-    |●   ●
-    |●   ●      ◆ anomalía 1
-    |●   ● ◆
-    |●___●   ◆ anomalía 2
-    +--+--+--+---> Valor
-```
+La detección de anomalías se aborda fundamentalmente mediante aprendizaje no supervisado debido a que, en situaciones del mundo real, no se conoce de antemano qué tipo de anomalía puede ocurrir. Intentar entrenar un clasificador supervisado tradicional (como una regresión logística) resulta ineficaz debido al severo desbalance de clases y a que las anomalías futuras pueden presentar patrones completamente inéditos que el modelo jamás vio en el entrenamiento.
 
-### Tipos de Anomalías
+## Enfoques estadísticos y de reconstrucción
 
-#### Punto (Point Anomaly)
-Un punto individual anómalo en el contexto de todos los datos.
+Antes de recurrir a modelos más complejos, existen dos aproximaciones clásicas muy eficientes basadas en la estimación de densidad y en la proyección lineal de los datos.  
 
-```
-[normal, normal, anomalía, normal, normal]
+[Datos Normales (Inliers)] ──▶ Modelado de Densidad/Proyección ──▶ Umbral Establecido
+                                                                           │
+  [Anomalía (Baja Densidad/Alto Error)] ───────────────────────────────────▼──▶ Alerta / Outlier
+
+### Modelado de densidad mediante mezclas gaussianas (GMM)
+
+Bajo este enfoque, se asume que las observaciones normales se concentran en regiones del espacio de características que presentan una alta densidad de probabilidad.
+
+- Se entrena un **Modelo de Mezcla Gaussiana** (GMM) para aproximar la función de densidad de probabilidad del dataset.
+- Para clasificar una nueva muestra, se calcula su **densidad** bajo el modelo estimado. Cualquier instancia ubicada en una región de baja densidad por debajo de un umbral preestablecido se marca como anomalía.
+- En entornos reales donde la tasa histórica de fallos es conocida (por ejemplo, un 4% de productos defectuosos en una fábrica), el **umbral** se establece de forma matemática seleccionando el percentil correspondiente (el 4% con menor densidad bajo el modelo).
+
+La {numref}`fig-gaussian-anomaly` ilustra el concepto: los contornos azules representan curvas de igual densidad de probabilidad y los puntos rojos marcados con X son anomalías que caen fuera de las regiones de alta densidad.
+
+```{figure} ../../_static/generated/figures/es/gaussian_anomaly_detection.png
+:name: fig-gaussian-anomaly
+:alt: Contornos de densidad gaussiana con datos normales agrupados en el centro y tres anomalías marcadas fuera de las curvas de densidad
+:width: 70%
+:align: center
+
+Detección de anomalías mediante estimación de densidad gaussiana.
 ```
 
-#### Contextual (Contextual Anomaly)
-Normal en general, pero anómalo en este contexto específico.
+### Enfoque de reconstrucción utilizando PCA
 
-```
-Temperatura en Salamanca:
-Enero: 2°C   (normal)
-Julio: 35°C  (normal)
-Diciembre: 25°C (¡anomalía!)
-```
+Esta técnica se basa en el principio de que los componentes principales mayoritarios de un análisis PCA capturan las direcciones de máxima varianza que caracterizan al comportamiento normal del sistema.
 
-#### Colectivo (Collective Anomaly)
-Una colección de puntos es anómala, aunque individualmente sean normales.
+- El dataset se proyecta a un espacio de baja dimensión utilizando PCA y, posteriormente, se reconstruye de vuelta al espacio original utilizando la matriz inversa.
+- Para cada instancia, se calcula el **error de reconstrucción** (la distancia cuadrática entre el vector original $x$ y su reconstrucción $\hat{x}$).
+- Dado que las componentes principales no capturan las desviaciones inusuales de los *outliers*, las anomalías experimentarán un error de reconstrucción significativamente mayor que las instancias normales, permitiendo su fácil identificación.
 
-```
-Patrón de fraude: transacción normal + transferencia normal
-Juntas forman patrón de lavado de dinero
-```
+La {numref}`fig-pca-reconstruction` ilustra el proceso: los datos normales (azul) se proyectan sobre la línea de PC1 y se reconstruyen con un error mínimo (líneas finas), mientras que las dos anomalías (rojo) están lejos de la dirección principal de los datos y, al reconstruirse sobre esa misma línea, presentan un error de reconstrucción mucho mayor (flechas largas).
 
-## Métodos de Detección
+```{figure} ../../_static/generated/figures/es/pca_reconstruction_anomaly.png
+:name: fig-pca-reconstruction
+:alt: Diagrama de dispersión mostrando datos normales proyectados sobre la primera componente principal con bajo error de reconstrucción, y dos anomalías con un error de reconstrucción mucho mayor
+:width: 65%
+:align: center
 
-### 1. Estadístico: Gaussiana Univariada
-
-Asumir que datos normales siguen distribución normal:
-
-```
-Densidad
-    |
-    |      ╱╲
-    |    ╱    ╲
-    |  ╱        ╲    ◆ (fuera de límites)
-    |╱            ╲__
-    +---+---+---+---+----> x
-     -3σ -2σ -σ  0  +σ
+Detección de anomalías mediante el error de reconstrucción de PCA.
 ```
 
-Algoritmo:
-1. Estimar media μ y desviación σ de datos normales
-2. Para nuevo punto x, calcular probabilidad P(x)
-3. Si P(x) < umbral, es anomalía
+## Algoritmos específicos basados en no-supervisión
 
-$$P(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}$$
+### *Isolation forest* (bosque de aislamiento)
 
-**Regla práctica**: puntos a ±3σ de la media son anomalías (99.7% de datos).
+Es uno de los algoritmos más eficientes y escalables para la detección de *outliers*, especialmente diseñado para trabajar en espacios de alta dimensionalidad.
 
-**Limitaciones**: solo funciona bien para una dimensión. En alta dimensión, la mayoría de puntos están "en la cola".
+- **Mecánica**: a diferencia de los métodos tradicionales que intentan modelar la densidad o los puntos normales, *isolation forest* busca aislar explícitamente cada observación. Para ello, construye un conjunto de árboles de decisión aleatorios. En cada nodo de un árbol, se selecciona una característica al azar y se elige un umbral de corte aleatorio (entre el mínimo y el máximo de esa variable) para dividir los datos en dos. Este proceso de partición recursiva continúa hasta que cada instancia queda aislada en su propia hoja.
+- **Intuición**: dado que las anomalías se encuentran alejadas del grueso de la población de datos normales, requieren en promedio significativamente menos particiones aleatorias para ser aisladas. Por lo tanto, aquellas instancias que presenten una longitud de camino promedio más corta hacia la raíz a lo largo del bosque de árboles son catalogadas inmediatamente como anomalías.
+  
+  Datos Normales (Densos)   ────────────────▶ Requieren muchas divisiones para aislarse.
+  Anomalías (Aisladas/Raras) ───────────────▶ Se aíslan rápidamente (pocas ramas).
 
-### 2. Basado en Distancia: Aislamiento por Proximidad
+La {numref}`fig-isolation-forest` compara ambos casos: la anomalía (izquierda) queda aislada con solo 2 divisiones aleatorias, mientras que un punto normal (derecha) necesita muchas más divisiones para separarse del resto.
 
-Si un punto está muy alejado de sus vecinos → anomalía.
+```{figure} ../../_static/generated/figures/es/isolation_forest_concept.png
+:name: fig-isolation-forest
+:alt: Dos paneles comparando cómo una anomalía se aísla con pocas divisiones aleatorias frente a un punto normal que requiere muchas más divisiones
+:width: 100%
+:align: center
 
-```
-Punto normal:       Anomalía:
-  o o               o   o
-o   o      →      o       o
-  o o              
-      o ◆                 ◆
-   (cerca)          (aislado)
-```
-
-Métodos:
-- **K-Nearest Neighbors (k-NN)**: punto con vecinos lejanos
-- **LOF (Local Outlier Factor)**: compara densidad local con vecinos
-- **Isolation Forest**: árbol que aísla puntos anómalos
-
-### 3. Aislamiento (Isolation Forest)
-
-**Idea**: los puntos anómalos son más fáciles de aislar.
-
-```
-Partición 1: Dividir por feature_1
-    [Normal] | [Normal, Anomalía]
-    
-Partición 2: Dividir por feature_2 (en rama con anomalía)
-    [Normal] | [Anomalía]
-    
-Anomalía aislada en 2 particiones
-Normal requeriría 10+ particiones
+Isolation Forest: las anomalías se aíslan en menos particiones que los puntos normales.
 ```
 
-**Ventajas**:
-- Eficiente: O(n log n)
-- No paramétrico
-- Funciona bien en alta dimensión
-- Naturalmente detecta puntos anómalos
+### *Local Outlier Factor* (LOF)
 
-**Desventajas**:
-- Menos interpretable
-- Sensible a randomización
+Este algoritmo basa su funcionamiento en el análisis de la densidad local de las muestras utilizando un enfoque de vecinos más cercanos (KNN).
 
-### 4. Basado en Densidad: Local Outlier Factor (LOF)
+- LOF compara la **densidad local** de una instancia con la densidad de sus vecinos más cercanos.
+- Una instancia normal tendrá una densidad local similar a la de su entorno. En cambio, un ***outlier* local** presentará una densidad significativamente menor que la de sus vecinos más cercanos (estará más aislado en relación con la densidad de su vecindario inmediato).
+- Este método es extremadamente útil para detectar **anomalías locales** que no destacarían en un análisis global porque sus valores absolutos no son extremos, pero sí resultan inusuales para el contexto específico de su clúster de pertenencia.
 
-Compara densidad local con densidad de vecinos:
+La {numref}`fig-lof` muestra un caso típico: el punto marcado en rojo no está lejos de todos los datos en términos absolutos, pero su densidad local es mucho menor que la de sus vecinos inmediatos, lo que lo delata como anomalía local.
 
-```
-Región densa:       Región rara:
-X X X X              X   X   X
-X   X      densidad  X       X (baja densidad)
-X X X X      alta    X   X   X
+```{figure} ../../_static/generated/figures/es/lof_concept.png
+:name: fig-lof
+:alt: Diagrama de dispersión con una región densa, una región dispersa y un punto marcado como outlier local por tener baja densidad respecto a su vecindario
+:width: 70%
+:align: center
+
+Local Outlier Factor: una anomalía local no destaca en un análisis global.
 ```
 
-LOF = 1: densidad similar a vecinos (normal)
-LOF > 1: menos denso que vecinos (anomalía)
+### *One-class* SVM (máquinas de vectores de soporte de una clase)
 
-$$\text{LOF}(p) = \frac{\text{densidad media de vecinos}}{\text{densidad de } p}$$
+Este algoritmo está optimizado específicamente para la detección de novedades (*novelty detection*) en escenarios donde se dispone de un conjunto de datos limpio para el entrenamiento.
 
-### 5. Autoencoders
+- **Funcionamiento**: en lugar de buscar un hiperplano que separe dos clases, *one-class* SVM proyecta los datos a un espacio de características de alta dimensión mediante un *kernel* y busca separar las instancias de entrenamiento del origen.
+- **Frontera de decisión**: esto equivale geométricamente a encontrar la región o hiperesfera de volumen mínimo que encierra a casi la totalidad de las muestras de entrenamiento. Si una nueva observación cae fuera de esta región delimitada por los vectores de soporte de frontera, es clasificada automáticamente como una anomalía o novedad.
 
-Red neuronal que:
-1. Comprime datos en representación de bajo rango
-2. Reconstruye desde esa representación
+La {numref}`fig-ocsvm` muestra un ejemplo con datos de forma irregular: *one-class* SVM traza una frontera no lineal (morado) que envuelve ajustadamente la región de datos normales (azul), de modo que cualquier observación nueva que caiga fuera de ella (cruces rojas) se clasifica como anomalía.
 
+```{figure} ../../_static/generated/figures/es/one_class_svm_boundary.png
+:name: fig-ocsvm
+:alt: Diagrama de dispersión mostrando una frontera de decisión no lineal que envuelve los datos normales, con tres nuevas observaciones fuera de la frontera marcadas como anomalías
+:width: 65%
+:align: center
+
+*One-class* SVM: la frontera envuelve la región normal; lo que queda fuera se clasifica como anomalía.
 ```
-Entrada → Compresión → Reconstrucción → Salida
-  x           z(100D)      x'
-             (10D)
-             
-Error de reconstrucción = ||x - x'||
-Si error > umbral → anomalía
-```
-
-**Intuición**: 
-- Datos normales: reconstrucción buena
-- Datos anómalos: reconstrucción pobre (nunca los vio)
-
-**Ventaja**: aprende qué es "normal" de los datos
-
-## Evaluación de Anomalías
-
-### El Desafío
-
-Típicamente hay muy pocas anomalías verdaderas:
-
-```
-1000 transacciones: 999 normales, 1 fraude
-Exactitud de decir "todo es normal": 99.9%
-Pero eso es inútil, no detectó el fraude
-```
-
-### Métricas Adecuadas
-
-**Recall (Sensibilidad)**: 
-$$\text{Recall} = \frac{\text{Anomalías detectadas}}{\text{Todas las anomalías}}$$
-
-Crítico: queremos encontrar todas las anomalías.
-
-**Precisión**:
-$$\text{Precisión} = \frac{\text{Anomalías correctas}}{\text{Predichas como anomalía}}$$
-
-Si es muy bajo, investigar muchos falsos positivos.
-
-**F1-Score**: balance entre ambas.
-
-### Curva Precision-Recall
-
-```
-Precisión
-    |
-  1 |●
-    |  ●
-    |    ●●  ← óptimo
-    |        ●●●
-    |            ●●
-  0 |________________●----> Recall
-    0            0.5    1
-```
-
-A diferencia de ROC, esta es más informativa para clases desbalanceadas.
-
-## Aplicaciones Reales
-
-### Detección de Fraude Bancario
-
-```
-Datos normales:
-- Transacciones pequeñas (< 500€)
-- Horarios de trabajo
-- Ubicación consistente
-
-Anomalías:
-- Transacción grande (50000€) a las 2 AM
-- Ubicación cambió 1000km en 2 horas
-- Múltiples transacciones rechazadas luego aceptada
-```
-
-### Mantenimiento Predictivo
-
-```
-Sensor de vibración en máquina:
-- Normal: 10-20 Hz
-- Anomalía: picos > 50 Hz
-→ Indicador de fallo incipiente
-
-Acción: mantenimiento preventivo antes de fallo
-Ahorro: evita paradas inesperadas
-```
-
-### Detección de Intrusiones
-
-```
-Flujo de red normal:
-- Pocos intentos de conexión por segundo
-- Puertos estándares (80, 443)
-- Volumen consistente
-
-Anomalía:
-- Escaneo de puertos (múltiples puertos en segundos)
-- Volumen explosivo de tráfico
-- Puertos inusuales
-
-Acción: bloquear conexión, alertar
-```
-
-## Implementación Conceptual: Isolation Forest
-
-```python
-import numpy as np
-
-class IsolationForest:
-    def __init__(self, n_trees=100, max_depth=20):
-        self.n_trees = n_trees
-        self.max_depth = max_depth
-        self.trees = []
-    
-    def fit(self, X):
-        for _ in range(self.n_trees):
-            tree = self._build_tree(X, depth=0)
-            self.trees.append(tree)
-    
-    def _build_tree(self, X, depth):
-        if depth >= self.max_depth or len(X) <= 1:
-            return {'type': 'leaf', 'size': len(X)}
-        
-        # Elegir feature aleatorio
-        feature = np.random.randint(0, X.shape[1])
-        
-        # Elegir valor de split aleatorio
-        split_value = np.random.uniform(X[:, feature].min(), 
-                                        X[:, feature].max())
-        
-        # Dividir datos
-        left_idx = X[:, feature] < split_value
-        right_idx = ~left_idx
-        
-        return {
-            'type': 'internal',
-            'feature': feature,
-            'split': split_value,
-            'left': self._build_tree(X[left_idx], depth + 1),
-            'right': self._build_tree(X[right_idx], depth + 1)
-        }
-    
-    def predict(self, X):
-        anomaly_scores = []
-        for x in X:
-            # Calcular profundidad promedio en árboles
-            depths = [self._traverse(x, tree, 0) 
-                     for tree in self.trees]
-            avg_depth = np.mean(depths)
-            anomaly_scores.append(avg_depth)
-        
-        # Normalizar: bajo score = anomalía
-        return np.array(anomaly_scores)
-    
-    def _traverse(self, x, node, depth):
-        if node['type'] == 'leaf':
-            return depth
-        
-        if x[node['feature']] < node['split']:
-            return self._traverse(x, node['left'], depth + 1)
-        else:
-            return self._traverse(x, node['right'], depth + 1)
-```
-
-## Comparación de Métodos
-
-| Método | Complejidad | Lineal | Interpretable | Alto-D |
-|--------|------------|--------|---------------|--------|
-| **Gaussiana** | O(n) | ✓ | ✓✓ | ✗ |
-| **k-NN** | O(n²) | ✗ | ○ | ✗ |
-| **LOF** | O(n²) | ✗ | ○ | ✗ |
-| **Isolation Forest** | O(n log n) | ✗ | ○ | ✓ |
-| **Autoencoder** | O(n) | ✗ | ✗ | ✓✓ |
 
 ## Resumen
 
-- **Anomalías**: eventos raros, contextuales o colectivos
-- **Métodos simples**: gaussiana para 1D, k-NN para distancia
-- **Métodos avanzados**: Isolation Forest, Autoencoders
-- **Evaluación**: Recall más importante que Exactitud
-- **Aplicaciones**: fraude, mantenimiento, seguridad
-
-## Reflexión Final
-
-La detección de anomalías es tanto **arte como ciencia**:
-- La ciencia: algoritmos probados
-- El arte: entender tu dominio para definir qué es "anómalo"
-
-Una anomalía estadística puede ser perfecto en tu negocio. Una anomalía empresarial puede ser perfectamente normal estadísticamente.
+- **Anomalías**: eventos raros, contextuales o colectivos.
+- **Métodos simples**: gaussiana para 1D, aplicación de PCA.
+- **Métodos avanzados**: *Isolation Forest*, *Local Outlier Factor*, *one-class* SVM.
 
 ---
 
-¡Felicidades! Has completado el curso de Fundamentos e Introducción al Aprendizaje Automático. Ahora tienes bases sólidas para explorar temas más avanzados como **aprendizaje profundo**, **procesamiento de lenguaje natural**, o **visión por computadora**.
-
-**Próximos pasos recomendados**:
-1. Practicar con datasets reales (Kaggle, UCI)
-2. Implementar algoritmos desde cero
-3. Leer papers académicos
-4. Contribuir a proyectos open-source
+¡Felicidades! Has completado el contenido de "Introducción al aprendiaje automático". Ahora tienes bases sólidas para explorar temas más avanzados como **aprendizaje profundo**, **procesamiento de lenguaje natural**, o **visión por computadora**.

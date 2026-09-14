@@ -1,105 +1,43 @@
-# Sección 3: Aprendizaje No Supervisado
+# Sección 3: aprendizaje no supervisado
 
 Bienvenido a la tercera y última sección principal del curso. Aquí exploraremos técnicas para extraer patrones de datos **sin etiquetas**.
 
-## ¿Qué es Aprendizaje No Supervisado?
+## ¿Qué es aprendizaje no supervisado?
 
-En aprendizaje no supervisado:
-- Tenemos **solo características** (X)
-- **No tenemos etiquetas** (sin y)
-- Queremos **descubrir patrones ocultos**
+A diferencia de los bloques anteriores enfocados en el aprendizaje supervisado, donde el entrenamiento está guiado por una variable objetivo clara o etiqueta (label), el aprendizaje no supervisado representa la desafiante tarea de enfrentarse a conjuntos de datos que carecen de cualquier tipo de salida esperada o anotación. En este paradigma, únicamente disponemos de una colección de características de entrada $X$ (o variables predictoras), pero no contamos con un "maestro" o supervisor que proporcione las respuestas correctas para guiar el proceso de aprendizaje.
 
-Es como explorar un territorio desconocido sin un mapa. La máquina debe encontrar su propia estructura.
+Técnicamente, mientras que el aprendizaje supervisado busca aproximar una función de mapeo directo entre entradas y salidas o estimar una **distribución condicional** $p(y|x)$, el aprendizaje no supervisado trabaja "a ciegas" para descubrir la **estructura latente**, las asociaciones estadísticas intrínsecas o la **distribución incondicional** de los propios datos $p(x)$. Como célebremente ilustró el científico de la computación Yann LeCun: "Si la inteligencia fuera un pastel, el aprendizaje no supervisado sería el cuerpo del pastel (el bizcocho), el aprendizaje supervisado la cobertura (el glaseado), y el aprendizaje por refuerzo la cereza". Esta analogía subraya que la inmensa mayoría de la información disponible en el mundo real no viene etiquetada, haciendo que este paradigma sea el pilar fundamental sobre el cual se erige el verdadero entendimiento de los datos.
 
-## Tres Tipos Principales
+### Tipos principales de aprendizaje no supervisado
 
-### 1. Clustering (Agrupamiento)
-Agrupar datos similares:
-- Segmentar clientes por comportamiento
-- Encontrar comunidades en redes sociales
-- Clasificar documentos por tema
-- Identificar células cancerosas en imágenes
+1. **_Clustering_** (agrupamiento): su objetivo es agrupar datos similares.
+2. **Reducción de dimensionalidad**: simplifica datos complejos.
+3. **Detección de anomalías**: este tipo permite identificar casos raros o inusuales.
 
-### 2. Reducción de Dimensionalidad
-Simplificar datos complejos:
-- Visualizar datos de alta dimensión
-- Eliminar ruido
-- Acelerar algoritmos posteriores
-- Comprensión interpretable
+## Ejemplos y utilidades prácticas
 
-### 3. Detección de Anomalías
-Identificar casos raros o inusuales:
-- Fraude en transacciones
-- Fallos en sistemas
-- Comportamiento anómalo de usuarios
-- Valores atípicos en datos científicos
+El aprendizaje no supervisado no busca realizar predicciones cuantitativas o cualitativas puntuales. Su valor reside en extraer conocimiento, simplificar estructuras y revelar patrones ocultos para que sean interpretables por el ser humano o sirvan de preparación para otros modelos:
+
+- **Segmentación de mercado** (*market segmentation*): al analizar grandes volúmenes de datos demográficos y transaccionales de consumidores (como ingresos, ocupación o hábitos de gasto), las empresas pueden agrupar a las personas en nichos homogéneos para dirigir campañas publicitarias específicas o desarrollar productos personalizados sin necesidad de definir estas categorías de antemano.
+- **Visualización de datos complejos**: proyectar datasets de altísima dimensionalidad (con cientos de atributos) a representaciones legibles de dos o tres dimensiones, preservando la estructura y las relaciones geométricas para que un analista pueda comprender de forma intuitiva cómo se organizan los datos.
+- **Sistemas de recomendación y filtrado colaborativo**: agrupar usuarios con gustos afines o productos con características similares para predecir preferencias implícitas basándose en comportamientos de consumo históricos.
+- **Detección de anomalías**: modelar el comportamiento estadístico de los datos "normales" para identificar de manera automática aquellas instancias sospechosas que se desvían significativamente del patrón general (por ejemplo, para detectar fraudes financieros o fallos en líneas de manufactura).
 
 ## ¿Qué Encontrarás en Esta Sección?
 
-### Capítulo 3.1: Clustering
-- **K-Means**: partición de datos en grupos
-- **Método del Codo**: seleccionar número óptimo de clusters
-- **Clustering Jerárquico**: dendrogramas y fusiones
-- **DBSCAN**: agrupamiento basado en densidad
-
-### Capítulo 3.2: Reducción de Dimensionalidad
-- **PCA (Principal Component Analysis)**: maximiza varianza explicada
-- **t-SNE y UMAP**: visualización no lineal
-
-### Capítulo 3.3: Detección de Anomalías
-- **Conceptos de patrones inusuales**: qué es una anomalía
-- **Métodos de detección**: aplicaciones prácticas
-
-## Desafío Principal: Evaluación
-
-Sin etiquetas, ¿cómo sabemos si nuestros resultados son correctos?
-
-```
-Aprendizaje Supervisado:
-Datos → Modelo → Predicción → Comparar con y real → Error
-
-Aprendizaje No Supervisado:
-Datos → Modelo → Estructura ??? → ¿Es correcta?
-```
-
-Esto es más desafiante y requiere:
-- **Intuición del dominio**: ¿tiene sentido el resultado?
-- **Métricas internas**: silhueta, índice Davies-Bouldin
-- **Validación externa**: etiquetas disponibles después (si las hay)
-
-## Aplicaciones Reales
-
-### E-commerce
-Segmentar clientes en grupos para marketing personalizado sin etiquetar manualmente.
-
-### Biología
-Agrupar proteínas por similitud estructural para descubrir nuevas familias.
-
-### Astronomía
-Detectar anomalías en observaciones de telescopios (candidatos a eventos raros).
-
-### Análisis de Redes
-Encontrar comunidades de usuarios con intereses similares en redes sociales.
-
-## Estructura Recomendada
-
-1. **Clustering**: Aprende a agrupar datos
-2. **Reducción de Dimensionalidad**: Aprende a simplificar datos complejos
-3. **Detección de Anomalías**: Aprende a encontrar patrones raros
-
-## Objetivos de Aprendizaje
-
-Después de completar esta sección, podrás:
-- ✓ Implementar K-Means desde cero
-- ✓ Elegir el número óptimo de clusters
-- ✓ Visualizar datos de alta dimensión
-- ✓ Detectar anomalías en datos reales
-- ✓ Entender las limitaciones de cada técnica
+- ***Clustering***: se centrará en los métodos diseñados para encontrar subgrupos homogéneos dentro de las observaciones.
+  - Se estudiarán algoritmos clásicos basados en centroides, como $K$-*means*.
+  - Estructuras de fusión jerárquica o *clustering* jerárquico.
+  - Modelos que definen los grupos según la densidad local del espacio geométrico.
+- **Reducción de dimensionalidad**: se explorarán herramientas de proyección lineal para simplificar datos.
+  - Técnicas que maximizan la varianza retenida, como PCA. 
+  - Algoritmos avanzados de aprendizaje de variedades no lineales, como t-SNE y UMAP.
+  - Algoritmos orientados específicamente a la visualización cualitativa y la eliminación de ruido antes de entrenar clasificadores supervisados.
 
 ## Nota Importante
 
-El aprendizaje no supervisado es más **arte que ciencia**. No hay una única respuesta "correcta". Tu interpretación domain and feedback externo son cruciales.
+El aprendizaje no supervisado es más **arte que ciencia**. No hay una única respuesta "correcta". Tu interpretación del dominio y el *feedback* externo son cruciales.
 
 ---
 
-**Empecemos**: Dirígete al Capítulo 3.1 para aprender sobre Clustering, el enfoque no supervisado más popular.
+**Empecemos**: dirígete al Capítulo 3.1 para aprender sobre *clustering*, el enfoque no supervisado más popular.

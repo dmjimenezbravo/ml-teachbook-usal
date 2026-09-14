@@ -1,0 +1,20 @@
+flowchart LR
+    D[("Dataset with<br/>equal initial weights")] --> M1["Weak model 1"]
+    M1 --> E1["M1's errors<br/>get more weight"]
+    E1 --> M2["Weak model 2<br/>(corrects M1's errors)"]
+    M2 --> E2["M2's errors<br/>get more weight"]
+    E2 --> M3["Weak model 3<br/>(corrects M2's errors)"]
+    M3 --> S["Weighted sum<br/>of all models"]
+    S --> P["Final prediction"]
+
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef model fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef error fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+    classDef agg fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef final fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class D data
+    class M1,M2,M3 model
+    class E1,E2 error
+    class S agg
+    class P final
