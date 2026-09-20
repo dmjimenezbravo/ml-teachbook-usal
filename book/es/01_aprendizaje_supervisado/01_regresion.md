@@ -8,10 +8,10 @@ La regresión es el problema de predecir un **valor continuo**. En otras palabra
 
 La regresión lineal es una técnica fundamental que asume una relación aproximadamente lineal entre los predictores y la variable objetivo.
 
-  - **Simple vs. múltiple**: en la **regresión lineal simple** se utiliza un único predictor para modelar $Y \approx \beta_0 + \beta_1X$. La **regresión lineal múltiple** extiende este concepto asignando un coeficiente o peso específico a cada una de las p características disponibles: $Y = \beta_0 + \beta_1X_1 + beta_2X_2 + ... + beta_pX_p + \epsilon$.
-  - **Parámetros del modelo**: los coeficientes $β_0$​ (intercepto o sesgo) y $β_1​...β_p$​ (pesos o pendientes) representan el conocimiento aprendido por el modelo a partir de los datos. Técnicamente, en un espacio de entrada de p dimensiones, este modelo representa un **hiperplano**.
+  - **Simple vs. múltiple**: en la **regresión lineal simple** se utiliza un único predictor para modelar $Y \approx \beta_0 + \beta_1X$. La **regresión lineal múltiple** extiende este concepto asignando un coeficiente o peso específico a cada una de las p características disponibles: $Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + ... + \beta_pX_p + \epsilon$.
+  - **Parámetros del modelo**: los coeficientes $β_0$​ (intercepto o sesgo) y $β_1​...β_p$​ (pesos o pendientes) representan el conocimiento aprendido por el modelo a partir de los datos. Técnicamente, en un espacio de entrada de $p$ dimensiones, este modelo representa un **hiperplano**.
 
-La {numref}`fig-linear-fit` muestra un ejemplo con un único predictor: la recta roja es el ajuste OLS y las líneas grises verticales representan los residuos (la distancia entre cada punto y la predicción).
+La {numref}`fig-linear-fit` muestra un ejemplo con un único predictor: la recta roja es el ajuste OLS (*Ordinary Least Squares*) y las líneas grises verticales representan los residuos (la distancia entre cada punto y la predicción).
 
 ```{figure} ../../_static/generated/figures/es/linear_regression_fit.png
 :name: fig-linear-fit
@@ -51,7 +51,7 @@ Para conjuntos de datos masivos que no caben en memoria o modelos con miles de p
   - Variantes:
     - *Batch* GD: utiliza todo el conjunto de entrenamiento para cada paso.
     - *Stochastic* GD (SGD): utiliza una sola muestra aleatoria por paso, lo que lo hace mucho más rápido y capaz de manejar flujos de datos en línea.
-    - *Mini-batch* GD: procesa pequeños grupos de datos (batches), equilibrando la estabilidad del Batch GD y la eficiencia del SGD.
+    - *Mini-batch* GD: procesa pequeños grupos de datos (*batches*), equilibrando la estabilidad del Batch GD y la eficiencia del SGD.
   - **Momentum**: técnica inspirada en la física que ayuda a evitar mínimos locales y acelera la convergencia al tener en cuenta las actualizaciones de peso anteriores.
 
 Como se ve en la {numref}`fig-gradient-descent`, el algoritmo parte de un punto inicial y va dando pasos sucesivos en la dirección de descenso más pronunciada hasta converger al mínimo de la función de pérdida.
@@ -121,8 +121,8 @@ Evaluar un modelo de regresión requiere métricas específicas y el análisis d
 
 - **Regresión Lineal**: modelo simple pero poderoso.
 - **OLS**: solución exacta, pero costosa computacionalmente
-- **Descenso de Gradiente**: método general, funciona para cualquier modelo.
-- **Regresión Polinomial**: captura relaciones no lineales.
+- **Descenso de gradiente**: método general, funciona para cualquier modelo.
+- **Regresión polinomial**: captura relaciones no lineales.
 - **Regularización**: previene *overfitting* (*Ridge* para retención, *Lasso* para selección).
 - **Validación**: métricas específicas para validar la regresión acompañadas de un estudio del proceo de entrenamiento.
 

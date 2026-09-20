@@ -4,7 +4,7 @@
 
 En clasificación, nuestro objetivo es predecir **categorías** (clases) en lugar de valores continuos. Para clasificar una muestra o instancia con una clase específica los algoritmos de clasificación se basan en los atributos de la muestra. Algunos ejemplos típicos incluyen:
 
-- Clasificación de correos electrónicos: spam vs. no-spam.
+- Clasificación de correos electrónicos: *spam* vs. no-*spam*.
 - Clasificación médica: enfermo vs. sano.
 - Clasificación de especies: gato vs. perro, etc.
 - Etc.
@@ -16,8 +16,8 @@ A diferencia de la regresión lineal, que predice valores continuos, la clasific
 - **Mecánica del modelo**: la regresión logística utiliza la **función sigmoide** (o logística) para transformar una combinación lineal de las características de entrada en un valor entre 0 y 1. La fórmula se define como: 
 $\sigma(t) = \frac{1}{1 + e^{-t}}$
 
-La entrada t de esta función se denomina **logit** (o log-odds), que representa las probabilidades logarítmicas no normalizadas de la clase positiva.
-- **Entrenamiento y optimización**: rl modelo se entrena minimizando una función de costo llamada **entropía cruzada** (o *log loss*), que penaliza las predicciones que son seguras pero incorrectas. Dado que esta función es convexa, se puede utilizar el descenso de gradiente para encontrar los pesos óptimos de forma iterativa.
+La entrada $t$ de esta función se denomina ***logit*** (o *log-odds*), que representa las probabilidades logarítmicas no normalizadas de la clase positiva.
+- **Entrenamiento y optimización**: el modelo se entrena minimizando una función de costo llamada **entropía cruzada** (o *log loss*), que penaliza las predicciones que son seguras pero incorrectas. Dado que esta función es convexa, se puede utilizar el descenso de gradiente para encontrar los pesos óptimos de forma iterativa.
 - **Evaluación mediante matriz de confusión**: es una tabla de $K×K$ clases que desglosa el rendimiento del modelo comparando las etiquetas reales (filas) con las predichas (columnas). De aquí surgen cuatro valores críticos:
   - **Verdaderos Positivos** (TP, *True Positives*) y **Verdaderos Negativos** (TN, *True Negatives*): aciertos del modelo.
   - **Falsos Positivos** (FP, *False Positives*): error de tipo I o falsa alarma.
@@ -50,7 +50,7 @@ Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduc
 
 Estos métodos estratifican el espacio de características o buscan fronteras de separación geométricas.
 
-### Árboles de Decisión
+### Árboles de decisión
 
 Los árboles particionan el espacio de entrada de forma recursiva en "cajas" o rectángulos de alta dimensión.
 
@@ -68,13 +68,14 @@ La {numref}`fig-tree-partition` ilustra cómo un árbol divide el espacio de car
 Particiones recursivas de un árbol de decisión sobre dos características.
 ```
 
-### Bosques aleatorios (*Random Forests*)
-Es un conjunto de árboles de decisión diseñado para reducir la varianza y mejorar la robustez.
+### Bosques aleatorios (*random forests*)
 
-- ***Bagging***: utiliza el muestreo con reemplazo (bootstrap) para entrenar cada árbol con una versión diferente de los datos.
+Es un conjunto de árboles de decisión diseñado para reducir la varianza y mejorar la robustez. Existen dos técnicas para conformar el bosque:
+
+- ***Bagging***: utiliza el muestreo con reemplazo (*bootstrap*) para entrenar cada árbol con una versión diferente de los datos.
 - **Decorrelación**: para asegurar que los árboles sean diversos, en cada división solo se considera un subconjunto aleatorio de características.
 
-La {numref}`fig-bagging` esquematiza el proceso completo: a partir del dataset original se generan varias muestras bootstrap, cada una entrena un árbol distinto (usando además un subconjunto aleatorio de features en cada división) y las predicciones individuales se combinan mediante votación mayoritaria (clasificación) o promedio (regresión).
+La {numref}`fig-bagging` esquematiza el proceso completo: a partir del *dataset* original se generan varias muestras *bootstrap*, cada una entrena un árbol distinto (usando además un subconjunto aleatorio de *features* en cada división) y las predicciones individuales se combinan mediante votación mayoritaria (clasificación) o promedio (regresión).
 
 ```{figure} ../../_static/generated/diagrams/es/01_aprendizaje_supervisado_02_clasificacion_01.svg
 :name: fig-bagging
@@ -82,7 +83,7 @@ La {numref}`fig-bagging` esquematiza el proceso completo: a partir del dataset o
 :width: 90%
 :align: center
 
-*Bagging*: cada árbol se entrena con una muestra bootstrap distinta y las predicciones se combinan por votación.
+*Bagging*: cada árbol se entrena con una muestra *bootstrap* distinta y las predicciones se combinan por votación.
 ```
 
 ### Máquinas de vectores de soporte (SVM, *Support Vector Machines*)
@@ -142,7 +143,7 @@ Arquitectura de una red neuronal totalmente conectada.
 
 ## Evalaución del rendimeinto en clasificación
 
-La evaluación es el proceso fundamental para medir la capacidad de generalización de un modelo, es decir, su aptitud para realizar predicciones precisas sobre datos que nunca ha visto anteriormente. Un modelo que rinde excepcionalmente en los datos de entrenamiento pero falla en datos nuevos está sufriendo de sobreajuste (overfit*ting) y carece de utilidad práctica.
+La evaluación es el proceso fundamental para medir la capacidad de generalización de un modelo, es decir, su aptitud para realizar predicciones precisas sobre datos que nunca ha visto anteriormente. Un modelo que rinde excepcionalmente en los datos de entrenamiento pero falla en datos nuevos está sufriendo de sobreajuste (*overfitting*) y carece de utilidad práctica.
 
 ### Protocolos de validación y división de datos
 
@@ -189,20 +190,20 @@ La evaluación no solo ocurre al final, sino que debe guiar todo el proceso de d
 
 - **Superar una línea de base** (*baseline*): antes de iniciar con modelos complejos, se debe establecer una línea de base trivial (como un clasificador aleatorio). Si el modelo no puede superar este umbral de sentido común, es probable que los datos no contengan información suficiente o el enfoque sea erróneo.
 - **Monitoreo de curvas de aprendizaje**: graficar la pérdida (*loss*) y la exactitud tanto del entrenamiento como de la validación permite detectar el punto exacto de sobreajuste (cuando la pérdida de entrenamiento baja pero la de validación empieza a subir).
-- **Parada temprana** (*early stopping*): estrategia que utiliza un callback para interrumpir el entrenamiento automáticamente cuando la métrica de validación deja de mejorar, ahorrando tiempo y evitando el sobreajuste.
+- **Parada temprana** (*early stopping*): estrategia que utiliza un *callback* para interrumpir el entrenamiento automáticamente cuando la métrica de validación deja de mejorar, ahorrando tiempo y evitando el sobreajuste.
 - **Análisis de errores**: inspeccionar manualmente las muestras donde el modelo falla ayuda a entender qué patrones específicos está confundiendo el sistema (por ejemplo, confundir un "3" con un "5" en reconocimiento de dígitos).
 - **A/B *testing***: tras el despliegue, se recomienda realizar pruebas aleatorizadas para medir el impacto real del modelo en comparación con el proceso anterior.
 
 ## Resumen
 
-- **Regresión Logística**: extensión de regresión lineal para clasificación.
-- **Matriz de Confusión**: visualiza el desempeño.
+- **Regresión logística**: extensión de regresión lineal para clasificación.
+- **Matriz de confusión**: visualiza el desempeño.
 - **Métricas**: elige según lo que importa (precisión o recall).
-- **Árboles de Decisión**: interpretables pero proclives a overfitting.
-- **Random Forest**: ensemble que reduce overfitting.
+- **Árboles de decisión**: interpretables pero proclives a overfitting.
+- ***Random Forest***: ensemble que reduce overfitting.
 - **SVM**: encuentra separación óptima con kernel trick.
 - **Ensanbles**: combinan varios algoritmos de clasificación.
-- **Redes Neuronales**: poderosas pero complejas.
+- **Redes neuronales**: poderosas pero complejas.
 
 ---
 

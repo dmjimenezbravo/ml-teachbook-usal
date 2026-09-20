@@ -25,11 +25,11 @@ Predecimos un **valor continuo** (un número real):
 Predecimos una **categoría** o **clase**:
 
 - Diagnosticar si una persona tiene una enfermedad (sí/no).
-- Clasificar emails como spam o no spam.
+- Clasificar emails como *spam* o no *spam*.
 - Reconocer si una imagen es un gato, perro o pájaro.
 - Predecir si un cliente va a abandonar.
 
-## ¿Qué Encontrarás en Esta Sección?
+## ¿Qué encontrarás en esta sección?
 
 - **Regresión**:
   - Regresión lineal: el modelo más simple y fundamental.
@@ -42,7 +42,7 @@ Predecimos una **categoría** o **clase**:
   - Matriz de confusión y métricas: cómo evaluar clasificadores.
   - Árboles de decisión y *Random Forests*: modelos interpretables.
   - *Support Vector Machines*: separación óptima de clases.
-  - Métodos ensemble: combinar múltiples modelos.
+  - Métodos *ensemble*: combinar múltiples modelos.
   - Redes neuronales: introducción a las redes profundas.
 
 ---

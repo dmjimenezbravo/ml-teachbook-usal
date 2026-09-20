@@ -4,7 +4,7 @@ Bienvenido a la tercera y última sección principal del curso. Aquí explorarem
 
 ## ¿Qué es aprendizaje no supervisado?
 
-A diferencia de los bloques anteriores enfocados en el aprendizaje supervisado, donde el entrenamiento está guiado por una variable objetivo clara o etiqueta (label), el aprendizaje no supervisado representa la desafiante tarea de enfrentarse a conjuntos de datos que carecen de cualquier tipo de salida esperada o anotación. En este paradigma, únicamente disponemos de una colección de características de entrada $X$ (o variables predictoras), pero no contamos con un "maestro" o supervisor que proporcione las respuestas correctas para guiar el proceso de aprendizaje.
+A diferencia de los bloques anteriores enfocados en el aprendizaje supervisado, donde el entrenamiento está guiado por una variable objetivo clara o etiqueta (*label*), el aprendizaje no supervisado representa la desafiante tarea de enfrentarse a conjuntos de datos que carecen de cualquier tipo de salida esperada o anotación. En este paradigma, únicamente disponemos de una colección de características de entrada $X$ (o variables predictoras), pero no contamos con un "maestro" o supervisor que proporcione las respuestas correctas para guiar el proceso de aprendizaje.
 
 Técnicamente, mientras que el aprendizaje supervisado busca aproximar una función de mapeo directo entre entradas y salidas o estimar una **distribución condicional** $p(y|x)$, el aprendizaje no supervisado trabaja "a ciegas" para descubrir la **estructura latente**, las asociaciones estadísticas intrínsecas o la **distribución incondicional** de los propios datos $p(x)$. Como célebremente ilustró el científico de la computación Yann LeCun: "Si la inteligencia fuera un pastel, el aprendizaje no supervisado sería el cuerpo del pastel (el bizcocho), el aprendizaje supervisado la cobertura (el glaseado), y el aprendizaje por refuerzo la cereza". Esta analogía subraya que la inmensa mayoría de la información disponible en el mundo real no viene etiquetada, haciendo que este paradigma sea el pilar fundamental sobre el cual se erige el verdadero entendimiento de los datos.
 
@@ -23,7 +23,7 @@ El aprendizaje no supervisado no busca realizar predicciones cuantitativas o cua
 - **Sistemas de recomendación y filtrado colaborativo**: agrupar usuarios con gustos afines o productos con características similares para predecir preferencias implícitas basándose en comportamientos de consumo históricos.
 - **Detección de anomalías**: modelar el comportamiento estadístico de los datos "normales" para identificar de manera automática aquellas instancias sospechosas que se desvían significativamente del patrón general (por ejemplo, para detectar fraudes financieros o fallos en líneas de manufactura).
 
-## ¿Qué Encontrarás en Esta Sección?
+## ¿Qué encontrarás en esta sección?
 
 - ***Clustering***: se centrará en los métodos diseñados para encontrar subgrupos homogéneos dentro de las observaciones.
   - Se estudiarán algoritmos clásicos basados en centroides, como $K$-*means*.

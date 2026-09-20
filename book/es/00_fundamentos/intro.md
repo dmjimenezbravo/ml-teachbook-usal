@@ -16,7 +16,7 @@ si temperatura < 15:
 Pero muchos problemas del mundo real son demasiado complejos para describirlos con reglas fijas. Por ejemplo:
 - ¿Cómo distinguir automáticamente un gato de un perro en una fotografía?
 - ¿Cómo predecir si una transacción bancaria es fraudulenta?
-- ¿Cómo clasificar correos electrónicos como spam o no spam?
+- ¿Cómo clasificar correos electrónicos como *spam* o no *spam*?
 
 **El aprendizaje automático invierte el paradigma**: en lugar de escribir las reglas, le enseñamos al programa a *aprender* las reglas a partir de ejemplos.
 
@@ -29,4 +29,4 @@ Estos fundamentos son críticos: sin una comprensión sólida de estos conceptos
 
 ---
 
-**Empecemos**: dirígete al Capítulo 1.1 para explorar la historia fascinante del aprendizaje automático.
+**Empecemos**: dirígete al capítulo 1.1 para explorar la fascinante historia del aprendizaje automático.

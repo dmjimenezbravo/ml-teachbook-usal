@@ -45,8 +45,8 @@ La IA como campo de investigación cristalizó formalmente en 1956, cuando John 
 
 La historia de la IA no ha sido lineal, sino que ha pasado por ciclos de optimismo extremo seguidos de desilusión y recortes de fondos, conocidos como "Inviernos de la IA".
 
-- **Primer Invierno**: ocurrió en los años 70, tras el fracaso de las expectativas de la IA simbólica temprana y de los modelos simples como el **Perceptrón**, que no podían resolver problemas no lineales.
-- **Segundo Invierno**: sucedió a principios de los 90, cuando los sistemas expertos resultaron costosos de mantener, difíciles de escalar y limitados en su alcance.
+- **Primer invierno**: ocurrió en los años 70, tras el fracaso de las expectativas de la IA simbólica temprana y de los modelos simples como el **perceptrón**, que no podían resolver problemas no lineales.
+- **Segundo invierno**: sucedió a principios de los 90, cuando los sistemas expertos resultaron costosos de mantener, difíciles de escalar y limitados en su alcance.
 
 ```{figure} ../../_static/external_images/frank_rosenblatt.jpg
 :name: fig-rosenblatt
@@ -58,7 +58,7 @@ Frank Rosenblatt (h. 1950), creador del Perceptrón en 1958.
 Fuente: Heinz Nixdorf MuseumsForum — Wikimedia Commons, licencia CC BY-SA 4.0.
 ```
 
-El Aprendizaje Automático comenzó a florecer realmente en la década de 1990, impulsado por la disponibilidad de hardware más rápido y conjuntos de datos masivos. A diferencia de la IA simbólica, que era apta para problemas lógicos como el ajedrez, el ML permitió abordar problemas "difusos" como el reconocimiento de voz o la clasificación de imágenes.
+El Aprendizaje Automático comenzó a florecer realmente en la década de 1990, impulsado por la disponibilidad de hardware más rápido y conjuntos de datos masivos. A diferencia de la IA simbólica, que era apta para problemas lógicos como el ajedrez, el ML (*Machine Learning*, Aprendizaje Automático en inglés) permitió abordar problemas "difusos" como el reconocimiento de voz o la clasificación de imágenes.
 
 ## Del *Deep Learning* a la era de los LLM (2010-presente)
 
@@ -76,15 +76,15 @@ Muestras del dataset MNIST: distintas variantes manuscritas de cada dígito (0-9
 Fuente: Suvanjanprasai (2024) — Wikimedia Commons, licencia CC BY-SA 4.0.
 ```
 
-A partir de 2017, la **arquitectura Transformer**, que utiliza un mecanismo de atención para procesar secuencias sin capas recurrentes, desató una revolución en el procesamiento de lenguaje natural. Esto permitió el desarrollo de **modelos fundacionales** entrenados mediante **aprendizaje auto-supervisado** en cantidades ingentes de datos de internet. La era actual, marcada por la **IA Generativa** (como ChatGPT y Gemini), ha llevado la tecnología a una escala de miles de millones de parámetros, permitiendo no solo clasificar, sino generar contenido creativo y funcional.
+A partir de 2017, la **arquitectura Transformer**, que utiliza un mecanismo de atención para procesar secuencias sin capas recurrentes, desató una revolución en el procesamiento de lenguaje natural. Esto permitió el desarrollo de **modelos fundacionales** entrenados mediante **aprendizaje auto-supervisado** en cantidades ingentes de datos de internet. La era actual, marcada por la **IA Generativa** (como ChatGPT y Gemini), ha llevado la tecnología a una escala de miles de millones de parámetros, permitiendo no solo clasificar, sino generar contenido creativo y funcional gracias a los LLMs (*Large Language Models*, Grandes Modelos del Lenguaje en castellano).
 
 ## Resumen
 
 - El aprendizaje automático nació como respuesta a la pregunta: ¿pueden las máquinas aprender?
-- Ha pasado por ciclos de hype y desencanto.
+- Ha pasado por ciclos de *hype* y desencanto.
 - Los avances recientes se deben a más datos, mejor hardware y algoritmos innovadores.
 - El aprendizaje profundo y los LLMs son el estado del arte actual.
 
 ---
 
-**Siguiente**: en el Capítulo 1.2, aprenderemos los conceptos fundamentales que necesitas para trabajar con cualquier modelo de aprendizaje automático.
+**Siguiente**: en el capítulo 1.2, aprenderemos los conceptos fundamentales que necesitas para trabajar con cualquier modelo de aprendizaje automático.

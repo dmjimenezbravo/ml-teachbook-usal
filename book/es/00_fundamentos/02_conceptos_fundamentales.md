@@ -1,10 +1,10 @@
-# 1.2 Conceptos Fundamentales
+# 1.2 Conceptos fundamentales
 
 ## Introducción
 
 Para trabajar efectivamente con modelos de aprendizaje automático, necesitamos dominar cierta terminología y comprensión de conceptos clave. Este capítulo construye el vocabulario que usaremos a lo largo del curso.
 
-## Datos, features y etiquetas
+## Datos, *features* y etiquetas
 
 El éxito de cualquier sistema de ML depende de cómo se represente la información.
 
@@ -20,21 +20,18 @@ El éxito de cualquier sistema de ML depende de cómo se represente la informaci
 +----------+---------+---------+---------+--------+
 ```
 
-- **Muestra** (sample): es la unidad básica de información, también denominada punto de datos, instancia o ejemplo. En un conjunto de datos tabular, cada fila representa una muestra individual.
+- **Muestra** (*sample*): es la unidad básica de información, también denominada punto de datos, instancia o ejemplo. En un conjunto de datos tabular, cada fila representa una muestra individual.
 - **Atributos y *features***: las muestras se caracterizan por sus *features* (características o atributos), que son variables cuantitativas o cualitativas que miden diferentes aspectos de la instancia. Técnicamente, un "atributo" es un tipo de dato (ej. "edad"), mientras que una "*feature*" suele referirse al atributo más su valor específico (ej. "edad = 25"). En *deep learning*, todas las entradas se vectorizan para ser procesadas como puntos en un espacio geométrico.
 - **Etiqueta** (*label*) o *target*: en el aprendizaje supervisado, cada muestra tiene asociada una respuesta correcta denominada etiqueta u objetivo. El conjunto de etiquetas para todo un *dataset* constituye la **"verdad fundamental"** (*ground-truth*). En problemas de clasificación, el objetivo es predecir una categoría (clase), mientras que en regresión se busca un valor numérico continuo o escalar.
 
-```python
-# Características: pueden ser números, categorías, etc.
-features = [
-    "metros_cuadrados",
-    "numero_habitaciones", 
-    "ubicacion",
-    "año_construccion"
-]
+```java
+import java.util.List;
 
-# Etiqueta: lo que queremos predecir
-label = "precio"
+// Características: pueden ser números, categorías, etc.
+List<String> frutas = List.of("metros_cuadrados", "numero_habitaciones", "ubicacion", "año_construccion");
+
+// Etiqueta: lo que queremos predecir
+String label = "precio";
 ```
 
 ## La tensión entre optimización y generalización: *overfitting* y *underfitting*
@@ -53,30 +50,30 @@ La {numref}`fig-overfitting-underfitting` ilustra los tres escenarios ajustando 
 
 ```{figure} ../../_static/generated/figures/es/overfitting_underfitting.png
 :name: fig-overfitting-underfitting
-:alt: Comparación de underfitting, ajuste óptimo y overfitting mediante tres modelos polinomiales ajustados a los mismos datos
+:alt: Comparación de *underfitting*, ajuste óptimo y *overfitting* mediante tres modelos polinomiales ajustados a los mismos datos
 :width: 100%
 :align: center
 
-Underfitting (alto sesgo) vs. ajuste óptimo vs. overfitting (alta varianza).
+*Underfitting* (alto sesgo) vs. ajuste óptimo vs. *overfitting* (alta varianza).
 ```
 
 ## Protocolos de evaluación: validación cruzada
 
 Para medir la generalización de forma fiable, no basta con evaluar el modelo sobre los mismos datos de entrenamiento.
 
-- **División de datos**: la práctica estándar es dividir los datos en tres conjuntos: entrenamiento (para aprender los pesos), validación (para elegir hiperparámetros y evitar el "leakage" de información) y prueba (para la evaluación final e imparcial).
+- **División de datos**: la práctica estándar es dividir los datos en tres conjuntos: entrenamiento (para aprender los pesos), validación (para elegir hiperparámetros y evitar el "*leakage*" de información) y prueba (para la evaluación final e imparcial).
 - **Validación cruzada** $K$-*fold*: cuando los datos son escasos, la división simple puede ser poco representativa. Este método consiste en dividir los datos en $K$ particiones (normalmente 5 o 10). El modelo se entrena $K$ veces; en cada iteración, se usa una partición distinta para validación y las $K-1$ restantes para entrenamiento. El puntaje final es el promedio de los $K$ resultados obtenidos, lo que reduce la varianza de la evaluación.
-- **Estratificación**: en clasificación, es vital que cada "*fold*" mantenga la misma proporción de clases que el dataset original para evitar sesgos, proceso denominado &&-*fold* estratificado.
+- **Estratificación**: en clasificación, es vital que cada "*fold*" mantenga la misma proporción de clases que el dataset original para evitar sesgos, proceso denominado $K$-*fold* estratificado.
 
-La {numref}`fig-kfold-cv` muestra un ejemplo con $K=5$: en cada fila (cada "fold"), un bloque distinto de datos actúa como conjunto de validación (en rojo) mientras el resto se usa para entrenar (en azul).
+La {numref}`fig-kfold-cv` muestra un ejemplo con $K=5$: en cada fila (cada "*fold*"), un bloque distinto de datos actúa como conjunto de validación (en rojo) mientras el resto se usa para entrenar (en azul).
 
 ```{figure} ../../_static/generated/figures/es/kfold_cross_validation.png
 :name: fig-kfold-cv
-:alt: Esquema de validación cruzada 5-fold mostrando qué bloque de datos se usa para validación en cada una de las cinco iteraciones
+:alt: Esquema de validación cruzada 5-*fold* mostrando qué bloque de datos se usa para validación en cada una de las cinco iteraciones
 :width: 90%
 :align: center
 
-Validación cruzada $K$-fold con $K=5$: cada bloque de datos actúa una vez como conjunto de validación.
+Validación cruzada $K$-*fold* con $K=5$: cada bloque de datos actúa una vez como conjunto de validación.
 ```
 
 ## Métricas de rendimiento
@@ -112,7 +109,7 @@ Matriz de confusión: aciertos (verde) y errores de tipo I y II (rojo).
 
 ## *Pipeline* de ML: el flujo de trabajo universal
 
-El desarrollo de un proyecto de Aprendizaje Automático sigue un blueprint universal que garantiza que el sistema no solo aprenda de los datos, sino que sea capaz de generalizar sus resultados en entornos de producción. La {numref}`fig-pipeline-ml` resume las 10 etapas y su naturaleza cíclica: el ajuste de hiperparámetros suele requerir volver a entrenar el modelo varias veces antes de la evaluación final.
+El desarrollo de un proyecto de Aprendizaje Automático sigue un *blueprint* universal que garantiza que el sistema no solo aprenda de los datos, sino que sea capaz de generalizar sus resultados en entornos de producción. La {numref}`fig-pipeline-ml` resume las 10 etapas y su naturaleza cíclica: el ajuste de hiperparámetros suele requerir volver a entrenar el modelo varias veces antes de la evaluación final.
 
 ```{figure} ../../_static/generated/diagrams/es/00_fundamentos_02_conceptos_fundamentales_01.svg
 :name: fig-pipeline-ml
@@ -120,7 +117,7 @@ El desarrollo de un proyecto de Aprendizaje Automático sigue un blueprint unive
 :width: 55%
 :align: center
 
-El *pipeline* de Machine Learning: 10 etapas desde la recolección de datos hasta el despliegue.
+El *pipeline* de *Machine Learning*: 10 etapas desde la recolección de datos hasta el despliegue.
 ```
 
 A continuación, se definen las etapas del *pipeline* de ML integrando los fundamentos teóricos y técnicos de las fuentes:
@@ -143,7 +140,7 @@ A continuación, se definen las etapas del *pipeline* de ML integrando los funda
 - **Etiqueta**: variable de salida que queremos predecir.
 - ***Overfitting***: memorizar datos de entrenamiento, mal en prueba.
 - ***Underfitting***: modelo demasiado simple, mal en ambos.
-- **Validación Cruzada**: técnica para evaluar desempeño sin sesgo.
+- **Validación cruzada**: técnica para evaluar desempeño sin sesgo.
 - **Precisión**: ratio de positivos predichos correctamente.
 - ***Recall***: ratio de positivos reales encontrados.
 - ***Pipeline* de ML**: se compone de 10 etapas, desde la recolección de datos al despliegue en producción.

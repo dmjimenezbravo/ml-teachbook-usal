@@ -20,7 +20,7 @@ El $K$-*means* es un algoritmo de agrupación que realiza las particiones basada
 
 #### Mecánica algorítmica y convergencia
 
-La meta matemática de $K$-*means* es minimizar la inercia intracluster, formalmente conocida como la Suma de los Cuadrados dentro del  *cluster*  (WCSS - *Within- *cluster*  Sum of Squares*). El proceso de optimización se divide en los siguientes pasos iterativos:
+La meta matemática de $K$-*means* es minimizar la inercia intracluster, formalmente conocida como la suma de los cuadrados dentro del  *cluster*  (WCSS - *Within-cluster*  Sum of Squares*). El proceso de optimización se divide en los siguientes pasos iterativos:
 
 1. **Inicialización**: se definen $K$ puntos en el espacio de características para que actúen como centroides iniciales.
 2. **Paso de asignación** (expectación): cada muestra del *dataset*  se asigna al centroide más cercano utilizando una métrica de distancia, típicamente la distancia Euclidiana: 
@@ -36,7 +36,7 @@ La {numref}`fig-kmeans-process` muestra las tres etapas sobre un conjunto de dat
 :width: 100%
 :align: center
 
-Proceso iterativo de K-means: de la inicialización a la convergencia.
+Proceso iterativo de $K$-*means*: de la inicialización a la convergencia.
 ```
 
 ##### El problema de los mínimos locales e inicialización ($K$-*means*++)
@@ -70,12 +70,12 @@ La {numref}`fig-elbow` muestra un ejemplo típico: la inercia cae bruscamente ha
 :width: 70%
 :align: center
 
-Método del codo: la inercia deja de disminuir bruscamente a partir de K=3.
+Método del codo: la inercia deja de disminuir bruscamente a partir de $K=3$.
 ```
 
-### **clustering** jerárquico: aglomerativo y dendrogramas
+### *Clustering* jerárquico: aglomerativo y dendrogramas
 
-El **clustering** jerárquico agrupa datos sin la necesidad de definir de antemano el número de grupos $K$. Su principal ventaja es que genera una estructura jerárquica de agrupamiento que puede visualizarse fácilmente
+El *clustering* jerárquico agrupa datos sin la necesidad de definir de antemano el número de grupos $K$. Su principal ventaja es que genera una estructura jerárquica de agrupamiento que puede visualizarse fácilmente.
 
 #### Enfoque aglomerativo (*bottom-up*)
 
@@ -87,14 +87,6 @@ La jerarquía de fusiones se representa gráficamente mediante un diagrama de á
 
 El eje horizontal organiza las observaciones individuales de forma que las ramas similares queden adyacentes. El usuario puede determinar el número final de *clusters* realizando un corte horizontal en el dendrograma a una altura de disimilitud específica. La cantidad de líneas verticales interceptadas por el corte define el número de grupos resultantes, ofreciendo una flexibilidad interpretativa que algoritmos rígidos como $K$-*means* no poseen.
 
-Disimilitud
-    ▲
-  8 ┼         ┌─────────┴─────────┐
-    │         │                   │
-  4 ┼   ┌─────┴─────┐             │
-    │   │           │             │
-  0 ┴───┴───────────┴─────────────┴───► Observaciones
-
 La {numref}`fig-dendrogram` muestra un dendrograma real generado sobre datos con tres grupos: la línea roja discontinua marca un corte que produce exactamente 3 clusters (uno por color).
 
 ```{figure} ../../_static/generated/figures/es/dendrogram.png
@@ -103,7 +95,7 @@ La {numref}`fig-dendrogram` muestra un dendrograma real generado sobre datos con
 :width: 80%
 :align: center
 
-Dendrograma de clustering jerárquico con un corte que produce 3 clusters.
+Dendrograma de *clustering* jerárquico con un corte que produce 3 clusters.
 ```
 
 #### Criterios de enlace (*linkage methods*)
@@ -136,7 +128,7 @@ Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduc
 
 ### DBSCAN: agrupamiento basado en densidad
 
-El algoritmo DBSCAN (*Density-Based Spatial *clustering* of Applications with Noise*) ofrece un enfoque radicalmente diferente a $K$-*means* y al **clustering** jerárquico al definir los grupos en función de la densidad local de los datos en el espacio de características. Esto le permite descubrir *clusters* de formas geométricas arbitrarias y aislar de forma natural las muestras de ruido
+El algoritmo DBSCAN (*Density-Based Spatial clustering of Applications with Noise*) ofrece un enfoque radicalmente diferente a $K$-*means* y al **clustering** jerárquico al definir los grupos en función de la densidad local de los datos en el espacio de características. Esto le permite descubrir *clusters* de formas geométricas arbitrarias y aislar de forma natural las muestras de ruido
 
 #### Fundamentos y parámetros críticos
 
@@ -151,7 +143,7 @@ Durante su ejecución, DBSCAN examina cada punto del *dataset*  y lo clasifica e
 
 - ***Core points*** (puntos núcleo): un punto es catalogado como núcleo si su vecindad de radio $\epsilon$ contiene al menos un número de muestras igual o superior a MinPts.
 - ***Border points*** (puntos frontera): son aquellos puntos que no cumplen con el requisito de densidad mínima de MinPts para ser considerados núcleo, pero residen dentro de la vecindad $\epsilon$ de algún punto que sí es núcleo.
-- ***Noise points*** (puntos de ruido / *outliers*): cualquier punto que no es clasificado como núcleo ni como frontera. Estos puntos se consideran anomalías o valores atípicos y no son asignados a ningún cluster13.
+- ***Noise points*** (puntos de ruido / *outliers*): cualquier punto que no es clasificado como núcleo ni como frontera. Estos puntos se consideran anomalías o valores atípicos y no son asignados a ningún cluster.
   
              (Punto frontera)
                   o
@@ -165,7 +157,7 @@ Durante su ejecución, DBSCAN examina cada punto del *dataset*  y lo clasifica e
 - **Robustez ante el ruido**: a diferencia de $K$-*means*, que obliga a cada muestra a pertenecer a un  *cluster*  (desplazando artificialmente los centroides ante valores atípicos), DBSCAN identifica y aísla el ruido de forma nativa.
 - **Flexibilidad geométrica**: no asume que los *clusters* tienen que ser esféricos; puede descubrir *clusters* anidados, lineales o con formas complejas de baja dimensión dentro de espacios de alta dimensión.
 
-La {numref}`fig-dbscan-vs-kmeans` compara ambos algoritmos sobre datos con forma no convexa: K-means corta el grupo por la mitad de forma arbitraria, mientras que DBSCAN respeta la forma real definida por la densidad.
+La {numref}`fig-dbscan-vs-kmeans` compara ambos algoritmos sobre datos con forma no convexa: $K$-*means* corta el grupo por la mitad de forma arbitraria, mientras que DBSCAN respeta la forma real definida por la densidad.
 
 ```{figure} ../../_static/generated/figures/es/dbscan_vs_kmeans.png
 :name: fig-dbscan-vs-kmeans
@@ -173,7 +165,7 @@ La {numref}`fig-dbscan-vs-kmeans` compara ambos algoritmos sobre datos con forma
 :width: 100%
 :align: center
 
-K-means frente a DBSCAN en datos con formas no convexas.
+$K$-*means* frente a DBSCAN en datos con formas no convexas.
 ```
 
 ## Técnicas de evaluación en **clustering**
@@ -333,11 +325,11 @@ A partir de esta asignación, es posible mapear las fronteras geométricas como 
 
 ## Resumen
 
-- **$K$-*means***: simple, rápido, requiere K conocido
-- **Método del Codo**: heurística para elegir K
-- ***Clustering* Jerárquico**: dendrograma, mejor visualización
-- **DBSCAN**: detecta formas arbitrarias y outliers
-- **Silhueta**: métrica para evaluar calidad sin etiquetas
+- **$K$-*means***: simple, rápido, requiere $K$ conocido.
+- **Método del codo**: heurística para elegir $K$.
+- ***Clustering* jerárquico**: dendrograma, mejor visualización.
+- **DBSCAN**: detecta formas arbitrarias y outliers.
+- **Silhueta**: métrica para evaluar calidad sin etiquetas.
 
 ---
 
