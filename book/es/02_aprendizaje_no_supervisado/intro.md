@@ -25,16 +25,26 @@ El aprendizaje no supervisado no busca realizar predicciones cuantitativas o cua
 
 ## ¿Qué encontrarás en esta sección?
 
-- ***Clustering***: se centrará en los métodos diseñados para encontrar subgrupos homogéneos dentro de las observaciones.
-  - Se estudiarán algoritmos clásicos basados en centroides, como $K$-*means*.
-  - Estructuras de fusión jerárquica o *clustering* jerárquico.
-  - Modelos que definen los grupos según la densidad local del espacio geométrico.
-- **Reducción de dimensionalidad**: se explorarán herramientas de proyección lineal para simplificar datos.
-  - Técnicas que maximizan la varianza retenida, como PCA. 
-  - Algoritmos avanzados de aprendizaje de variedades no lineales, como t-SNE y UMAP.
-  - Algoritmos orientados específicamente a la visualización cualitativa y la eliminación de ruido antes de entrenar clasificadores supervisados.
+- ***Clustering***:
+  - $K$-*means*: agrupamiento basado en centroides, inicialización ($K$-*means*++) y elección de $K$ con el método del codo.
+  - *Clustering* jerárquico: enfoque aglomerativo, dendrogramas y criterios de enlace.
+  - DBSCAN: agrupamiento basado en densidad, capaz de detectar formas arbitrarias y ruido.
+  - Técnicas de evaluación: coeficiente de silueta, métricas internas, criterios de teoría de la información y evaluación externa con datos etiquetados.
 
-## Nota Importante
+- **Reducción de dimensionalidad**:
+  - La maldición de la dimensionalidad: por qué trabajar en espacios de muchas variables es un problema.
+  - PCA: proyección lineal que maximiza la varianza retenida, SVD y reconstrucción.
+  - Aprendizaje de variedades (*manifold learning*): la hipótesis de la variedad y el ejemplo del *Swiss roll*.
+  - Métodos no lineales: *Kernel* PCA, $t$-SNE y UMAP.
+
+- **Detección de anomalías**:
+  - *Anomaly detection* frente a *novelty detection*: la diferencia según la contaminación de los datos de entrenamiento.
+  - Enfoques estadísticos y de reconstrucción: mezclas gaussianas (GMM) y error de reconstrucción con PCA.
+  - *Isolation forest*: aislar las observaciones mediante particiones aleatorias.
+  - *Local Outlier Factor* (LOF): detectar anomalías locales según la densidad del vecindario.
+  - *One-class* SVM: delimitar la región de comportamiento normal.
+
+## Nota importante
 
 El aprendizaje no supervisado es más **arte que ciencia**. No hay una única respuesta "correcta". Tu interpretación del dominio y el *feedback* externo son cruciales.
 

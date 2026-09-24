@@ -1,0 +1,14 @@
+flowchart LR
+    A["0D<br/>Punto"] --> B["1D<br/>Intervalo"]
+    B --> C["2D<br/>Cuadrado"]
+    C --> D["3D<br/>Cubo"]
+    D --> E["pD<br/>Hipercubo"]
+    E -.-> F["Espacio ultra-disperso y<br/>muestras en la frontera"]
+
+    classDef low fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef high fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef effect fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+
+    class A,B,C,D low
+    class E high
+    class F effect

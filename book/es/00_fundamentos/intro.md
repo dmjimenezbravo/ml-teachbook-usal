@@ -22,8 +22,8 @@ Pero muchos problemas del mundo real son demasiado complejos para describirlos c
 
 ## ¿Qué encontrarás en esta sección?
 
-1. **Historia y evolución**: conoceremos cómo nació la IA y cómo evolucionó hasta llegar a los modelos modernos que usamos hoy.
-2. **Conceptos fundamentales**: aprenderemos el vocabulario técnico esencial para trabajar con modelos de aprendizaje automático.
+- **Historia y evolución**: conoceremos cómo nació la IA y cómo evolucionó hasta llegar a los modelos modernos que usamos hoy.
+- **Conceptos fundamentales**: aprenderemos el vocabulario técnico esencial para trabajar con modelos de aprendizaje automático.
 
 Estos fundamentos son críticos: sin una comprensión sólida de estos conceptos, será difícil entender las técnicas más avanzadas de las secciones posteriores.
 

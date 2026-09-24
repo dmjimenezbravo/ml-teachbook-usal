@@ -109,6 +109,18 @@ SVM: hiperplano de margen máximo y vectores de soporte.
 Combinan múltiples modelos para obtener una predicción superior a la de cualquier modelo individual.
 
 - ***Voting*** y ***stacking***: el voto mayoritario (duro) o el promedio de probabilidades (suave) combina modelos independientes. El *stacking* entrena un meta-modelo que aprende a combinar las salidas de los modelos base.
+
+La {numref}`fig-voting-stacking` compara ambos enfoques: en *voting*, los modelos se entrenan de forma independiente y sus salidas se combinan con una regla fija (voto o promedio); en *stacking*, las predicciones de los modelos base se convierten en la entrada de un meta-modelo que aprende cómo combinarlas.
+
+```{figure} ../../_static/generated/diagrams/es/01_aprendizaje_supervisado_02_clasificacion_03.svg
+:name: fig-voting-stacking
+:alt: Diagrama de flujo comparando voting, donde los modelos se combinan mediante voto o promedio, y stacking, donde las predicciones de los modelos base alimentan un meta-modelo
+:width: 90%
+:align: center
+
+*Voting* frente a *stacking*: regla fija de combinación frente a meta-modelo que aprende a combinar.
+```
+
 - ***Boosting***: a diferencia del entrenamiento en paralelo de los bosques aleatorios, el *boosting* entrena modelos de forma secuencial, donde cada nuevo predictor intenta corregir los errores cometidos por sus predecesores. Ejemplos modernos incluyen *XGBoost* y *Gradient Boosting*.
 
 La {numref}`fig-boosting` ilustra el entrenamiento secuencial del *boosting*: cada modelo débil se entrena sobre los datos ponderados según los errores del modelo anterior, dando más peso a las instancias mal clasificadas, y la predicción final combina todos los modelos mediante una suma ponderada.

@@ -1,0 +1,14 @@
+flowchart LR
+    A["0D<br/>Point"] --> B["1D<br/>Interval"]
+    B --> C["2D<br/>Square"]
+    C --> D["3D<br/>Cube"]
+    D --> E["pD<br/>Hypercube"]
+    E -.-> F["Ultra-sparse space and<br/>samples at the boundary"]
+
+    classDef low fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef high fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef effect fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+
+    class A,B,C,D low
+    class E high
+    class F effect

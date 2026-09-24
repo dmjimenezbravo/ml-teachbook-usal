@@ -1,4 +1,4 @@
-# 3.1 ***Clustering***
+# 3.1 *Clustering*
 
 ## Introducción
 
@@ -6,7 +6,7 @@ El aprendizaje no supervisado representa un paradigma fundamental de la intelige
 
 Dentro de este paradigma, el ***clustering*** (o agrupamiento) es la técnica más extendida, orientada a particionar un conjunto de datos en subgrupos cuyos miembros compartan una alta similitud interna y, al mismo tiempo, presenten una alta diferenciación respecto a los miembros de otros subgrupos.
 
-## Algoritmos de ***clustering***
+## Algoritmos de *clustering*
 
 Existen diferentes algoritmos de ***clustering***. A continuación, se explican los mas relevantes actualmente.
 
@@ -14,13 +14,20 @@ Existen diferentes algoritmos de ***clustering***. A continuación, se explican 
 
 El $K$-*means* es un algoritmo de agrupación que realiza las particiones basada en centroides. El algoritmo es una técnica de agrupamiento iterativo que busca particionar un conjunto de observaciones en $K$ *clusters* distintos. Es un enfoque geométrico basado en el concepto de centroides, que actúan como los centros de gravedad de cada grupo.
 
-                     [Muestras iniciales] → [Asignación a centroides] 
-                              ↑              ↓
-                     [Actualizar centroides] ← [Calcular inercia (WCSS)]
+La {numref}`fig-kmeans-flow` resume el ciclo del algoritmo: tras asignar cada muestra a su centroide y calcular la inercia (WCSS), se actualizan los centroides y el proceso se repite hasta alcanzar la convergencia.
+
+```{figure} ../../_static/generated/diagrams/es/02_aprendizaje_no_supervisado_01_clustering_01.svg
+:name: fig-kmeans-flow
+:alt: Diagrama de flujo del algoritmo K-means con las etapas de asignación a centroides, cálculo de la inercia y actualización de centroides en bucle hasta la convergencia
+:width: 100%
+:align: center
+
+Ciclo iterativo de $K$-*means*.
+```
 
 #### Mecánica algorítmica y convergencia
 
-La meta matemática de $K$-*means* es minimizar la inercia intracluster, formalmente conocida como la suma de los cuadrados dentro del  *cluster*  (WCSS - *Within-cluster*  Sum of Squares*). El proceso de optimización se divide en los siguientes pasos iterativos:
+La meta matemática de $K$-*means* es minimizar la inercia intracluster, formalmente conocida como la suma de los cuadrados dentro del  *cluster*  (WCSS - *Within-cluster Sum of Squares*). El proceso de optimización se divide en los siguientes pasos iterativos:
 
 1. **Inicialización**: se definen $K$ puntos en el espacio de características para que actúen como centroides iniciales.
 2. **Paso de asignación** (expectación): cada muestra del *dataset*  se asigna al centroide más cercano utilizando una métrica de distancia, típicamente la distancia Euclidiana: 
@@ -144,13 +151,17 @@ Durante su ejecución, DBSCAN examina cada punto del *dataset*  y lo clasifica e
 - ***Core points*** (puntos núcleo): un punto es catalogado como núcleo si su vecindad de radio $\epsilon$ contiene al menos un número de muestras igual o superior a MinPts.
 - ***Border points*** (puntos frontera): son aquellos puntos que no cumplen con el requisito de densidad mínima de MinPts para ser considerados núcleo, pero residen dentro de la vecindad $\epsilon$ de algún punto que sí es núcleo.
 - ***Noise points*** (puntos de ruido / *outliers*): cualquier punto que no es clasificado como núcleo ni como frontera. Estos puntos se consideran anomalías o valores atípicos y no son asignados a ningún cluster.
-  
-             (Punto frontera)
-                  o
-                / 
-       o  -  o (Punto núcleo)             o (Punto de ruido)
-       |  \  /
-       o  -  o
+
+La {numref}`fig-dbscan-points` ilustra los tres tipos con $\epsilon = 1$ y MinPts $= 4$: los puntos azules tienen al menos 4 vecinos dentro de su círculo (núcleo); los naranjas caen dentro del círculo de un punto núcleo pero no alcanzan MinPts por sí mismos (frontera); y la cruz roja no tiene ningún punto núcleo cerca (ruido).
+
+```{figure} ../../_static/generated/figures/es/dbscan_point_types.png
+:name: fig-dbscan-points
+:alt: Diagrama con puntos núcleo en azul rodeados de círculos de radio epsilon, puntos frontera en naranja dentro de esos círculos y un punto de ruido en rojo aislado
+:width: 70%
+:align: center
+
+Clasificación de puntos en DBSCAN: núcleo, frontera y ruido.
+```
 
 #### Ventajas sobre métodos basados en distancia
 

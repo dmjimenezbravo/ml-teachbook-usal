@@ -8,9 +8,16 @@ In modern data analytics and the design of artificial intelligence systems, it i
 
 Human intuition is wired to reason in three physical dimensions, which makes it difficult for us to understand the geometric properties of high-dimensional spaces. Many mathematical properties of traditional machine learning algorithms degrade or collapse due to this phenomenon, formally coined by Richard Bellman as the curse of dimensionality.
 
-  0D (Point) ── 1D (Interval) ── 2D (Square) ── 3D (Cube) ──▶ pD (Hypercube)
-                                                                 (Ultra-sparse space and
-                                                                  samples at the boundary)
+{numref}`fig-dimension-progression` shows the progression from a point to a $p$-dimensional hypercube: as the dimension grows, the space becomes ultra-sparse and samples tend to sit at the boundary.
+
+```{figure} ../../_static/generated/diagrams/en/02_unsupervised_learning_02_dimensionality_reduction_01.svg
+:name: fig-dimension-progression
+:alt: Diagram of the progression of dimensions from a point (0D), interval (1D), square (2D), and cube (3D) to a p-dimensional hypercube, with ultra-sparse space and samples at the boundary
+:width: 100%
+:align: center
+
+Progression of dimensions: from a point to a hypercube.
+```
 
 ### Loss of neighborhood and sparse space
 
@@ -46,12 +53,16 @@ Principal Component Analysis (PCA), originally developed in the early 20th centu
 
 From a geometric point of view, the first principal component (PC1) is defined as the direction or axis of the feature space along which the data varies the most. By projecting the data onto this axis, the largest percentage of the original information's spread is preserved.
 
-                X2 ▲        *     *  (Maximum-variance projection: PC1)
-                   │       * ───/─── *
-                   │      /    /    /
-                   │     * ───/─── *
-                   │         /
-                   └─────────┴─────────► X1
+{numref}`fig-pca-max-variance` compares two projections of the same data: onto PC1 (left) the projected points stay widely spread along the axis and 90% of the variance is preserved; onto another direction (right) the points pile up and only 13% is retained.
+
+```{figure} ../../_static/generated/figures/en/pca_max_variance_projection.png
+:name: fig-pca-max-variance
+:alt: Two panels with the same data projected onto the first principal component, which retains 90% of the variance, and onto another direction, which retains only 13%
+:width: 100%
+:align: center
+
+Projection onto the maximum-variance direction (PC1) versus another direction.
+```
 
 The second principal component (PC2) seeks the direction that explains as much of the remaining variance as possible, under the strict constraint of being fully orthogonal to (and therefore uncorrelated with) the first component.
 
@@ -176,6 +187,18 @@ UMAP is one of the most powerful manifold learning techniques available today. G
 Unlike t-SNE, which focuses almost exclusively on retaining very local neighborhoods (short-range relationships), UMAP is able to preserve both the local and the global structure of the data.
 
 It is mathematically much more efficient, resulting in substantially faster execution speed on massive datasets with millions of samples.
+
+{numref}`fig-umap-digits` shows a 2D UMAP projection of the handwritten digits dataset (64 dimensions): each digit (0-9, one color per class) forms a compact, well-differentiated group, and the relative position between groups is also informative.
+
+```{figure} ../../_static/external_images/umap_digits_projection.png
+:name: fig-umap-digits
+:alt: Two-dimensional UMAP projection of the handwritten digits dataset, with ten well-separated colored groups, one per digit
+:width: 75%
+:align: center
+
+UMAP projection of the *Digits* dataset.
+Source: umap-learn documentation, "How to Use UMAP" (umap-learn.readthedocs.io). Copyright (c) 2017, Leland McInnes. BSD 3-Clause License.
+```
 
 ## Summary
 

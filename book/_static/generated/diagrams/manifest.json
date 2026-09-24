@@ -26,6 +26,12 @@
       "format": "svg"
     },
     {
+      "source": "diagram_sources\\en\\01_supervised_learning_02_classification_03.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\01_supervised_learning_02_classification_03.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
       "source": "diagram_sources\\en\\01_tutorial_02_workflow_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\en\\01_tutorial_02_workflow_01.svg",
       "type": "mermaid",
@@ -116,6 +122,18 @@
       "format": "svg"
     },
     {
+      "source": "diagram_sources\\en\\02_unsupervised_learning_01_clustering_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\02_unsupervised_learning_01_clustering_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\en\\02_unsupervised_learning_02_dimensionality_reduction_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\02_unsupervised_learning_02_dimensionality_reduction_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
       "source": "diagram_sources\\en\\05_basic_content_mermaid_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\en\\05_basic_content_mermaid_01.svg",
       "type": "mermaid",
@@ -170,6 +188,12 @@
       "format": "svg"
     },
     {
+      "source": "diagram_sources\\es\\01_aprendizaje_supervisado_02_clasificacion_03.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\01_aprendizaje_supervisado_02_clasificacion_03.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
       "source": "diagram_sources\\es\\01_tutorial_02_flujo_trabajo_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\es\\01_tutorial_02_flujo_trabajo_01.svg",
       "type": "mermaid",
@@ -178,6 +202,18 @@
     {
       "source": "diagram_sources\\es\\01_tutorial_05_filosofia_codigo_docente_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\es\\01_tutorial_05_filosofia_codigo_docente_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\02_aprendizaje_no_supervisado_01_clustering_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\02_aprendizaje_no_supervisado_01_clustering_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\02_aprendizaje_no_supervisado_02_reduccion_dimensionalidad_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\02_aprendizaje_no_supervisado_02_reduccion_dimensionalidad_01.svg",
       "type": "mermaid",
       "format": "svg"
     },

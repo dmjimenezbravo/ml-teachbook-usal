@@ -1,0 +1,386 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{spanish}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\definecolor{ejemplocolor}{RGB}{180,83,9}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamerfont{footnote}{size=\tiny}
+
+\newcommand{\fuente}[1]{{\footnotesize\textit{Fuente: #1}}}
+\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{ejemplocolor}\textbf{Ejemplo:} #1}}
+
+\title[3. Aprendizaje No Supervisado]{Capítulo 3: Aprendizaje\\No Supervisado}
+\subtitle{Material del curso}
+\author{Universidad de Salamanca}
+\institute{Facultades de Ciencias y Ciencias Químicas}
+\date{\today}
+
+\begin{document}
+
+% ============================================================
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{En este capítulo}
+  \begin{enumerate}
+    \item \textbf{3.1 \textit{Clustering}}: agrupar datos sin etiquetas
+    \item \textbf{3.2 Reducción de dimensionalidad}: simplificar y visualizar datos complejos
+    \item \textbf{3.3 Detección de anomalías}: identificar casos raros o sospechosos
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{¿Qué es el aprendizaje no supervisado?}
+  \begin{itemize}
+    \item No hay etiquetas: solo tenemos datos de entrada $X$, sin respuestas correctas $y$
+    \item El sistema debe descubrir por sí mismo la \textbf{estructura latente} de los datos
+    \item Frase de Yann LeCun: \textit{``Si la inteligencia fuera un pastel, el aprendizaje no supervisado sería el bizcocho, el supervisado el glaseado, y el refuerzo la cereza''}
+  \end{itemize}
+  \ejemplo{la inmensa mayoría de los datos del mundo real no vienen etiquetados: fotos, textos, transacciones... por eso este paradigma es tan importante en la práctica.}
+\end{frame}
+
+\begin{frame}{Aplicaciones prácticas}
+  \begin{itemize}
+    \item \textbf{Segmentación de mercado}: agrupar clientes en nichos homogéneos sin definir las categorías de antemano
+    \item \textbf{Visualización}: proyectar datos de cientos de variables a 2D o 3D para entenderlos de un vistazo
+    \item \textbf{Sistemas de recomendación}: agrupar usuarios o productos con gustos afines
+    \item \textbf{Detección de anomalías}: identificar fraudes o fallos de fabricación sin haberlos visto antes
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\section{3.1 Clustering}
+
+\begin{frame}{¿Qué es el \textit{clustering}?}
+  \begin{itemize}
+    \item Objetivo: dividir los datos en subgrupos con \textbf{alta similitud interna} y \textbf{alta diferenciación externa}
+    \item No hay ``verdad fundamental'': el sistema debe descubrir la estructura por sí solo
+    \item Algoritmos principales: $K$-\textit{means}, jerárquico, DBSCAN
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{$K$-\textit{means}: el ciclo del algoritmo}
+  \footnotesize
+  \begin{enumerate}
+    \item \textbf{Inicialización}: se eligen $K$ centroides
+    \item \textbf{Asignación}: cada muestra se une al centroide más cercano
+    \item \textbf{Actualización}: cada centroide se recalcula como la media de su grupo
+    \item Se repite hasta que los centroides dejan de moverse (\textbf{convergencia})
+  \end{enumerate}
+  \begin{center}
+    \includegraphics[width=0.62\textwidth]{../book/_static/generated/diagrams_pdf/es/02_aprendizaje_no_supervisado_01_clustering_01.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{$K$-\textit{means}: proceso visual}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/es/kmeans_process.png}
+  \end{center}
+  \ejemplo{es como asignar mesas en una fiesta: cada invitado se sienta en la mesa más cercana, luego cada mesa se recoloca al centro de sus invitados, y se repite hasta que nadie se mueve.}
+\end{frame}
+
+\begin{frame}{$K$-\textit{means}++ y el método del codo}
+  \begin{itemize}
+    \item $K$-\textit{means} es sensible a la inicialización: centroides mal colocados pueden llevar a un resultado subóptimo
+    \item \textbf{$K$-\textit{means}++}: elige los centroides iniciales lo más alejados posible entre sí, acelerando la convergencia
+    \item ¿Cuántos grupos $K$ elegir? El \textbf{método del codo}: se busca el punto donde la inercia deja de caer bruscamente
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.42\textwidth]{../book/_static/generated/figures/es/elbow_method.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{\textit{Clustering} jerárquico}
+  \begin{itemize}
+    \item No requiere fijar $K$ de antemano
+    \item Enfoque \textbf{aglomerativo} (de abajo a arriba): cada punto empieza siendo su propio grupo, y en cada paso se fusionan los dos más cercanos
+    \item El resultado se visualiza en un \textbf{dendrograma}; cortarlo a una altura determina el número final de grupos
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.52\textwidth]{../book/_static/generated/figures/es/dendrogram.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Criterios de enlace (\textit{linkage})}
+  \begin{itemize}
+    \item Definen cómo medir la distancia entre dos grupos, no entre dos puntos
+    \item \textbf{Completo}: distancia \textit{máxima} entre miembros --- grupos compactos y balanceados
+    \item \textbf{Simple}: distancia \textit{mínima} --- sensible al ruido, tiende a encadenar grupos alargados
+    \item \textbf{Promedio}: media de todas las distancias --- equilibrio entre los dos anteriores
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.26\textwidth]{../book/_static/book_figures/islr_fig10_17_nci60_dendrogram.png}
+  \end{center}
+  \fuente{James, Witten, Hastie \& Tibshirani (2013), \textit{An Introduction to Statistical Learning}, Fig. 10.17.}
+\end{frame}
+
+\begin{frame}{DBSCAN: agrupamiento por densidad}
+  \begin{itemize}
+    \item Define los grupos según la \textbf{densidad local}, no por cercanía a un centroide
+    \item Dos parámetros: \textbf{$\epsilon$} (radio de vecindad) y \textbf{MinPts} (mínimo de vecinos para ser denso)
+    \item Tres tipos de punto: \textbf{núcleo} (denso), \textbf{frontera} (cerca de un núcleo) y \textbf{ruido} (aislado)
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.45\textwidth]{../book/_static/generated/figures/es/dbscan_point_types.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{DBSCAN vs. $K$-\textit{means}}
+  \begin{itemize}
+    \item DBSCAN detecta \textbf{formas arbitrarias} (no solo esféricas) y aísla el ruido de forma nativa
+    \item $K$-\textit{means} fuerza a cada punto a pertenecer a un grupo, incluso si es un valor atípico
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.72\textwidth]{../book/_static/generated/figures/es/dbscan_vs_kmeans.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Evaluación: coeficiente de silueta}
+  \begin{itemize}
+    \item Sin etiquetas, ¿cómo sabemos si un \textit{clustering} es bueno?
+    \item El coeficiente de silueta compara, para cada punto, su \textbf{cohesión} (distancia a su propio grupo) con su \textbf{separación} (distancia al grupo más cercano)
+    \item Rango $[-1, 1]$: cerca de $+1$ es un buen agrupamiento; cerca de $0$, frontera ambigua; negativo, mal asignado
+    \item Otros criterios existen (AIC/BIC, pureza, índice Rand...) para comparar frente a etiquetas ya conocidas
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{../book/_static/generated/figures/es/silhouette_diagram.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Resumen: 3.1 \textit{Clustering}}
+  \begin{itemize}
+    \item \textbf{$K$-\textit{means}}: simple y rápido, pero necesita $K$ conocido y grupos aproximadamente esféricos
+    \item \textbf{Jerárquico}: no necesita $K$, ofrece un dendrograma visual e interpretable
+    \item \textbf{DBSCAN}: detecta formas arbitrarias y aísla el ruido automáticamente
+    \item \textbf{Silueta}: métrica estándar para evaluar la calidad sin etiquetas
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\section{3.2 Reducción de dimensionalidad}
+
+\begin{frame}{La maldición de la dimensionalidad}
+  \begin{itemize}
+    \item A medida que aumentan las dimensiones, el espacio se vuelve \textbf{ultra-disperso}
+    \item Las muestras tienden a situarse en la frontera del espacio, no en el centro
+    \item Las distancias entre puntos se vuelven casi indistinguibles, degradando algoritmos basados en distancia (como $K$-NN)
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{../book/_static/generated/diagrams_pdf/es/02_aprendizaje_no_supervisado_02_reduccion_dimensionalidad_01.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{¿Por qué reducir dimensiones?}
+  \begin{itemize}
+    \item Acelera drásticamente la computación
+    \item Mitiga el \textit{overfitting}
+    \item Es indispensable para \textbf{visualizar} datos complejos en 2D o 3D
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/es/curse_of_dimensionality.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{PCA: la dirección de máxima varianza}
+  \begin{itemize}
+    \item PCA proyecta los datos sobre los ejes donde \textbf{más varían}, perdiendo la menor información posible
+    \item PC1: la dirección de máxima varianza; PC2: ortogonal a PC1, captura la varianza restante
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.68\textwidth]{../book/_static/generated/figures/es/pca_max_variance_projection.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{PCA: componentes principales}
+  \begin{itemize}
+    \item Se calcula mediante la descomposición en valores singulares (SVD) de la matriz de datos
+    \item Puede verse como un \textbf{autoencoder lineal}: comprime y luego reconstruye, minimizando el error
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{../book/_static/generated/figures/es/pca_projection.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{PCA en datos reales: NCI60 (6830 genes)}
+  \footnotesize
+  De 6830 genes a solo 3 componentes principales: las líneas del mismo tipo de cáncer (mismo color) se agrupan a pesar de la enorme dimensionalidad original.
+  \begin{center}
+    \includegraphics[width=0.62\textwidth]{../book/_static/book_figures/islr_fig10_15_nci60_pca.png}
+  \end{center}
+  \fuente{James, Witten, Hastie \& Tibshirani (2013), \textit{An Introduction to Statistical Learning}, Fig. 10.15.}
+\end{frame}
+
+\begin{frame}{\textit{Manifold learning}: cuando los datos no son planos}
+  \begin{itemize}
+    \item PCA asume que la estructura interesante es \textbf{lineal} --- falla en estructuras curvas
+    \item La \textbf{hipótesis de la variedad}: los datos reales (imágenes, voces...) viven en una superficie de baja dimensión curvada dentro de un espacio de alta dimensión
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{../book/_static/generated/figures/es/swiss_roll_manifold.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{\textit{Kernel} PCA: el truco del \textit{kernel}}
+  \begin{itemize}
+    \item Mapea los datos a un espacio de más dimensiones donde sí son separables linealmente
+    \item Útil cuando los datos originales no son separables por una línea recta
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.72\textwidth]{../book/_static/generated/figures/es/kernel_pca_trick.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{$t$-SNE: preservar vecindades locales}
+  \begin{itemize}
+    \item Convierte distancias en probabilidades de vecindad: puntos cercanos deben seguir cerca tras la proyección
+    \item Excelente para \textbf{visualización} de \textit{clusters} complejos en 2D; más lento en datasets grandes
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.78\textwidth]{../book/_static/generated/figures/es/pca_vs_tsne.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{UMAP: rápido y preciso}
+  \begin{itemize}
+    \item Preserva tanto la estructura \textbf{local} como la \textbf{global}, a diferencia de $t$-SNE
+    \item Mucho más rápido: apto para datasets de millones de muestras
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{../book/_static/external_images/umap_digits_projection.png}
+  \end{center}
+  \fuente{umap-learn docs, Copyright (c) 2017 Leland McInnes, licencia BSD-3.}
+\end{frame}
+
+\begin{frame}{Resumen: 3.2 Reducción de dimensionalidad}
+  \begin{itemize}
+    \item \textbf{PCA}: rápido, lineal, interpretable
+    \item \textbf{\textit{Kernel} PCA}: extiende PCA a estructuras no lineales
+    \item \textbf{$t$-SNE}: visualización excelente, no lineal, lento en datos grandes
+    \item \textbf{UMAP}: el mejor equilibrio entre velocidad y calidad
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\section{3.3 Detección de anomalías}
+
+\begin{frame}{Filosofía de la detección de anomalías}
+  \begin{itemize}
+    \item \textit{Inliers} (normales): frecuentes, con patrones consistentes
+    \item \textit{Outliers} (anomalías): raros, se desvían significativamente de la norma
+    \item \textbf{\textit{Anomaly detection}}: los datos de entrenamiento pueden contener ruido
+    \item \textbf{\textit{Novelty detection}}: los datos de entrenamiento están completamente limpios
+  \end{itemize}
+  \ejemplo{fraude bancario, fallos en una línea de producción, o un sensor que empieza a dar lecturas extrañas: en ninguno de estos casos sabemos de antemano cómo será la próxima anomalía.}
+\end{frame}
+
+\begin{frame}{Enfoque gaussiano}
+  \begin{itemize}
+    \item Se ajusta una distribución gaussiana a los datos normales
+    \item Los puntos con \textbf{baja densidad de probabilidad} se marcan como anomalías
+    \item El umbral se puede fijar según la tasa histórica de casos raros conocida
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.4\textwidth]{../book/_static/generated/figures/es/gaussian_anomaly_detection.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Reconstrucción con PCA}
+  \begin{itemize}
+    \item Se proyectan los datos a baja dimensión con PCA y se reconstruyen de vuelta
+    \item Las anomalías no siguen la estructura principal, así que su \textbf{error de reconstrucción} es mucho mayor
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.36\textwidth]{../book/_static/generated/figures/es/pca_reconstruction_anomaly.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{\textit{Isolation Forest}}
+  \begin{itemize}
+    \item En vez de modelar lo normal, intenta \textbf{aislar} cada punto con particiones aleatorias
+    \item Las anomalías, al estar alejadas del resto, se aíslan con muy pocas particiones
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/es/isolation_forest_concept.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{\textit{Local Outlier Factor} (LOF)}
+  \begin{itemize}
+    \item Compara la \textbf{densidad local} de un punto con la de sus vecinos
+    \item Detecta \textbf{anomalías locales}: puntos que no son extremos en términos absolutos, pero sí resultan raros en su vecindario
+  \end{itemize}
+  \ejemplo{una casa de 200 m\textsuperscript{2} no es rara a nivel nacional, pero sí lo es en un barrio donde todas miden 60 m\textsuperscript{2}: eso es exactamente lo que detecta LOF.}
+  \begin{center}
+    \includegraphics[width=0.32\textwidth]{../book/_static/generated/figures/es/lof_concept.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{\textit{One-class} SVM}
+  \begin{itemize}
+    \item Diseñado para \textit{novelty detection}: se entrena con datos limpios
+    \item Encuentra la región de \textbf{volumen mínimo} que encierra casi todos los datos de entrenamiento
+    \item Cualquier observación nueva fuera de esa frontera se marca como anomalía
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.36\textwidth]{../book/_static/generated/figures/es/one_class_svm_boundary.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Resumen: 3.3 Detección de anomalías}
+  \begin{itemize}
+    \item Las anomalías pueden ser eventos raros, contextuales o colectivos
+    \item \textbf{Métodos simples}: gaussiana, reconstrucción con PCA
+    \item \textbf{Métodos avanzados}: \textit{Isolation Forest}, LOF, \textit{one-class} SVM
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Resumen del curso}
+  \begin{columns}
+    \begin{column}{0.33\textwidth}
+      \textbf{1. Fundamentos}
+      \begin{itemize}
+        \footnotesize
+        \item Historia del ML
+        \item \textit{Overfitting}/\textit{underfitting}
+        \item Validación cruzada
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \textbf{2. Supervisado}
+      \begin{itemize}
+        \footnotesize
+        \item Regresión, regularización
+        \item Clasificación, SVM
+        \item Redes neuronales
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.33\textwidth}
+      \textbf{3. No supervisado}
+      \begin{itemize}
+        \footnotesize
+        \item \textit{Clustering}
+        \item PCA, \textit{manifold learning}
+        \item Detección de anomalías
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \centering
+  {\Huge ¡Gracias!}\\[1em]
+  {\large Universidad de Salamanca}
+\end{frame}
+
+\end{document}

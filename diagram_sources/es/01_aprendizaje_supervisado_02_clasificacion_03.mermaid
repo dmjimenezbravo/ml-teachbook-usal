@@ -1,0 +1,29 @@
+flowchart LR
+    VT["Voting"]:::title --> VD[("Datos")]
+    VD --> VM1["Modelo 1"]
+    VD --> VM2["Modelo 2"]
+    VD --> VM3["Modelo 3"]
+    VM1 --> VV["Voto mayoritario (duro)<br/>o promedio de<br/>probabilidades (suave)"]
+    VM2 --> VV
+    VM3 --> VV
+    VV --> VP["Predicción final"]
+
+    ST["Stacking"]:::title --> SD[("Datos")]
+    SD --> SM1["Modelo base 1"]
+    SD --> SM2["Modelo base 2"]
+    SD --> SM3["Modelo base 3"]
+    SM1 -->|predicciones| SMM["Meta-modelo<br/>(aprende a combinar<br/>las salidas)"]
+    SM2 -->|predicciones| SMM
+    SM3 -->|predicciones| SMM
+    SMM --> SP["Predicción final"]
+
+    classDef title fill:#1e3a8a,stroke:#1e3a8a,color:#ffffff,font-weight:bold
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef model fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef agg fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef final fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class VD,SD data
+    class VM1,VM2,VM3,SM1,SM2,SM3 model
+    class VV,SMM agg
+    class VP,SP final

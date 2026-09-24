@@ -108,6 +108,18 @@ SVM: maximum-margin hyperplane and support vectors.
 These combine multiple models to obtain a prediction superior to that of any individual model.
 
 - **Voting** and **stacking**: majority (hard) voting or averaging probabilities (soft voting) combines independent models. Stacking trains a meta-model that learns to combine the outputs of the base models.
+
+{numref}`fig-voting-stacking` compares both approaches: in voting, the models are trained independently and their outputs are combined with a fixed rule (vote or average); in stacking, the base models' predictions become the input of a meta-model that learns how to combine them.
+
+```{figure} ../../_static/generated/diagrams/en/01_supervised_learning_02_classification_03.svg
+:name: fig-voting-stacking
+:alt: Flowchart comparing voting, where models are combined through a vote or average, and stacking, where the base models' predictions feed a meta-model
+:width: 90%
+:align: center
+
+Voting versus stacking: a fixed combination rule versus a meta-model that learns to combine.
+```
+
 - **Boosting**: unlike the parallel training of random forests, boosting trains models sequentially, where each new predictor tries to correct the errors made by its predecessors. Modern examples include XGBoost and Gradient Boosting.
 
 {numref}`fig-boosting` illustrates boosting's sequential training: each weak model is trained on data reweighted according to the previous model's errors, giving more weight to misclassified instances, and the final prediction combines all models through a weighted sum.

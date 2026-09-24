@@ -14,9 +14,16 @@ Several **clustering** algorithms exist. The most relevant ones today are explai
 
 $K$-means is a grouping algorithm that performs partitions based on centroids. The algorithm is an iterative grouping technique that seeks to partition a set of observations into $K$ distinct clusters. It is a geometric approach based on the concept of centroids, which act as the center of gravity of each group.
 
-                     [Initial samples] → [Assignment to centroids]
-                              ↑              ↓
-                     [Update centroids] ← [Compute inertia (WCSS)]
+{numref}`fig-kmeans-flow` summarizes the algorithm's cycle: after assigning each sample to its centroid and computing the inertia (WCSS), the centroids are updated and the process repeats until convergence.
+
+```{figure} ../../_static/generated/diagrams/en/02_unsupervised_learning_01_clustering_01.svg
+:name: fig-kmeans-flow
+:alt: Flowchart of the K-means algorithm with the stages of assignment to centroids, inertia computation, and centroid update in a loop until convergence
+:width: 100%
+:align: center
+
+Iterative cycle of $K$-means.
+```
 
 #### Algorithmic mechanics and convergence
 
@@ -153,12 +160,16 @@ During execution, DBSCAN examines every point in the dataset and classifies it i
 - **Border points**: points that do not meet the minimum density requirement of MinPts to be considered core, but reside within the $\epsilon$-neighborhood of a point that is a core point.
 - **Noise points** (outliers): any point that is classified as neither core nor border. These points are considered anomalies or outliers and are not assigned to any cluster.
 
-             (Border point)
-                  o
-                /
-       o  -  o (Core point)             o (Noise point)
-       |  \  /
-       o  -  o
+{numref}`fig-dbscan-points` illustrates the three types with $\epsilon = 1$ and MinPts $= 4$: the blue points have at least 4 neighbors within their circle (core); the orange ones fall inside the circle of a core point but do not reach MinPts on their own (border); and the red cross has no core point nearby (noise).
+
+```{figure} ../../_static/generated/figures/en/dbscan_point_types.png
+:name: fig-dbscan-points
+:alt: Diagram with blue core points surrounded by circles of radius epsilon, orange border points inside those circles, and an isolated red noise point
+:width: 70%
+:align: center
+
+Classification of points in DBSCAN: core, border, and noise.
+```
 
 #### Advantages over distance-based methods
 
