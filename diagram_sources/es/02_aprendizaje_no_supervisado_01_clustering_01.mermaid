@@ -1,0 +1,16 @@
+flowchart LR
+    A["Muestras<br/>iniciales"] --> B["Asignación<br/>a centroides"]
+    B --> C["Calcular inercia<br/>(WCSS)"]
+    C --> D["Actualizar<br/>centroides"]
+    D -->|no converge| B
+    D -->|convergencia| E["Agrupamiento<br/>final"]
+
+    classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef step fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef eval fill:#e9d5ff,stroke:#a855f7,color:#581c87
+    classDef final fill:#bbf7d0,stroke:#22c55e,color:#14532d
+
+    class A data
+    class B,D step
+    class C eval
+    class E final

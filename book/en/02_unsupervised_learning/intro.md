@@ -25,14 +25,24 @@ Unsupervised learning does not seek to make pointwise quantitative or qualitativ
 
 ## What Will You Find in This Section?
 
-- **Clustering**: focused on methods designed to find homogeneous subgroups within the observations.
-  - Classic centroid-based algorithms, such as $K$-means, will be covered.
-  - Hierarchical merging structures, or hierarchical clustering.
-  - Models that define groups based on the local density of the geometric space.
-- **Dimensionality reduction**: linear projection tools for simplifying data will be explored.
-  - Techniques that maximize retained variance, such as PCA.
-  - Advanced non-linear manifold learning algorithms, such as t-SNE and UMAP.
-  - Algorithms specifically aimed at qualitative visualization and noise removal before training supervised classifiers.
+- **Clustering**:
+  - $K$-means: centroid-based grouping, initialization ($K$-means++), and choosing $K$ with the elbow method.
+  - Hierarchical clustering: the agglomerative approach, dendrograms, and linkage criteria.
+  - DBSCAN: density-based clustering, able to detect arbitrary shapes and noise.
+  - Evaluation techniques: silhouette coefficient, internal metrics, information-theoretic criteria, and external evaluation with labeled data.
+
+- **Dimensionality reduction**:
+  - The curse of dimensionality: why working in spaces with many variables is a problem.
+  - PCA: linear projection that maximizes retained variance, SVD, and reconstruction.
+  - Manifold learning: the manifold hypothesis and the Swiss roll example.
+  - Non-linear methods: Kernel PCA, t-SNE, and UMAP.
+
+- **Anomaly detection**:
+  - Anomaly detection vs. novelty detection: the difference based on training-data contamination.
+  - Statistical and reconstruction-based approaches: Gaussian mixture models (GMM) and PCA reconstruction error.
+  - Isolation forest: isolating observations through random partitions.
+  - Local Outlier Factor (LOF): detecting local anomalies based on neighborhood density.
+  - One-class SVM: delimiting the region of normal behavior.
 
 ## Important Note
 

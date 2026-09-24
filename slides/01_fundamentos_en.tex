@@ -1,0 +1,255 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage{english}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\definecolor{examplecolor}{RGB}{180,83,9}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamerfont{footnote}{size=\tiny}
+
+\newcommand{\fuente}[1]{{\footnotesize\textit{Source: #1}}}
+\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{examplecolor}\textbf{Example:} #1}}
+
+\title[1. Foundations]{Chapter 1: Foundations of\\Machine Learning}
+\subtitle{Course material}
+\author{Universidad de Salamanca}
+\institute{Faculties of Sciences and Chemical Sciences}
+\date{\today}
+
+\begin{document}
+
+% ============================================================
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{In this chapter}
+  \begin{enumerate}
+    \item \textbf{1.1 History and evolution} of machine learning
+    \begin{itemize}
+      \item From least squares (1805) to Generative AI
+      \item The ``AI winters'' and why they happened
+    \end{itemize}
+    \item \textbf{1.2 Fundamental concepts}
+    \begin{itemize}
+      \item Data, features, and labels
+      \item \textit{Overfitting}, cross-validation, and metrics
+      \item The ML \textit{pipeline} end to end
+    \end{itemize}
+  \end{enumerate}
+  \vspace{0.5em}
+  These foundations underpin everything that follows: without them, it's hard to understand why a model works or fails.
+\end{frame}
+
+% ============================================================
+\section{1.1 History and evolution}
+
+\begin{frame}{Why learn machine learning?}
+  \begin{itemize}
+    \item In \textbf{traditional} programming, a human writes every rule by hand:
+    \begin{itemize}
+      \small
+      \item \texttt{if temperature > 30: turn\_on\_ac()}
+    \end{itemize}
+    \item But many problems are too complex to describe with fixed rules
+    \item \textbf{Machine learning inverts the paradigm}: instead of writing the rules, we teach the machine to \textit{learn} them from examples
+  \end{itemize}
+  \ejemplo{no one can hand-write a rule that tells a cat from a dog in a photo, but a model can \textit{learn} one from thousands of already-labeled photos.}
+\end{frame}
+
+\begin{frame}{The new programming paradigm}
+  \begin{itemize}
+    \item For a machine to learn, \textbf{three elements} are needed:
+    \begin{enumerate}
+      \item Input data
+      \item Examples of the expected output (\textbf{labels})
+      \item A way to measure whether it's doing well (\textbf{loss function})
+    \end{enumerate}
+    \item AI isn't a new idea: it coexists with symbolic AI (hand-written logical rules), which dominated the field from the 1950s to the late 1980s
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Mathematical roots and the Turing Test (1805-1950)}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item 1805: Legendre and Gauss publish \textbf{least squares} --- the earliest form of linear regression
+        \item 1936: Fisher proposes linear discriminant analysis
+        \item 1943: McCulloch and Pitts present the first model of an artificial neuron
+        \item 1950: Alan Turing publishes \textit{``Computing Machinery and Intelligence''} and introduces the \textbf{Turing Test}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      \centering
+      \includegraphics[width=0.85\textwidth]{../book/_static/external_images/alan_turing_1951.jpg}\\[0.3em]
+      {\tiny\textit{Source: Elliott \& Fry (1951), public domain}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{The formal birth and the symbolic era (1956-1980)}
+  \begin{itemize}
+    \item 1956: John McCarthy organizes the \textbf{Dartmouth workshop} --- AI is formally born as a research field
+    \item For decades it was believed that hand-coding a massive set of logical rules would be enough (\textbf{symbolic AI})
+    \item This approach peaked with \textbf{expert systems} in the 1980s
+  \end{itemize}
+  \ejemplo{a 1980s medical expert system contained thousands of hand-written rules like ``if fever and cough and chest pain, then suspect pneumonia.''}
+\end{frame}
+
+\begin{frame}{The Perceptron and the AI winters}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item 1958: Frank Rosenblatt creates the \textbf{Perceptron}, the first trainable artificial-neuron model
+        \item \textbf{First winter} (1970s): the Perceptron cannot solve non-linear problems; enthusiasm collapses
+        \item \textbf{Second winter} (1990s): expert systems prove expensive to maintain, hard to scale, and limited
+        \item ML truly takes off in the 1990s, driven by faster hardware and more available data
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.35\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../book/_static/external_images/frank_rosenblatt.jpg}\\
+      \fuente{Heinz Nixdorf MuseumsForum, CC BY-SA 4.0}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Full timeline}
+  \footnotesize
+  Cycles of ``summer'' (breakthroughs, funding) and ``winter'' (disillusionment, funding cuts).
+  \begin{center}
+    \includegraphics[width=0.62\textwidth]{../book/_static/generated/diagrams_pdf/en/00_fundamentals_01_history_evolution_01.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{From \textit{Deep Learning} to the LLM era (2010-today)}
+  \begin{itemize}
+    \item \textbf{Deep Learning} learns representations in successive layers, each more useful for the task
+    \item 2012: Hinton's victory in the \textbf{ImageNet} challenge marks the turning point
+    \item \textbf{MNIST} (handwritten digits 0-9) becomes the classic benchmark
+    \item 2017: the \textbf{Transformer} architecture revolutionizes natural language processing
+    \item 2020s: \textbf{Generative AI} (ChatGPT, Gemini) scales to billions of parameters
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.42\textwidth]{../book/_static/external_images/mnist_dataset_example.png}\\
+    \fuente{Suvanjanprasai (2024), Wikimedia Commons, CC BY-SA 4.0}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Summary: 1.1 History and evolution}
+  \begin{itemize}
+    \item ML was born from one question: can machines learn?
+    \item It has gone through cycles of hype and disillusionment
+    \item Recent progress comes from more data, better hardware, and new algorithms
+    \item Deep Learning and LLMs are the current state of the art
+  \end{itemize}
+\end{frame}
+
+% ============================================================
+\section{1.2 Fundamental concepts}
+
+\begin{frame}{Data, features, and labels}
+  \begin{center}
+    \begin{tabular}{lcccc}
+      \toprule
+      Sample & Feature 1 & Feature 2 & Feature 3 & Label \\
+      \midrule
+      1 & 25 & 70 & 175 & Cat \\
+      2 & 8 & 4 & 90 & Cat \\
+      3 & 35 & 80 & 180 & Dog \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vspace{0.5em}
+  \begin{itemize}
+    \item \textbf{Sample}: a single data point (one row of the table)
+    \item \textbf{Features}: the attributes that describe the sample
+    \item \textbf{Label}: what we want to predict --- the ``ground truth''
+  \end{itemize}
+  \ejemplo{to predict a house's price, the features would be m\textsuperscript{2}, number of rooms, and location; the label would be the price.}
+\end{frame}
+
+\begin{frame}{Overfitting vs. underfitting}
+  \begin{itemize}
+    \item \textbf{Underfitting} (high bias): the model is too simple, misses the real pattern
+    \item \textbf{Overfitting} (high variance): the model memorizes training noise instead of learning the trend
+    \item The goal is the bias-variance trade-off that generalizes best
+  \end{itemize}
+  \ejemplo{it's like studying for an exam by memorizing the exact answers of a mock test (overfitting) instead of understanding the topic: you'll fail as soon as the questions change.}
+  \begin{center}
+    \includegraphics[width=0.62\textwidth]{../book/_static/generated/figures/en/overfitting_underfitting.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{$K$-fold cross-validation}
+  \begin{itemize}
+    \item Standard split: \textbf{training} (fit weights), \textbf{validation} (choose hyperparameters), and \textbf{test} (final, unbiased evaluation)
+    \item $K$-fold: split into $K$ parts; train $K$ times, each time using a different part as validation
+    \item The final metric is the average of the $K$ results --- reduces the variance of the estimate
+    \item \textbf{Stratification}: each partition must preserve the class proportions of the original set
+  \end{itemize}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{../book/_static/generated/figures/en/kfold_cross_validation.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Confusion matrix and metrics}
+  \begin{columns}
+    \begin{column}{0.48\textwidth}
+      \includegraphics[width=0.75\textwidth]{../book/_static/generated/figures/en/confusion_matrix.png}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \footnotesize
+      \begin{align*}
+        \text{Precision} &= \frac{TP}{TP+FP} \\
+        \text{Recall} &= \frac{TP}{TP+FN} \\
+        F1 &= 2\cdot\frac{P \times R}{P + R}
+      \end{align*}
+    \end{column}
+  \end{columns}
+  \ejemplo{\footnotesize in a medical diagnosis, a \textbf{false negative} (telling a sick patient ``healthy'') is usually more serious than a false positive. That's why recall is sometimes prioritized over precision.}
+\end{frame}
+
+\begin{frame}{The ML \textit{pipeline}: 10 stages}
+  \begin{columns}
+    \begin{column}{0.4\textwidth}
+      \footnotesize
+      \begin{itemize}
+        \item An \textbf{iterative} process: evaluation can send you back to earlier stages
+        \item Much of the real effort lies in stages 2-3 (data) and 7-8 (tuning)
+        \item Deployment isn't the end: it requires continuous monitoring, since real-world data changes over time (\textit{concept drift})
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.57\textwidth}
+      \centering
+      \includegraphics[height=0.75\textheight]{../book/_static/generated/diagrams_pdf/en/00_fundamentals_02_fundamental_concepts_01.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Summary: 1.2 Fundamental concepts}
+  \begin{itemize}
+    \item \textbf{Sample / feature / label}: the basic building blocks of any dataset
+    \item \textbf{Overfitting / underfitting}: the central tension of machine learning
+    \item \textbf{Cross-validation}: evaluating without bias when data is scarce
+    \item \textbf{Metrics}: pick the right one for what matters (precision or recall)
+    \item \textbf{ML \textit{pipeline}}: 10 stages, from data collection to deployment
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \centering
+  {\Huge End of Chapter 1}\\[1em]
+  {\large Next: Chapter 2 --- Supervised Learning}
+\end{frame}
+
+\end{document}

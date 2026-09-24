@@ -31,7 +31,7 @@ Antes de recurrir a modelos más complejos, existen dos aproximaciones clásicas
 
 Bajo este enfoque, se asume que las observaciones normales se concentran en regiones del espacio de características que presentan una alta densidad de probabilidad.
 
-- Se entrena un **Modelo de Mezcla Gaussiana** (GMM) para aproximar la función de densidad de probabilidad del dataset.
+- Se entrena un **Modelo de Mezcla Gaussiana** (GMM) para aproximar la función de densidad de probabilidad del *dataset*.
 - Para clasificar una nueva muestra, se calcula su **densidad** bajo el modelo estimado. Cualquier instancia ubicada en una región de baja densidad por debajo de un umbral preestablecido se marca como anomalía.
 - En entornos reales donde la tasa histórica de fallos es conocida (por ejemplo, un 4% de productos defectuosos en una fábrica), el **umbral** se establece de forma matemática seleccionando el percentil correspondiente (el 4% con menor densidad bajo el modelo).
 
@@ -50,7 +50,7 @@ Detección de anomalías mediante estimación de densidad gaussiana.
 
 Esta técnica se basa en el principio de que los componentes principales mayoritarios de un análisis PCA capturan las direcciones de máxima varianza que caracterizan al comportamiento normal del sistema.
 
-- El dataset se proyecta a un espacio de baja dimensión utilizando PCA y, posteriormente, se reconstruye de vuelta al espacio original utilizando la matriz inversa.
+- El *dataset* se proyecta a un espacio de baja dimensión utilizando PCA y, posteriormente, se reconstruye de vuelta al espacio original utilizando la matriz inversa.
 - Para cada instancia, se calcula el **error de reconstrucción** (la distancia cuadrática entre el vector original $x$ y su reconstrucción $\hat{x}$).
 - Dado que las componentes principales no capturan las desviaciones inusuales de los *outliers*, las anomalías experimentarán un error de reconstrucción significativamente mayor que las instancias normales, permitiendo su fácil identificación.
 
@@ -74,8 +74,8 @@ Es uno de los algoritmos más eficientes y escalables para la detección de *out
 - **Mecánica**: a diferencia de los métodos tradicionales que intentan modelar la densidad o los puntos normales, *isolation forest* busca aislar explícitamente cada observación. Para ello, construye un conjunto de árboles de decisión aleatorios. En cada nodo de un árbol, se selecciona una característica al azar y se elige un umbral de corte aleatorio (entre el mínimo y el máximo de esa variable) para dividir los datos en dos. Este proceso de partición recursiva continúa hasta que cada instancia queda aislada en su propia hoja.
 - **Intuición**: dado que las anomalías se encuentran alejadas del grueso de la población de datos normales, requieren en promedio significativamente menos particiones aleatorias para ser aisladas. Por lo tanto, aquellas instancias que presenten una longitud de camino promedio más corta hacia la raíz a lo largo del bosque de árboles son catalogadas inmediatamente como anomalías.
   
-  Datos Normales (Densos)   ────────────────▶ Requieren muchas divisiones para aislarse.
-  Anomalías (Aisladas/Raras) ───────────────▶ Se aíslan rápidamente (pocas ramas).
+  Datos normales (densos)   ────────────────▶ Requieren muchas divisiones para aislarse.
+  Anomalías (aisladas/raras) ───────────────▶ Se aíslan rápidamente (pocas ramas).
 
 La {numref}`fig-isolation-forest` compara ambos casos: la anomalía (izquierda) queda aislada con solo 2 divisiones aleatorias, mientras que un punto normal (derecha) necesita muchas más divisiones para separarse del resto.
 
@@ -85,12 +85,12 @@ La {numref}`fig-isolation-forest` compara ambos casos: la anomalía (izquierda) 
 :width: 100%
 :align: center
 
-Isolation Forest: las anomalías se aíslan en menos particiones que los puntos normales.
+*Isolation Forest*: las anomalías se aíslan en menos particiones que los puntos normales.
 ```
 
 ### *Local Outlier Factor* (LOF)
 
-Este algoritmo basa su funcionamiento en el análisis de la densidad local de las muestras utilizando un enfoque de vecinos más cercanos (KNN).
+Este algoritmo basa su funcionamiento en el análisis de la densidad local de las muestras utilizando un enfoque de vecinos más cercanos ($K$-NN).
 
 - LOF compara la **densidad local** de una instancia con la densidad de sus vecinos más cercanos.
 - Una instancia normal tendrá una densidad local similar a la de su entorno. En cambio, un ***outlier* local** presentará una densidad significativamente menor que la de sus vecinos más cercanos (estará más aislado en relación con la densidad de su vecindario inmediato).
@@ -104,7 +104,7 @@ La {numref}`fig-lof` muestra un caso típico: el punto marcado en rojo no está 
 :width: 70%
 :align: center
 
-Local Outlier Factor: una anomalía local no destaca en un análisis global.
+*Local Outlier Factor*: una anomalía local no destaca en un análisis global.
 ```
 
 ### *One-class* SVM (máquinas de vectores de soporte de una clase)
@@ -133,4 +133,4 @@ La {numref}`fig-ocsvm` muestra un ejemplo con datos de forma irregular: *one-cla
 
 ---
 
-¡Felicidades! Has completado el contenido de "Introducción al aprendiaje automático". Ahora tienes bases sólidas para explorar temas más avanzados como **aprendizaje profundo**, **procesamiento de lenguaje natural**, o **visión por computadora**.
+¡Felicidades! Has completado el contenido de "Fundamentos e introducción al aprendizaje automático". Ahora tienes bases sólidas para explorar temas más avanzados como **aprendizaje profundo**, **procesamiento de lenguaje natural**, o **visión por computadora**.
