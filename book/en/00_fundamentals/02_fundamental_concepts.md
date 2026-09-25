@@ -117,7 +117,7 @@ Developing a Machine Learning project follows a universal blueprint that ensures
 ```{figure} ../../_static/generated/diagrams/en/00_fundamentals_02_fundamental_concepts_01.svg
 :name: fig-pipeline-ml
 :alt: Flowchart of the machine learning pipeline with its 10 stages, from data collection to deployment, including the retraining loop
-:width: 55%
+:width: 100%
 :align: center
 
 The Machine Learning pipeline: 10 stages from data collection to deployment.

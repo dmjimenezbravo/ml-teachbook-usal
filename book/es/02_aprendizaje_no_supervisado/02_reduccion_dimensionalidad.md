@@ -157,7 +157,7 @@ La {numref}`fig-kernel-pca-trick` ilustra el truco del *kernel* con un ejemplo c
 El truco del *kernel*: datos no separables en 2D se vuelven separables al proyectarlos a una dimensión adicional.
 ```
 
-#### t-SNE (*t-Distributed Stochastic Neighbor Embedding*)
+#### t-SNE (*t-distributed Stochastic Neighbor Embedding*)
 
 Propuesto por Maaten y Hinton (2008), t-SNE es la técnica no convexa preferida para la visualización cualitativa de agrupamientos complejos en dos dimensiones.
 

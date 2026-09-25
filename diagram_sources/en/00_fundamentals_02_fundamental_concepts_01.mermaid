@@ -1,14 +1,22 @@
-flowchart TD
-    A["1. Data<br/>collection"] --> B["2. Exploration<br/>and cleaning"]
-    B --> C["3. Feature<br/>engineering"]
-    C --> D["4. Train / test<br/>split"]
-    D --> E["5. Model<br/>selection"]
-    E --> F["6. Training"]
-    F --> G["7. Evaluation"]
-    G --> H["8. Hyperparameter<br/>tuning"]
-    H -->|retrain| F
-    H --> I["9. Final<br/>evaluation"]
-    I --> J["10. Deployment"]
+flowchart TB
+    subgraph ROW1[" "]
+        direction LR
+        A["1. Data<br/>collection"] --> B["2. Exploration<br/>and cleaning"]
+        B --> C["3. Feature<br/>engineering"]
+        C --> D["4. Train / test<br/>split"]
+        D --> E["5. Model<br/>selection"]
+    end
+
+    subgraph ROW2[" "]
+        direction LR
+        F["6. Training"] --> G["7. Evaluation"]
+        G --> H["8. Hyperparameter<br/>tuning"]
+        H --> I["9. Final<br/>evaluation"]
+        I --> J["10. Deployment"]
+    end
+
+    E --> F
+    H -.->|retrain| F
 
     classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
     classDef split fill:#e5e7eb,stroke:#6b7280,color:#374151
@@ -21,3 +29,6 @@ flowchart TD
     class E,F model
     class G,H,I eval
     class J deploy
+
+    style ROW1 fill:none,stroke:none
+    style ROW2 fill:none,stroke:none
