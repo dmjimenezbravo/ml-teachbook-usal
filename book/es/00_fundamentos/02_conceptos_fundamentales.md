@@ -114,7 +114,7 @@ El desarrollo de un proyecto de Aprendizaje Automático sigue un *blueprint* uni
 ```{figure} ../../_static/generated/diagrams/es/00_fundamentos_02_conceptos_fundamentales_01.svg
 :name: fig-pipeline-ml
 :alt: Diagrama de flujo del pipeline de aprendizaje automático con sus 10 etapas, desde la recolección de datos hasta el despliegue, incluyendo el bucle de reentrenamiento
-:width: 55%
+:width: 100%
 :align: center
 
 El *pipeline* de *Machine Learning*: 10 etapas desde la recolección de datos hasta el despliegue.

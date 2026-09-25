@@ -1,14 +1,22 @@
-flowchart TD
-    A["1. Recolección<br/>de datos"] --> B["2. Exploración<br/>y limpieza"]
-    B --> C["3. Ingeniería de<br/>características"]
-    C --> D["4. División<br/>train / test"]
-    D --> E["5. Selección<br/>del modelo"]
-    E --> F["6. Entrenamiento"]
-    F --> G["7. Evaluación"]
-    G --> H["8. Ajuste de<br/>hiperparámetros"]
-    H -->|reentrenar| F
-    H --> I["9. Evaluación<br/>final"]
-    I --> J["10. Despliegue"]
+flowchart TB
+    subgraph FILA1[" "]
+        direction LR
+        A["1. Recolección<br/>de datos"] --> B["2. Exploración<br/>y limpieza"]
+        B --> C["3. Ingeniería de<br/>características"]
+        C --> D["4. División<br/>train / test"]
+        D --> E["5. Selección<br/>del modelo"]
+    end
+
+    subgraph FILA2[" "]
+        direction LR
+        F["6. Entrenamiento"] --> G["7. Evaluación"]
+        G --> H["8. Ajuste de<br/>hiperparámetros"]
+        H --> I["9. Evaluación<br/>final"]
+        I --> J["10. Despliegue"]
+    end
+
+    E --> F
+    H -.->|reentrenar| F
 
     classDef data fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
     classDef split fill:#e5e7eb,stroke:#6b7280,color:#374151
@@ -21,3 +29,6 @@ flowchart TD
     class E,F model
     class G,H,I eval
     class J deploy
+
+    style FILA1 fill:none,stroke:none
+    style FILA2 fill:none,stroke:none
