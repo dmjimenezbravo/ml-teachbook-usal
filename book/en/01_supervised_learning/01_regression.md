@@ -22,7 +22,7 @@ Linear regression is a fundamental technique that assumes an approximately linea
 Simple linear regression: fitted line and residuals.
 ```
 
-A classic example from the literature is the *Advertising* dataset, where a line is fit to predict `Sales` from TV advertising spending (`TV`):
+A classic example from the literature {cite:p}`james2013islr` is the *Advertising* dataset, where a line is fit to predict `Sales` from TV advertising spending (`TV`):
 
 ```{figure} ../../_static/book_figures/islr_fig3_1_advertising.png
 :name: fig-islr-advertising
@@ -72,8 +72,8 @@ When data exhibits curvature, linear models can be extended through feature engi
   - **Polynomial regression**: powers of the original predictors are added (e.g., $X^2$, $X^3$) as new features. Although the model is non-linear with respect to the original inputs, it remains linear in its parameters, which allows OLS to be used for training.
   - **The risk of overfitting**: increasing the polynomial degree increases the model's flexibility, which can lead it to memorize the noise in the training data (overfitting) and fail to generalize.
   - **Regularization techniques**: these add a penalty to the cost function for having large weights, forcing the model to be simpler.
-    - **Ridge** (L2): adds a penalty proportional to the square of the weights. It shrinks coefficients toward zero but never eliminates them entirely; it works very well when there are many correlated predictors.
-    - **Lasso** (L1): adds a penalty proportional to the absolute value of the weights. It has the unique property of forcing some coefficients to be exactly zero, automatically performing variable selection.
+    - **Ridge** (L2) {cite:p}`hoerl1970ridge`: adds a penalty proportional to the square of the weights. It shrinks coefficients toward zero but never eliminates them entirely; it works very well when there are many correlated predictors.
+    - **Lasso** (L1) {cite:p}`tibshirani1996lasso`: adds a penalty proportional to the absolute value of the weights. It has the unique property of forcing some coefficients to be exactly zero, automatically performing variable selection.
     - **Elastic Net**: a combination of Ridge and Lasso that uses both types of penalty via a mixing ratio.
 
 {numref}`fig-regularization-paths` compares how a model's coefficients evolve as the penalty $\lambda$ increases: Ridge shrinks them smoothly without ever reaching zero, while Lasso drives them exactly to zero, performing variable selection.

@@ -47,7 +47,7 @@ The curse of dimensionality, quantified through simulation.
 
 ## Linear projection methods: PCA (Principal Components Analysis)
 
-Principal Component Analysis (PCA), originally developed in the early 20th century by Pearson and Hotelling, is the quintessential linear dimensionality reduction algorithm. Its goal is to orthogonally project the original data $X \in \mathbb{R}^{D}$ onto a low-dimensional linear subspace $Z \in \mathbb{R}^{M}$ (where $M < D$), minimizing information loss under strict statistical criteria.
+Principal Component Analysis (PCA), originally developed in the early 20th century by Pearson and Hotelling {cite:p}`pearson1901pca,hotelling1933pca`, is the quintessential linear dimensionality reduction algorithm. Its goal is to orthogonally project the original data $X \in \mathbb{R}^{D}$ onto a low-dimensional linear subspace $Z \in \mathbb{R}^{M}$ (where $M < D$), minimizing information loss under strict statistical criteria.
 
 ### Maximum variance perspective
 
@@ -111,7 +111,7 @@ A real example of PCA's usefulness appears in the *NCI60* dataset, where each sa
 :align: center
 
 Projection of the *NCI60* cancer cell lines (6830 genes) onto their first three principal components.
-Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.15. Springer. Freely distributed for educational use (statlearning.com).
+Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.15. Springer. Freely distributed for educational use (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ## Non-linear methods and manifold learning
@@ -159,7 +159,7 @@ The kernel trick: data that is not separable in 2D becomes separable once projec
 
 #### t-SNE (t-Distributed Stochastic Neighbor Embedding)
 
-Proposed by Maaten and Hinton (2008), t-SNE is the preferred non-convex technique for the qualitative visualization of complex groupings in two dimensions.
+Proposed by Maaten and Hinton (2008) {cite:p}`vandermaaten2008tsne`, t-SNE is the preferred non-convex technique for the qualitative visualization of complex groupings in two dimensions.
 
 1. **High-dimensional space** (original SNE): converts Euclidean distances between samples into Gaussian conditional probabilities $p_{j|i}$ denoting similarity. Nearby points receive high neighborhood probabilities and distant ones receive infinitesimal probabilities.
 2. **The crowding problem**: when high-dimensional data is projected onto a flat 2D space, the available volume of space shrinks exponentially. Average distances grow so much that, using normal approximations, attraction forces push all distant points into a dense, indistinguishable core at the center of the plot.
@@ -182,7 +182,7 @@ PCA (linear projection) versus t-SNE (non-linear projection) on data with non-li
 
 #### UMAP (Uniform Manifold Approximation and Projection)
 
-UMAP is one of the most powerful manifold learning techniques available today. Grounded in classical Riemannian geometry and algebraic topology, UMAP assumes the data space is locally connected and that the manifold on which it lies is uniform.
+UMAP {cite:p}`mcinnes2018umap` is one of the most powerful manifold learning techniques available today. Grounded in classical Riemannian geometry and algebraic topology, UMAP assumes the data space is locally connected and that the manifold on which it lies is uniform.
 
 Unlike t-SNE, which focuses almost exclusively on retaining very local neighborhoods (short-range relationships), UMAP is able to preserve both the local and the global structure of the data.
 

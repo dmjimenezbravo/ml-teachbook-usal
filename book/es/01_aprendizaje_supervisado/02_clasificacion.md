@@ -43,7 +43,7 @@ La {numref}`fig-islr-default` muestra por qué es necesaria esta transformación
 :align: center
 
 Regresión lineal (izquierda) frente a regresión logística (derecha) sobre el conjunto de datos *Default*.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 4.2. Springer. Libro de libre distribución para uso educativo (statlearning.com).
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 4.2. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ## Algoritmos clásicos de clasificación
@@ -70,7 +70,7 @@ Particiones recursivas de un árbol de decisión sobre dos características.
 
 ### Bosques aleatorios (*random forests*)
 
-Es un conjunto de árboles de decisión diseñado para reducir la varianza y mejorar la robustez. Existen dos técnicas para conformar el bosque:
+Es un conjunto de árboles de decisión {cite:p}`breiman2001randomforest` diseñado para reducir la varianza y mejorar la robustez. Existen dos técnicas para conformar el bosque:
 
 - ***Bagging***: utiliza el muestreo con reemplazo (*bootstrap*) para entrenar cada árbol con una versión diferente de los datos.
 - **Decorrelación**: para asegurar que los árboles sean diversos, en cada división solo se considera un subconjunto aleatorio de características.
@@ -88,7 +88,7 @@ La {numref}`fig-bagging` esquematiza el proceso completo: a partir del *dataset*
 
 ### Máquinas de vectores de soporte (SVM, *Support Vector Machines*)
 
-Este modelo busca encontrar un **hiperplano** que separe las clases con el **margen máximo** posible.
+Este modelo {cite:p}`cortes1995svm` busca encontrar un **hiperplano** que separe las clases con el **margen máximo** posible.
 
 - **Vectores de soporte**: la frontera de decisión está determinada únicamente por las muestras más cercanas al hiperplano; mover otros puntos no altera el modelo.
 - **Margen blando y truco del *kernel***: las SVM manejan datos no separables linealmente mediante variables de holgura (*slack variables*) y el truco del *kernel*, que mapea implícitamente los datos a espacios de mayor dimensión para encontrar separaciones complejas.
@@ -121,7 +121,7 @@ La {numref}`fig-voting-stacking` compara ambos enfoques: en *voting*, los modelo
 *Voting* frente a *stacking*: regla fija de combinación frente a meta-modelo que aprende a combinar.
 ```
 
-- ***Boosting***: a diferencia del entrenamiento en paralelo de los bosques aleatorios, el *boosting* entrena modelos de forma secuencial, donde cada nuevo predictor intenta corregir los errores cometidos por sus predecesores. Ejemplos modernos incluyen *XGBoost* y *Gradient Boosting*.
+- ***Boosting*** {cite:p}`friedman2001gradientboosting`: a diferencia del entrenamiento en paralelo de los bosques aleatorios, el *boosting* entrena modelos de forma secuencial, donde cada nuevo predictor intenta corregir los errores cometidos por sus predecesores. Ejemplos modernos incluyen *XGBoost* y *Gradient Boosting*.
 
 La {numref}`fig-boosting` ilustra el entrenamiento secuencial del *boosting*: cada modelo débil se entrena sobre los datos ponderados según los errores del modelo anterior, dando más peso a las instancias mal clasificadas, y la predicción final combina todos los modelos mediante una suma ponderada.
 
@@ -140,7 +140,7 @@ Representan el aprendizaje de representaciones sucesivas a través de capas de f
 
 - **Arquitectura**: se componen de una capa de entrada, múltiples capas ocultas (densamente conectadas) y una capa de salida.
 - **Funciones de activación**: introducen no linealidad para aprender patrones complejos. **ReLU** es el estándar para capas ocultas, mientras que **Softmax** se usa en la capa de salida para clasificaciones de múltiples clases.
-- **Retropropagación** (*backpropagation*): es el mecanismo central de aprendizaje; utiliza la regla de la cadena del cálculo para propagar el error desde la salida hacia atrás, ajustando los pesos de la red para reducir la pérdida total.
+- **Retropropagación** (*backpropagation*) {cite:p}`rumelhart1986backprop`: es el mecanismo central de aprendizaje; utiliza la regla de la cadena del cálculo para propagar el error desde la salida hacia atrás, ajustando los pesos de la red para reducir la pérdida total.
 
 La {numref}`fig-nn-architecture` esquematiza una red totalmente conectada con una capa de entrada, una capa oculta y una capa de salida: cada conexión representa un peso que se ajusta durante el entrenamiento.
 

@@ -1,4 +1,4 @@
-# Sección 3: aprendizaje no supervisado
+# Sección 3: Aprendizaje no supervisado
 
 Bienvenido a la tercera y última sección principal del curso. Aquí exploraremos técnicas para extraer patrones de datos **sin etiquetas**.
 

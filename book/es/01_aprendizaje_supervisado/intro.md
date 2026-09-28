@@ -1,4 +1,4 @@
-# Sección 2: aprendizaje supervisado
+# Sección 2: Aprendizaje supervisado
 
 Bienvenido a la segunda sección del curso. Aquí aprenderemos a construir modelos que aprenden a partir de ejemplos etiquetados.
 

@@ -23,9 +23,9 @@ El aspecto más revolucionario del aprendizaje automático es que representa un 
 
 ## Raíces matemáticas y pioneros (1943-1950)
 
-Aunque el término es moderno, muchos conceptos de aprendizaje estadístico se desarrollaron hace decadas. A principios del siglo XIX, Legendre y Gauss publicaron sobre el **método de mínimos cuadrados**, que es la forma más temprana de regresión lineal. En 1936, Fisher propuso el **análisis discriminante lineal** para predecir valores cualitativos.
+Aunque el término es moderno, muchos conceptos de aprendizaje estadístico se desarrollaron hace decadas. A principios del siglo XIX, Legendre y Gauss publicaron sobre el **método de mínimos cuadrados** {cite:p}`legendre1805leastsquares,gauss1809leastsquares`, que es la forma más temprana de regresión lineal. En 1936, Fisher propuso el **análisis discriminante lineal** {cite:p}`fisher1936lda` para predecir valores cualitativos.
 
-En el ámbito computacional, el campo comenzó a gestarse en la década de 1940. En 1943, Warren McCulloch y Walter Pitts presentaron el **primer modelo computacional de neuronas biológicas**. Posteriormente, en 1950, Alan Turing publicó su artículo fundamental "Computing Machinery and Intelligence", donde introdujo el **Test de Turing** como una herramienta conceptual para discutir la naturaleza de la cognición en las máquinas y la posibilidad de que estas emularan la inteligencia humana.
+En el ámbito computacional, el campo comenzó a gestarse en la década de 1940. En 1943, Warren McCulloch y Walter Pitts presentaron el **primer modelo computacional de neuronas biológicas** {cite:p}`mcculloch1943logicalcalculus`. Posteriormente, en 1950, Alan Turing publicó su artículo fundamental "Computing Machinery and Intelligence" {cite:p}`turing1950computingmachinery`, donde introdujo el **Test de Turing** como una herramienta conceptual para discutir la naturaleza de la cognición en las máquinas y la posibilidad de que estas emularan la inteligencia humana.
 
 ```{figure} ../../_static/external_images/alan_turing_1951.jpg
 :name: fig-alan-turing
@@ -39,13 +39,13 @@ Fuente: fotografía de Elliott & Fry (1951), Computer History Museum — dominio
 
 ## El nacimiento formal y la era simbólica (1956-1980)
 
-La IA como campo de investigación cristalizó formalmente en 1956, cuando John McCarthy organizó el **seminario de Dartmouth**. McCarthy propuso la conjetura de que cada aspecto del aprendizaje o la inteligencia podía describirse con tal precisión que una máquina podría simularlo. Durante décadas, los expertos creyeron que la inteligencia de nivel humano se alcanzaría mediante la codificación manual de un conjunto masivo de reglas lógicas explícitas. Este enfoque, conocido como **IA simbólica**, alcanzó su auge con los **sistemas expertos** en los años 80.
+La IA como campo de investigación cristalizó formalmente en 1956, cuando John McCarthy organizó el **seminario de Dartmouth** {cite:p}`mccarthy1955dartmouth`. McCarthy propuso la conjetura de que cada aspecto del aprendizaje o la inteligencia podía describirse con tal precisión que una máquina podría simularlo. Durante décadas, los expertos creyeron que la inteligencia de nivel humano se alcanzaría mediante la codificación manual de un conjunto masivo de reglas lógicas explícitas. Este enfoque, conocido como **IA simbólica**, alcanzó su auge con los **sistemas expertos** en los años 80.
 
 ## Los inviernos de la IA y el resurgimiento del aprendizaje automático
 
 La historia de la IA no ha sido lineal, sino que ha pasado por ciclos de optimismo extremo seguidos de desilusión y recortes de fondos, conocidos como "Inviernos de la IA".
 
-- **Primer invierno**: ocurrió en los años 70, tras el fracaso de las expectativas de la IA simbólica temprana y de los modelos simples como el **perceptrón**, que no podían resolver problemas no lineales.
+- **Primer invierno**: ocurrió en los años 70, tras el fracaso de las expectativas de la IA simbólica temprana y de los modelos simples como el **perceptrón** {cite:p}`rosenblatt1958perceptron`, que no podían resolver problemas no lineales.
 - **Segundo invierno**: sucedió a principios de los 90, cuando los sistemas expertos resultaron costosos de mantener, difíciles de escalar y limitados en su alcance.
 
 ```{figure} ../../_static/external_images/frank_rosenblatt.jpg
@@ -62,7 +62,7 @@ El Aprendizaje Automático comenzó a florecer realmente en la década de 1990, 
 
 ## Del *Deep Learning* a la era de los LLM (2010-presente)
 
-El **Aprendizaje Profundo** (*Deep Learning*) es una rama especializada del ML que enfatiza el aprendizaje de representaciones sucesivas en capas. Estas capas, estructuradas en redes neuronales, actúan como un proceso de destilación de información en múltiples etapas donde los datos se vuelven cada vez más útiles para una tarea específica. El punto de inflexión para el *Deep Learning* ocurrió entre 2011 y 2015, destacando la victoria del grupo de Hinton en el desafío **ImageNet** de 2012.
+El **Aprendizaje Profundo** (*Deep Learning*) es una rama especializada del ML que enfatiza el aprendizaje de representaciones sucesivas en capas. Estas capas, estructuradas en redes neuronales, actúan como un proceso de destilación de información en múltiples etapas donde los datos se vuelven cada vez más útiles para una tarea específica. El punto de inflexión para el *Deep Learning* ocurrió entre 2011 y 2015, destacando la victoria del grupo de Hinton en el desafío **ImageNet** de 2012 {cite:p}`krizhevsky2012imagenet`.
 
 Durante esta época, el conjunto de datos **MNIST** (dígitos manuscritos del 0 al 9) se convirtió en el banco de pruebas por excelencia para comparar algoritmos de clasificación, desde los primeros clasificadores estadísticos hasta las redes convolucionales profundas.
 
@@ -76,7 +76,7 @@ Muestras del dataset MNIST: distintas variantes manuscritas de cada dígito (0-9
 Fuente: Suvanjanprasai (2024) — Wikimedia Commons, licencia CC BY-SA 4.0.
 ```
 
-A partir de 2017, la **arquitectura Transformer**, que utiliza un mecanismo de atención para procesar secuencias sin capas recurrentes, desató una revolución en el procesamiento de lenguaje natural. Esto permitió el desarrollo de **modelos fundacionales** entrenados mediante **aprendizaje auto-supervisado** en cantidades ingentes de datos de internet. La era actual, marcada por la **IA Generativa** (como ChatGPT y Gemini), ha llevado la tecnología a una escala de miles de millones de parámetros, permitiendo no solo clasificar, sino generar contenido creativo y funcional gracias a los LLMs (*Large Language Models*, Grandes Modelos del Lenguaje en castellano).
+A partir de 2017, la **arquitectura Transformer** {cite:p}`vaswani2017attention`, que utiliza un mecanismo de atención para procesar secuencias sin capas recurrentes, desató una revolución en el procesamiento de lenguaje natural. Esto permitió el desarrollo de **modelos fundacionales** entrenados mediante **aprendizaje auto-supervisado** en cantidades ingentes de datos de internet. La era actual, marcada por la **IA Generativa** (como ChatGPT y Gemini), ha llevado la tecnología a una escala de miles de millones de parámetros, permitiendo no solo clasificar, sino generar contenido creativo y funcional gracias a los LLMs (*Large Language Models*, Grandes Modelos del Lenguaje en castellano).
 
 ## Resumen
 

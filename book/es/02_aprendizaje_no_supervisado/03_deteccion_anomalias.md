@@ -69,7 +69,7 @@ Detección de anomalías mediante el error de reconstrucción de PCA.
 
 ### *Isolation forest* (bosque de aislamiento)
 
-Es uno de los algoritmos más eficientes y escalables para la detección de *outliers*, especialmente diseñado para trabajar en espacios de alta dimensionalidad.
+Es uno de los algoritmos {cite:p}`liu2008isolationforest` más eficientes y escalables para la detección de *outliers*, especialmente diseñado para trabajar en espacios de alta dimensionalidad.
 
 - **Mecánica**: a diferencia de los métodos tradicionales que intentan modelar la densidad o los puntos normales, *isolation forest* busca aislar explícitamente cada observación. Para ello, construye un conjunto de árboles de decisión aleatorios. En cada nodo de un árbol, se selecciona una característica al azar y se elige un umbral de corte aleatorio (entre el mínimo y el máximo de esa variable) para dividir los datos en dos. Este proceso de partición recursiva continúa hasta que cada instancia queda aislada en su propia hoja.
 - **Intuición**: dado que las anomalías se encuentran alejadas del grueso de la población de datos normales, requieren en promedio significativamente menos particiones aleatorias para ser aisladas. Por lo tanto, aquellas instancias que presenten una longitud de camino promedio más corta hacia la raíz a lo largo del bosque de árboles son catalogadas inmediatamente como anomalías.
@@ -90,7 +90,7 @@ La {numref}`fig-isolation-forest` compara ambos casos: la anomalía (izquierda) 
 
 ### *Local Outlier Factor* (LOF)
 
-Este algoritmo basa su funcionamiento en el análisis de la densidad local de las muestras utilizando un enfoque de vecinos más cercanos ($K$-NN).
+Este algoritmo {cite:p}`breunig2000lof` basa su funcionamiento en el análisis de la densidad local de las muestras utilizando un enfoque de vecinos más cercanos ($K$-NN).
 
 - LOF compara la **densidad local** de una instancia con la densidad de sus vecinos más cercanos.
 - Una instancia normal tendrá una densidad local similar a la de su entorno. En cambio, un ***outlier* local** presentará una densidad significativamente menor que la de sus vecinos más cercanos (estará más aislado en relación con la densidad de su vecindario inmediato).
@@ -109,7 +109,7 @@ La {numref}`fig-lof` muestra un caso típico: el punto marcado en rojo no está 
 
 ### *One-class* SVM (máquinas de vectores de soporte de una clase)
 
-Este algoritmo está optimizado específicamente para la detección de novedades (*novelty detection*) en escenarios donde se dispone de un conjunto de datos limpio para el entrenamiento.
+Este algoritmo {cite:p}`scholkopf2001oneclasssvm` está optimizado específicamente para la detección de novedades (*novelty detection*) en escenarios donde se dispone de un conjunto de datos limpio para el entrenamiento.
 
 - **Funcionamiento**: en lugar de buscar un hiperplano que separe dos clases, *one-class* SVM proyecta los datos a un espacio de características de alta dimensión mediante un *kernel* y busca separar las instancias de entrenamiento del origen.
 - **Frontera de decisión**: esto equivale geométricamente a encontrar la región o hiperesfera de volumen mínimo que encierra a casi la totalidad de las muestras de entrenamiento. Si una nueva observación cae fuera de esta región delimitada por los vectores de soporte de frontera, es clasificada automáticamente como una anomalía o novedad.

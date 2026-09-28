@@ -17,3 +17,6 @@ parts:
     - file: en/02_unsupervised_learning/01_clustering
     - file: en/02_unsupervised_learning/02_dimensionality_reduction
     - file: en/02_unsupervised_learning/03_anomaly_detection
+  - caption: Bibliography
+    chapters:
+    - file: en/95_course_bibliography

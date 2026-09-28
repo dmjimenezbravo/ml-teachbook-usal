@@ -17,3 +17,6 @@ parts:
     - file: es/02_aprendizaje_no_supervisado/01_clustering
     - file: es/02_aprendizaje_no_supervisado/02_reduccion_dimensionalidad
     - file: es/02_aprendizaje_no_supervisado/03_deteccion_anomalias
+  - caption: Bibliografía
+    chapters:
+    - file: es/95_bibliografia_curso

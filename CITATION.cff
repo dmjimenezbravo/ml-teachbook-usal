@@ -1,18 +1,14 @@
 cff-version: 1.2.0
 message: 'Si utilizas este teachbook, cita el material usando estos metadatos.'
-title: 'Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial'
+title: 'Fundamentos e introducción al aprendizaje automático'
 authors:
-  - family-names: 'Lozano Murciego'
-    given-names: 'Álvaro'
-    orcid: 'https://orcid.org/0000-0002-0493-4471'
-    affiliation: 'Universidad de Salamanca'
-  - family-names: 'Sales Mendes'
-    given-names: 'André Filipe'
-    orcid: 'https://orcid.org/0000-0003-0976-2784'
+  - family-names: 'Jiménez-Bravo'
+    given-names: 'Diego M.'
+    orcid: 'https://orcid.org/0000-0002-0291-7627'
     affiliation: 'Universidad de Salamanca'
 abstract: >-
-  Material del curso "Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial",
-  orientado a la creación de libros docentes interactivos para las Facultades de Ciencias y de Ciencias Químicas de la Universidad de Salamanca.
+  Material del curso "Fundamentos e introducción al aprendizaje automático",
+  orientado a la formación de ingenieros informáticos de la Universidad de Salamanca en los conceptos fundamentales del aprendizaje automático.
   El proyecto combina una plantilla reproducible basada en Jupyter Book y TeachBooks con guías docentes para trabajar con asistentes de inteligencia artificial.
 keywords:
   - TeachBook
@@ -20,39 +16,36 @@ keywords:
   - MyST Markdown
   - Universidad de Salamanca
   - Ciencias
-  - Ciencias Químicas
+  - Ingeniería Informática
   - Docencia
   - Libros electrónicos
   - Inteligencia Artificial
+  - Aprendizaje Automático
 license: CC-BY-4.0
-repository-code: 'https://github.com/elloza/teachbook_usal_template'
-url: 'https://elloza.com/teachbook_usal_template/'
+repository-code: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
+url: 'https://dmjimenezbravo.github.io/ml-teachbook-usal/'
 doi: '10.5281/zenodo.20449102'
 contact:
-  - family-names: 'Lozano Murciego'
-    given-names: 'Álvaro'
-    orcid: 'https://orcid.org/0000-0002-0493-4471'
+  - family-names: 'Jiménez-Bravo'
+    given-names: 'Diego M.'
+    orcid: 'https://orcid.org/0000-0002-0291-7627'
     affiliation: 'Universidad de Salamanca'
 preferred-citation:
   type: book
   authors:
-    - family-names: 'Lozano Murciego'
-      given-names: 'Álvaro'
-      orcid: 'https://orcid.org/0000-0002-0493-4471'
+    - family-names: 'Jiménez-Bravo'
+      given-names: 'Diego M.'
+      orcid: 'https://orcid.org/0000-0002-0291-7627'
       affiliation: 'Universidad de Salamanca'
-    - family-names: 'Sales Mendes'
-      given-names: 'André Filipe'
-      orcid: 'https://orcid.org/0000-0003-0976-2784'
-      affiliation: 'Universidad de Salamanca'
-  title: 'Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial'
+  title: 'Fundamentos e introducción al aprendizaje automático'
   year: 2026
   publisher:
     name: 'Universidad de Salamanca'
   doi: '10.5281/zenodo.20449102'
-  url: 'https://elloza.com/teachbook_usal_template/'
+  url: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
   identifiers:
     - type: url
-      value: 'https://github.com/elloza/teachbook_usal_template'
+      value: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
       description: 'Repositorio fuente en GitHub'
     - type: doi
       value: '10.5281/zenodo.20449102'

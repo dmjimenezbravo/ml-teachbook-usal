@@ -69,7 +69,7 @@ Anomaly detection via PCA reconstruction error.
 
 ### Isolation forest
 
-One of the most efficient and scalable algorithms for outlier detection, especially designed to work in high-dimensional spaces.
+One of the most efficient and scalable algorithms {cite:p}`liu2008isolationforest` for outlier detection, especially designed to work in high-dimensional spaces.
 
 - **Mechanics**: unlike traditional methods that try to model the density or the normal points, isolation forest explicitly seeks to isolate each observation. To do so, it builds a set of random decision trees. At each node of a tree, a feature is randomly selected, and a random cutoff threshold (between the minimum and maximum of that variable) is chosen to split the data in two. This recursive partitioning process continues until each instance is isolated in its own leaf.
 - **Intuition**: since anomalies are far from the bulk of the normal data population, they require, on average, significantly fewer random partitions to be isolated. Therefore, instances with a shorter average path length to the root across the forest of trees are immediately flagged as anomalies.
@@ -90,7 +90,7 @@ Isolation Forest: anomalies are isolated in fewer partitions than normal points.
 
 ### Local Outlier Factor (LOF)
 
-This algorithm bases its operation on analyzing the local density of samples using a k-nearest-neighbors (KNN) approach.
+This algorithm {cite:p}`breunig2000lof` bases its operation on analyzing the local density of samples using a k-nearest-neighbors (KNN) approach.
 
 - LOF compares the **local density** of an instance with the density of its nearest neighbors.
 - A normal instance will have a local density similar to that of its surroundings. In contrast, a **local outlier** will exhibit a significantly lower density than its nearest neighbors (it will be more isolated relative to the density of its immediate neighborhood).
@@ -109,7 +109,7 @@ Local Outlier Factor: a local anomaly does not stand out in a global analysis.
 
 ### One-class SVM
 
-This algorithm is specifically optimized for novelty detection in scenarios where a clean training dataset is available.
+This algorithm {cite:p}`scholkopf2001oneclasssvm` is specifically optimized for novelty detection in scenarios where a clean training dataset is available.
 
 - **How it works**: instead of finding a hyperplane that separates two classes, one-class SVM projects the data into a high-dimensional feature space via a kernel and seeks to separate the training instances from the origin.
 - **Decision boundary**: this is geometrically equivalent to finding the minimum-volume region or hypersphere that encloses nearly all of the training samples. If a new observation falls outside this region, bounded by the border support vectors, it is automatically classified as an anomaly or novelty.

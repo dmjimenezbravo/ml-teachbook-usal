@@ -22,7 +22,7 @@ La {numref}`fig-linear-fit` muestra un ejemplo con un único predictor: la recta
 Regresión lineal simple: recta ajustada y residuos.
 ```
 
-Un ejemplo clásico de la literatura es el conjunto de datos *Advertising*, donde se ajusta una recta que predice las ventas (`Sales`) a partir de la inversión en publicidad en TV (`TV`):
+Un ejemplo clásico de la literatura {cite:p}`james2013islr` es el conjunto de datos *Advertising*, donde se ajusta una recta que predice las ventas (`Sales`) a partir de la inversión en publicidad en TV (`TV`):
 
 ```{figure} ../../_static/book_figures/islr_fig3_1_advertising.png
 :name: fig-islr-advertising
@@ -72,8 +72,8 @@ Cuando los datos presentan curvas, se pueden extender los modelos lineales media
   - **Regresión polinomial**: se añaden potencias de los predictores originales (ej. $X^2$, $X^3$) como nuevas características. Aunque el modelo es no lineal respecto a las entradas originales, sigue siendo un modelo lineal en sus parámetros, lo que permite usar OLS para entrenarlo.
   - **El riesgo del sobreajuste**: aumentar el grado del polinomio aumenta la flexibilidad del modelo, lo que puede llevarlo a memorizar el ruido de los datos de entrenamiento (*overfitting*) y fallar en la generalización.
   - **Técnicas de regularización**: consisten en añadir una penalización a la función de costo por tener pesos grandes, forzando al modelo a ser más simple.
-    - ***Ridge*** (L2): añade una penalización proporcional al cuadrado de los pesos. Encoge los coeficientes hacia cero pero nunca los elimina por completo; funciona muy bien cuando hay muchos predictores correlacionados.
-    - ***Lasso*** (L1): añade una penalización proporcional al valor absoluto de los pesos. Tiene la propiedad única de forzar algunos coeficientes a ser exactamente cero, realizando automáticamente selección de variables.
+    - ***Ridge*** (L2) {cite:p}`hoerl1970ridge`: añade una penalización proporcional al cuadrado de los pesos. Encoge los coeficientes hacia cero pero nunca los elimina por completo; funciona muy bien cuando hay muchos predictores correlacionados.
+    - ***Lasso*** (L1) {cite:p}`tibshirani1996lasso`: añade una penalización proporcional al valor absoluto de los pesos. Tiene la propiedad única de forzar algunos coeficientes a ser exactamente cero, realizando automáticamente selección de variables.
     - ***Elastic Net***: una combinación de *Ridge* y *Lasso* que utiliza ambos tipos de penalización mediante un ratio de mezcla.
 
 La {numref}`fig-regularization-paths` compara cómo evolucionan los coeficientes de un modelo al aumentar la penalización $\lambda$: Ridge los encoge suavemente sin llegar nunca a cero, mientras que Lasso los lleva a cero de forma exacta, seleccionando variables.
