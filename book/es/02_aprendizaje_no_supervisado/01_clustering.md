@@ -12,7 +12,7 @@ Existen diferentes algoritmos de ***clustering***. A continuación, se explican 
 
 ### Algoritmo $K$-*means*
 
-El $K$-*means* es un algoritmo de agrupación que realiza las particiones basada en centroides. El algoritmo es una técnica de agrupamiento iterativo que busca particionar un conjunto de observaciones en $K$ *clusters* distintos. Es un enfoque geométrico basado en el concepto de centroides, que actúan como los centros de gravedad de cada grupo.
+El $K$-*means* {cite:p}`macqueen1967kmeans` es un algoritmo de agrupación que realiza las particiones basada en centroides. El algoritmo es una técnica de agrupamiento iterativo que busca particionar un conjunto de observaciones en $K$ *clusters* distintos. Es un enfoque geométrico basado en el concepto de centroides, que actúan como los centros de gravedad de cada grupo.
 
 La {numref}`fig-kmeans-flow` resume el ciclo del algoritmo: tras asignar cada muestra a su centroide y calcular la inercia (WCSS), se actualizan los centroides y el proceso se repite hasta alcanzar la convergencia.
 
@@ -130,12 +130,12 @@ La {numref}`fig-islr-nci60-dendrogram` compara los tres criterios de enlace sobr
 :align: center
 
 Clustering jerárquico del conjunto de datos *NCI60* con enlace completo, promedio y simple.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.17. Springer. Libro de libre distribución para uso educativo (statlearning.com).
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.17. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ### DBSCAN: agrupamiento basado en densidad
 
-El algoritmo DBSCAN (*Density-Based Spatial clustering of Applications with Noise*) ofrece un enfoque radicalmente diferente a $K$-*means* y al **clustering** jerárquico al definir los grupos en función de la densidad local de los datos en el espacio de características. Esto le permite descubrir *clusters* de formas geométricas arbitrarias y aislar de forma natural las muestras de ruido
+El algoritmo DBSCAN (*Density-Based Spatial clustering of Applications with Noise*) {cite:p}`ester1996dbscan` ofrece un enfoque radicalmente diferente a $K$-*means* y al **clustering** jerárquico al definir los grupos en función de la densidad local de los datos en el espacio de características. Esto le permite descubrir *clusters* de formas geométricas arbitrarias y aislar de forma natural las muestras de ruido
 
 #### Fundamentos y parámetros críticos
 
@@ -191,7 +191,7 @@ Analizan la disposición espacial de los puntos en el espacio de característica
 
 #### Coeficiente y *score* de silueta (*silhouette score*)
 
-El coeficiente de silueta ($sc$) evalúa la calidad de la asignación de cada muestra de forma individual, sirviendo de diagnóstico para agrupamientos predominantemente esféricos. Para una instancia $i$, se calcula como:
+El coeficiente de silueta ($sc$) {cite:p}`rousseeuw1987silhouette` evalúa la calidad de la asignación de cada muestra de forma individual, sirviendo de diagnóstico para agrupamientos predominantemente esféricos. Para una instancia $i$, se calcula como:
 
 $sc(i) = \frac{b_i - a_i}{\max(a_i, b_i)}$ 
 
@@ -222,7 +222,7 @@ Diagrama de silueta: cada "cuchillo" representa un cluster y su calidad de agrup
 
 #### Estadístico *gap* (*gap statistic*)
 
-Propuesto por Tibshirani et al. (2001b), el estadístico *gap* formaliza matemáticamente la búsqueda del número óptimo de *clusters* ($K$) superando la vaguedad visual del método heurístico del codo (*elbow method*).
+Propuesto por Tibshirani et al. {cite:p}`tibshirani2001gapstatistic`, el estadístico *gap* formaliza matemáticamente la búsqueda del número óptimo de *clusters* ($K$) superando la vaguedad visual del método heurístico del codo (*elbow method*).
 
 Compara la curva del logaritmo de la inercia observada de tus datos ($\log W_K$) con la esperanza matemática de la inercia calculada sobre múltiples muestras generadas artificialmente con una distribución uniforme (sin estructura de agrupamiento o hipótesis nula) en el hiperrectángulo que encierra a los datos reales:
 

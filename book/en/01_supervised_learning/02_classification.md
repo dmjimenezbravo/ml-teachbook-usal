@@ -43,7 +43,7 @@ Sigmoid function used in logistic regression.
 :align: center
 
 Linear regression (left) vs. logistic regression (right) on the *Default* dataset.
-Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 4.2. Springer. Freely distributed for educational use (statlearning.com).
+Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 4.2. Springer. Freely distributed for educational use (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ## Classic classification algorithms
@@ -69,7 +69,7 @@ Recursive partitions of a decision tree over two features.
 ```
 
 ### Random Forests
-An ensemble of decision trees designed to reduce variance and improve robustness.
+An ensemble of decision trees {cite:p}`breiman2001randomforest` designed to reduce variance and improve robustness.
 
 - **Bagging**: uses sampling with replacement (bootstrap) to train each tree on a different version of the data.
 - **Decorrelation**: to ensure the trees are diverse, only a random subset of features is considered at each split.
@@ -87,7 +87,7 @@ Bagging: each tree is trained on a different bootstrap sample and predictions ar
 
 ### Support Vector Machines (SVM)
 
-This model seeks to find a **hyperplane** that separates the classes with the **maximum margin** possible.
+This model {cite:p}`cortes1995svm` seeks to find a **hyperplane** that separates the classes with the **maximum margin** possible.
 
 - **Support vectors**: the decision boundary is determined solely by the samples closest to the hyperplane; moving other points does not change the model.
 - **Soft margin and the kernel trick**: SVMs handle non-linearly separable data through slack variables and the kernel trick, which implicitly maps the data to higher-dimensional spaces to find complex separations.
@@ -120,7 +120,7 @@ These combine multiple models to obtain a prediction superior to that of any ind
 Voting versus stacking: a fixed combination rule versus a meta-model that learns to combine.
 ```
 
-- **Boosting**: unlike the parallel training of random forests, boosting trains models sequentially, where each new predictor tries to correct the errors made by its predecessors. Modern examples include XGBoost and Gradient Boosting.
+- **Boosting** {cite:p}`friedman2001gradientboosting`: unlike the parallel training of random forests, boosting trains models sequentially, where each new predictor tries to correct the errors made by its predecessors. Modern examples include XGBoost and Gradient Boosting.
 
 {numref}`fig-boosting` illustrates boosting's sequential training: each weak model is trained on data reweighted according to the previous model's errors, giving more weight to misclassified instances, and the final prediction combines all models through a weighted sum.
 
@@ -139,7 +139,7 @@ These represent learning through successive layers of filtering representations.
 
 - **Architecture**: composed of an input layer, multiple hidden (densely connected) layers, and an output layer.
 - **Activation functions**: introduce non-linearity to learn complex patterns. **ReLU** is the standard for hidden layers, while **Softmax** is used in the output layer for multi-class classification.
-- **Backpropagation**: the central learning mechanism; it uses the chain rule from calculus to propagate the error backward from the output, adjusting the network's weights to reduce the total loss.
+- **Backpropagation** {cite:p}`rumelhart1986backprop`: the central learning mechanism; it uses the chain rule from calculus to propagate the error backward from the output, adjusting the network's weights to reduce the total loss.
 
 {numref}`fig-nn-architecture` sketches a fully-connected network with an input layer, a hidden layer, and an output layer: each connection represents a weight that gets adjusted during training.
 

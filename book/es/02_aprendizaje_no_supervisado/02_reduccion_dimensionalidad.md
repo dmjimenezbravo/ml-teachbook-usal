@@ -47,7 +47,7 @@ La maldición de la dimensionalidad, cuantificada mediante simulación.
 
 ## Métodos de proyección lineal: PCA (*Principal Components Analysis*)
 
-El análisis de componentes principales (PCA), desarrollado originalmente a principios del siglo XX por Pearson y Hotelling, es el algoritmo de reducción de dimensionalidad lineal por excelencia. Su objetivo es proyectar ortogonalmente los datos originales $X \in \mathbb{R}^{D}$ en un subespacio lineal de baja dimensión $Z \in \mathbb{R}^{M}$ (donde $M < D$), minimizando la pérdida de información bajo criterios estadísticos estrictos.
+El análisis de componentes principales (PCA), desarrollado originalmente a principios del siglo XX por Pearson y Hotelling {cite:p}`pearson1901pca,hotelling1933pca`, es el algoritmo de reducción de dimensionalidad lineal por excelencia. Su objetivo es proyectar ortogonalmente los datos originales $X \in \mathbb{R}^{D}$ en un subespacio lineal de baja dimensión $Z \in \mathbb{R}^{M}$ (donde $M < D$), minimizando la pérdida de información bajo criterios estadísticos estrictos.
 
 ### Perspectiva de máxima varianza
 
@@ -111,7 +111,7 @@ Un ejemplo real de la utilidad de PCA aparece en el conjunto de datos *NCI60*, d
 :align: center
 
 Proyección de las líneas celulares de cáncer *NCI60* (6830 genes) sobre sus tres primeras componentes principales.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.15. Springer. Libro de libre distribución para uso educativo (statlearning.com).
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.15. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ## Métodos no lineales y aprendizaje de variedades (*manifold learning*)
@@ -159,7 +159,7 @@ El truco del *kernel*: datos no separables en 2D se vuelven separables al proyec
 
 #### t-SNE (*t-distributed Stochastic Neighbor Embedding*)
 
-Propuesto por Maaten y Hinton (2008), t-SNE es la técnica no convexa preferida para la visualización cualitativa de agrupamientos complejos en dos dimensiones.
+Propuesto por Maaten y Hinton (2008) {cite:p}`vandermaaten2008tsne`, t-SNE es la técnica no convexa preferida para la visualización cualitativa de agrupamientos complejos en dos dimensiones.
 
 1. **Espacio de alta dimensión** (SNE original): convierte las distancias euclidianas entre muestras en probabilidades condicionales Gaussianas $p_{j|i}$ que denotan similitud. Los puntos cercanos reciben altas probabilidades de vecindad y los lejanos probabilidades infinitesimales.
 2. **El problema del hacinamiento** (*crowding problem*): cuando se proyectan datos de alta dimensión a un espacio plano 2D, el volumen del espacio disponible disminuye de forma exponencial. Las distancias medias crecen tanto que, usando aproximaciones normales, las fuerzas de atracción obligan a todos los puntos distantes a agruparse en un núcleo denso e indistinguible en el centro del gráfico.
@@ -182,7 +182,7 @@ PCA (proyección lineal) frente a $t$-SNE (proyección no lineal) sobre datos co
 
 #### UMAP (*Uniform Manifold Approximation and Projection*)
 
-UMAP es una de las técnicas de aprendizaje de variedades más potentes de la actualidad. Fundamentada en la geometría riemanniana clásica y la topología algebraica, UMAP asume que el espacio de los datos es localmente conexo y que la variedad sobre la que yacen es uniforme.
+UMAP {cite:p}`mcinnes2018umap` es una de las técnicas de aprendizaje de variedades más potentes de la actualidad. Fundamentada en la geometría riemanniana clásica y la topología algebraica, UMAP asume que el espacio de los datos es localmente conexo y que la variedad sobre la que yacen es uniforme.
 
 A diferencia de $t$-SNE, que se enfoca casi exclusivamente en retener vecindades muy locales (relaciones de corto alcance), UMAP es capaz de preservar tanto la estructura local como la estructura global de los datos.
 

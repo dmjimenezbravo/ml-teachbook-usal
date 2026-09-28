@@ -10,159 +10,247 @@
 \usepackage{booktabs}
 \usepackage{xcolor}
 
-\definecolor{examplecolor}{RGB}{180,83,9}
+\definecolor{usalred}{RGB}{140,21,21}
+\definecolor{usalreddark}{RGB}{80,10,10}
+\usecolortheme[named=usalred]{structure}
+\setbeamercolor{title}{bg=usalred,fg=white}
+\setbeamercolor{frametitle}{bg=usalred,fg=white}
+\setbeamercolor{palette primary}{bg=usalred,fg=white}
+\setbeamercolor{palette secondary}{bg=usalreddark,fg=white}
+\setbeamercolor{palette tertiary}{bg=usalreddark,fg=white}
+\setbeamercolor{palette quaternary}{bg=usalred,fg=white}
+\setbeamercolor{block title}{bg=usalred,fg=white}
+\setbeamercolor{section in toc}{fg=usalred}
 
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
 \setbeamerfont{footnote}{size=\tiny}
 
+\setbeamercolor{footlinebox}{bg=usalreddark,fg=white}
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{%
+  \begin{beamercolorbox}[wd=.55\paperwidth,ht=2.6ex,dp=1.2ex,left,leftskip=1em]{footlinebox}
+    \usebeamerfont{footline}\tiny Foundations and Introduction to Machine Learning --- Ch. 3
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.32\paperwidth,ht=2.6ex,dp=1.2ex,center]{footlinebox}
+    \usebeamerfont{footline}\tiny \insertsectionhead
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.13\paperwidth,ht=2.6ex,dp=1.2ex,right,rightskip=1em]{footlinebox}
+    \usebeamerfont{footline}\tiny \insertframenumber{}/\inserttotalframenumber
+  \end{beamercolorbox}%
+  }
+}
+
 \newcommand{\fuente}[1]{{\footnotesize\textit{Source: #1}}}
-\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{examplecolor}\textbf{Example:} #1}}
+\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{usalreddark}\textbf{Example:} #1}}
 
 \title[3. Unsupervised Learning]{Chapter 3: Unsupervised\\Learning}
-\subtitle{Course material}
+\subtitle{Study material}
 \author{Universidad de Salamanca}
-\institute{Faculties of Sciences and Chemical Sciences}
+\institute{Faculty of Sciences}
 \date{\today}
+
+\AtBeginSection[]{
+  \begin{frame}{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\newcommand{\titleslide}{%
+\begin{frame}
+  \titlepage
+  \vspace{-0.5em}
+  {\footnotesize Diego M. Jiménez-Bravo \quad$\cdot$\quad \texttt{dmjimenez@usal.es}}
+\end{frame}
+}
 
 \begin{document}
 
-% ============================================================
-\begin{frame}
-  \titlepage
+\titleslide
+
+\begin{frame}{Outline}
+  \tableofcontents
 \end{frame}
 
-\begin{frame}{In this chapter}
-  \begin{enumerate}
-    \item \textbf{3.1 Clustering}: grouping data without labels
-    \item \textbf{3.2 Dimensionality reduction}: simplifying and visualizing complex data
-    \item \textbf{3.3 Anomaly detection}: identifying rare or suspicious cases
-  \end{enumerate}
-\end{frame}
+% ============================================================
+\section{Introduction}
 
 \begin{frame}{What is unsupervised learning?}
-  \begin{itemize}
-    \item There are no labels: we only have input data $X$, no correct answers $y$
-    \item The system must discover the \textbf{latent structure} of the data on its own
-    \item Yann LeCun's quote: \textit{``If intelligence is a cake, unsupervised learning is the cake, supervised learning is the icing, and reinforcement learning is the cherry''}
-  \end{itemize}
-  \ejemplo{the vast majority of real-world data is unlabeled: photos, text, transactions... that's why this paradigm matters so much in practice.}
+  \small
+  Unlike the previous chapters, here training is \textbf{not guided} by any label or target variable. The system receives no ``ground truth''; instead, it must explore the intrinsic mathematical relationships in the data to reveal its hidden structure.
+
+  Technically, while supervised learning seeks to approximate the relationship $X \rightarrow y$, unsupervised learning works ``blindly'' to discover the \textbf{latent structure} of the data $X$ itself, with no correct reference answer.
+
+  As computer scientist Yann LeCun put it: \textit{``If intelligence is a cake, unsupervised learning is the cake, supervised learning is the icing, and reinforcement learning is the cherry.''} The vast majority of real-world data is unlabeled, which makes this paradigm a fundamental pillar of machine learning.
+
+  There are three main families of techniques: \textbf{clustering} (grouping similar data), \textbf{dimensionality reduction} (simplifying complex data), and \textbf{anomaly detection} (identifying rare cases).
 \end{frame}
 
 \begin{frame}{Practical applications}
+  \small
   \begin{itemize}
-    \item \textbf{Market segmentation}: grouping customers into homogeneous niches without defining the categories in advance
-    \item \textbf{Visualization}: projecting data with hundreds of variables into 2D or 3D to understand it at a glance
-    \item \textbf{Recommendation systems}: grouping users or products with similar tastes
-    \item \textbf{Anomaly detection}: spotting fraud or manufacturing defects never seen before
+    \item \textbf{Market segmentation}: grouping customers into homogeneous niches based on demographic and consumption data, without defining the categories in advance, to target specific campaigns.
+    \item \textbf{Visualizing complex data}: projecting datasets with hundreds of variables into 2D or 3D representations, preserving their structure, so a person can understand them at a glance.
+    \item \textbf{Recommendation systems}: grouping users with similar tastes or products with similar characteristics to predict implicit preferences.
+    \item \textbf{Anomaly detection}: modeling the ``normal'' behavior of data to automatically identify financial fraud or manufacturing-line failures.
   \end{itemize}
+  \ejemplo{an online store that groups its customers by purchasing habits (without being told in advance which groups to look for) in order to design different offers for each group --- that's clustering applied to market segmentation.}
 \end{frame}
 
 % ============================================================
 \section{3.1 Clustering}
 
 \begin{frame}{What is clustering?}
-  \begin{itemize}
-    \item Goal: split the data into subgroups with \textbf{high internal similarity} and \textbf{high external differentiation}
-    \item There's no ``ground truth'': the system must discover the structure on its own
-    \item Main algorithms: $K$-means, hierarchical, DBSCAN
-  \end{itemize}
+  Clustering is the most widespread technique in unsupervised learning. Its goal is to \textbf{partition} a dataset into subgroups whose members share \textbf{high internal similarity} while, at the same time, showing \textbf{high differentiation} from members of other subgroups.
+
+  Different families of algorithms exist, depending on how they define group membership: \textbf{centroid}-based ($K$-means), \textbf{hierarchy}-based (hierarchical clustering), and \textbf{density}-based (DBSCAN). We'll study each in turn.
 \end{frame}
 
-\begin{frame}{$K$-means: the algorithm's cycle}
-  \footnotesize
+\begin{frame}{$K$-means: the algorithm's mechanics}
+  \small
+  $K$-means is a \textbf{centroid}-based clustering algorithm: it seeks to partition a set of observations into $K$ distinct clusters, where each centroid acts as the ``center of gravity'' of its group. Its mathematical goal is to minimize the \textbf{within-cluster inertia} (WCSS, Within-cluster Sum of Squares). The process repeats iteratively:
   \begin{enumerate}
-    \item \textbf{Initialization}: $K$ centroids are chosen
-    \item \textbf{Assignment}: each sample joins its nearest centroid
-    \item \textbf{Update}: each centroid is recomputed as the mean of its group
-    \item Repeat until the centroids stop moving (\textbf{convergence})
+    \item \textbf{Initialization}: $K$ random points are chosen as initial centroids.
+    \item \textbf{Assignment}: each sample joins the nearest centroid (typically by Euclidean distance).
+    \item \textbf{Update}: each centroid is recomputed as the mean of all samples assigned to its group.
+    \item Steps 2 and 3 repeat until the centroids stop moving: \textbf{convergence}.
   \end{enumerate}
   \begin{center}
-    \includegraphics[width=0.62\textwidth]{../book/_static/generated/diagrams_pdf/en/02_unsupervised_learning_01_clustering_01.png}
+    \includegraphics[width=0.42\textwidth]{../book/_static/generated/diagrams_pdf/en/02_unsupervised_learning_01_clustering_01.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{$K$-means: the process, visually}
+  The figure below shows the three stages on a dataset with three natural groups: the centroids (marked with an X) start from random positions and converge toward the center of each group after just a few iterations.
   \begin{center}
-    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/en/kmeans_process.png}
+    \includegraphics[width=0.8\textwidth]{../book/_static/generated/figures/en/kmeans_process.png}
   \end{center}
-  \ejemplo{it's like seating guests at a party: each guest sits at the nearest table, then each table recenters on its guests, and this repeats until no one moves.}
+  \ejemplo{it's like seating guests at a party: each guest sits at the nearest table; then each table recenters on its guests; and this repeats until no one needs to move.}
 \end{frame}
 
-\begin{frame}{$K$-means++ and the elbow method}
+\begin{frame}{$K$-means++: the initialization problem}
+  \small
+  $K$-means is a \textbf{heuristic} algorithm and therefore highly sensitive to the random initialization of its centroids. If the initial centroids land in unfavorable regions, the algorithm can converge to a \textbf{suboptimal local minimum} --- a clustering that looks good locally but isn't the best possible.
+
+  To mitigate this, \textbf{$K$-means++} initialization is used:
   \begin{itemize}
-    \item $K$-means is sensitive to initialization: poorly placed centroids can lead to a suboptimal result
-    \item \textbf{$K$-means++}: picks initial centroids as far apart as possible, speeding up convergence
-    \item How many groups $K$ to choose? The \textbf{elbow method}: find the point where inertia stops dropping sharply
+    \item The first centroid is chosen at random among the data points.
+    \item Each subsequent centroid is chosen probabilistically, giving higher probability to points that are \textbf{farther} from the centroids already chosen.
+  \end{itemize}
+  This ``smart seeding'' ensures the initial centroids are well spread across the space, speeding up convergence and improving the quality of the final result.
+\end{frame}
+
+\begin{frame}{The elbow method}
+  Since the number of clusters $K$ is a hyperparameter that must be fixed before training, we need a criterion for choosing it. The \textbf{elbow method} plots the inertia (WCSS) against different values of $K$:
+  \begin{itemize}
+    \item As $K$ increases, inertia naturally decreases (groups become smaller and more compact).
+    \item The optimal $K$ sits where the curve stops dropping sharply and flattens out: the ``elbow''.
   \end{itemize}
   \begin{center}
-    \includegraphics[width=0.42\textwidth]{../book/_static/generated/figures/en/elbow_method.png}
+    \includegraphics[width=0.38\textwidth]{../book/_static/generated/figures/en/elbow_method.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Hierarchical clustering}
-  \begin{itemize}
-    \item Doesn't require fixing $K$ in advance
-    \item \textbf{Agglomerative} approach (bottom-up): each point starts as its own group, and at each step the two closest groups merge
-    \item The result is visualized as a \textbf{dendrogram}; cutting it at a given height determines the final number of groups
-  \end{itemize}
+\begin{frame}{Hierarchical clustering: the agglomerative approach}
+  \small
+  Hierarchical clustering groups data \textbf{without needing to fix} $K$ in advance, and produces a hierarchical structure that is easy to visualize. The most common method is \textbf{agglomerative} (bottom-up):
+  \begin{enumerate}
+    \item Start by treating each individual observation as its own cluster.
+    \item At each step, compute the distances between all clusters and \textbf{merge the two closest ones}.
+    \item Repeat until all samples are merged into a single, global cluster.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Dendrograms and interpreting cuts}
+  The hierarchy of merges is represented graphically as a \textbf{dendrogram}: a tree diagram where the vertical axis shows the distance (or dissimilarity) at which each pair of groups was merged.
+
+  The user can choose the final number of clusters by making a \textbf{horizontal cut} at a given height: the number of lines the cut crosses is the number of resulting groups. This offers a flexibility that rigid algorithms like $K$-means lack.
   \begin{center}
-    \includegraphics[width=0.52\textwidth]{../book/_static/generated/figures/en/dendrogram.png}
+    \includegraphics[width=0.48\textwidth]{../book/_static/generated/figures/en/dendrogram.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Linkage criteria}
+  \small
+  To decide which clusters to merge at each step, we need to define how to measure the distance between groups (not between individual points):
   \begin{itemize}
-    \item Define how to measure distance between two groups, not between two points
-    \item \textbf{Complete}: \textit{maximum} distance between members --- compact, balanced groups
-    \item \textbf{Single}: \textit{minimum} distance --- sensitive to noise, tends to chain elongated groups
-    \item \textbf{Average}: mean of all distances --- a balance between the two above
+    \item \textbf{Complete linkage}: the \textbf{maximum} distance between any pair of points from the two groups. Produces compact, well-balanced clusters.
+    \item \textbf{Single linkage}: the \textbf{minimum} distance between any pair. Sensitive to noise, and can produce a ``chaining'' effect (elongated, diffuse groups).
+    \item \textbf{Average linkage}: the average of \textbf{all} distances between points in both groups. Balances the stability of complete linkage with the tolerance of single linkage.
   \end{itemize}
   \begin{center}
-    \includegraphics[width=0.26\textwidth]{../book/_static/book_figures/islr_fig10_17_nci60_dendrogram.png}
+    \includegraphics[width=0.17\textwidth]{../book/_static/book_figures/islr_fig10_17_nci60_dendrogram.png}
   \end{center}
-  \fuente{James, Witten, Hastie \& Tibshirani (2013), \textit{An Introduction to Statistical Learning}, Fig. 10.17.}
+  {\footnotesize\fuente{James, Witten, Hastie \& Tibshirani (2013), \textit{An Introduction to Statistical Learning}, Fig. 10.17.}}
 \end{frame}
 
-\begin{frame}{DBSCAN: density-based clustering}
+\begin{frame}{DBSCAN: fundamentals and parameters}
+  \small
+  The \textbf{DBSCAN} algorithm (Density-Based Spatial Clustering of Applications with Noise) defines groups based on the \textbf{local density} of the data, rather than closeness to a centroid or hierarchy. This lets it discover clusters of arbitrary geometric shapes and isolate noise naturally.
+
+  It requires two hyperparameters:
   \begin{itemize}
-    \item Defines groups by \textbf{local density}, not by closeness to a centroid
-    \item Two parameters: \textbf{$\epsilon$} (neighborhood radius) and \textbf{MinPts} (minimum neighbors to be dense)
-    \item Three point types: \textbf{core} (dense), \textbf{border} (near a core point), and \textbf{noise} (isolated)
+    \item \textbf{$\epsilon$ (epsilon)}: the neighborhood radius around any point.
+    \item \textbf{MinPts}: the minimum number of points required within that radius for the region to be considered ``dense''.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{DBSCAN: classifying points}
+  During execution, DBSCAN classifies every point into one of three categories, based on the density of its neighborhood:
+  \begin{itemize}
+    \item \textbf{Core points}: their $\epsilon$-radius neighborhood contains at least MinPts samples.
+    \item \textbf{Border points}: they don't reach MinPts on their own, but lie within the neighborhood of a core point.
+    \item \textbf{Noise points}: neither core nor border --- considered anomalies and not assigned to any cluster.
   \end{itemize}
   \begin{center}
-    \includegraphics[width=0.45\textwidth]{../book/_static/generated/figures/en/dbscan_point_types.png}
+    \includegraphics[width=0.38\textwidth]{../book/_static/generated/figures/en/dbscan_point_types.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{DBSCAN vs. $K$-means}
+\begin{frame}{DBSCAN: advantages over $K$-means}
+  \small
   \begin{itemize}
-    \item DBSCAN detects \textbf{arbitrary shapes} (not just spherical) and isolates noise natively
-    \item $K$-means forces every point into a group, even outliers
+    \item \textbf{Robustness to noise}: $K$-means forces every sample into a cluster (artificially shifting centroids in the presence of outliers); DBSCAN identifies and isolates noise natively.
+    \item \textbf{Geometric flexibility}: it doesn't assume clusters must be spherical, so it can discover elongated, nested, or irregular shapes.
   \end{itemize}
   \begin{center}
-    \includegraphics[width=0.72\textwidth]{../book/_static/generated/figures/en/dbscan_vs_kmeans.png}
+    \includegraphics[width=0.62\textwidth]{../book/_static/generated/figures/en/dbscan_vs_kmeans.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Evaluation: silhouette coefficient}
-  \begin{itemize}
-    \item Without labels, how do we know if a clustering is good?
-    \item The silhouette coefficient compares, for each point, its \textbf{cohesion} (distance to its own group) with its \textbf{separation} (distance to the nearest other group)
-    \item Range $[-1, 1]$: near $+1$ is a good grouping; near $0$, an ambiguous boundary; negative, likely misassigned
-    \item Other criteria exist (AIC/BIC, purity, Rand index...) to compare against already-known labels
-  \end{itemize}
+\begin{frame}{Evaluation: the silhouette coefficient}
+  \small
+  Without labels, how do we know if a clustering is good? The \textbf{silhouette coefficient} compares, for each point, how close it is to its own group versus how close it is to the nearest neighboring group:
+  \[ sc(i) = \frac{b_i - a_i}{\max(a_i, b_i)} \]
+  The value ranges from $-1$ to $1$: near $+1$ indicates a well-grouped point, far from other clusters; near $0$, a point on the boundary between two groups; and negative suggests the point is misassigned.
   \begin{center}
     \includegraphics[width=0.3\textwidth]{../book/_static/generated/figures/en/silhouette_diagram.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Summary: 3.1 Clustering}
+\begin{frame}{Evaluation: the gap statistic}
+  \small
+  The \textbf{gap statistic} is another way to choose the optimal number of clusters, more rigorous than the elbow method: it compares the inertia observed in the real data with the inertia we'd expect if the data had no clustering structure at all.
+
+  Its great advantage: it can detect when the correct answer is that there is \textbf{no real grouping} in the data at all --- something the elbow method or the silhouette coefficient don't always make clear.
+\end{frame}
+
+\begin{frame}{Other evaluation criteria}
+  \small
+  There are more ways to evaluate a clustering, especially when probabilistic models are used:
   \begin{itemize}
-    \item \textbf{$K$-means}: simple and fast, but needs a known $K$ and roughly spherical groups
-    \item \textbf{Hierarchical}: no $K$ needed, gives a visual, interpretable dendrogram
-    \item \textbf{DBSCAN}: detects arbitrary shapes and isolates noise automatically
-    \item \textbf{Silhouette}: standard metric to evaluate quality without labels
+    \item \textbf{AIC and BIC}: compare models by penalizing the ones with too many parameters, so we don't always pick the most complex one.
+    \item \textbf{Cophenetic correlation}: checks whether a dendrogram faithfully reflects the real distances between the data.
+  \end{itemize}
+  In practice, these criteria are rarely computed by hand: machine learning libraries apply them automatically to compare models.
+\end{frame}
+
+\begin{frame}{External evaluation with labeled data}
+  \small
+  When reference labels are available (even if they weren't used for training), we can check how well the discovered groups match the real categories:
+  \begin{itemize}
+    \item \textbf{Purity}: each cluster is assigned its most frequent label, and we measure the proportion of correct assignments obtained this way. Its weakness: it doesn't penalize having too many small clusters.
+    \item \textbf{Adjusted Rand Index (ARI)}: checks whether the model grouped the samples similarly to how the real classes would, correcting for the result we'd expect from pure chance.
   \end{itemize}
 \end{frame}
 
@@ -170,217 +258,161 @@
 \section{3.2 Dimensionality reduction}
 
 \begin{frame}{The curse of dimensionality}
-  \begin{itemize}
-    \item As dimensions increase, the space becomes \textbf{ultra-sparse}
-    \item Samples tend to sit at the boundary of the space, not in the center
-    \item Distances between points become nearly indistinguishable, degrading distance-based algorithms (like $K$-NN)
-  \end{itemize}
+  \small
+  Modern data analytics often involves datasets with hundreds or thousands of variables. Working directly in such high-dimensional spaces has serious drawbacks, known as the \textbf{curse of dimensionality}: as the number of dimensions grows, the volume of the space grows exponentially, and any real dataset ---however large--- populates it extremely \textbf{sparsely}. Samples stop having truly close ``neighbors'', and distances between points become nearly indistinguishable.
   \begin{center}
-    \includegraphics[width=0.85\textwidth]{../book/_static/generated/diagrams_pdf/en/02_unsupervised_learning_02_dimensionality_reduction_01.png}
+    \includegraphics[width=0.6\textwidth]{../book/_static/generated/diagrams_pdf/en/02_unsupervised_learning_02_dimensionality_reduction_01.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Why reduce dimensions?}
+  Dimensionality reduction tackles this problem by projecting or compressing the data into a low-dimensional space (usually 2D or 3D). This offers several benefits:
   \begin{itemize}
-    \item Drastically speeds up computation
-    \item Mitigates overfitting
-    \item Indispensable for \textbf{visualizing} complex data in 2D or 3D
+    \item Drastically speeds up downstream computation.
+    \item Mitigates the risk of overfitting.
+    \item Is indispensable for \textbf{visualizing} complex data and extracting explainable latent factors.
   \end{itemize}
   \begin{center}
-    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/en/curse_of_dimensionality.png}
+    \includegraphics[width=0.6\textwidth]{../book/_static/generated/figures/en/curse_of_dimensionality.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{PCA: the direction of maximum variance}
-  \begin{itemize}
-    \item PCA projects the data onto the axes where it \textbf{varies most}, losing as little information as possible
-    \item PC1: the direction of maximum variance; PC2: orthogonal to PC1, captures the remaining variance
-  \end{itemize}
+  \small
+  \textbf{Principal Component Analysis} (PCA) is the quintessential linear dimensionality-reduction algorithm. It orthogonally projects the original data onto a lower-dimensional subspace, minimizing information loss.
+
+  The \textbf{first principal component} (PC1) is the direction of the feature space along which the data \textbf{varies most}. Projecting the data onto this axis preserves as much of the original information as possible. The \textbf{second component} (PC2) seeks the direction explaining the most \textit{remaining} variance, subject to being orthogonal to the first.
   \begin{center}
-    \includegraphics[width=0.68\textwidth]{../book/_static/generated/figures/en/pca_max_variance_projection.png}
+    \includegraphics[width=0.5\textwidth]{../book/_static/generated/figures/en/pca_max_variance_projection.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{PCA: principal components}
-  \begin{itemize}
-    \item Computed via singular value decomposition (SVD) of the data matrix
-    \item Can be seen as a \textbf{linear autoencoder}: compress then reconstruct, minimizing the error
-  \end{itemize}
+\begin{frame}{PCA: principal directions and reconstruction}
+  \small
+  PCA can be understood as a compression algorithm: an ``encoder'' reduces each sample to a smaller representation (its principal components), and a ``decoder'' reconstructs it back into the original space with minimal error. The fewer components kept, the greater the compression, but also the greater the information lost.
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{../book/_static/generated/figures/en/pca_projection.png}
+    \includegraphics[width=0.32\textwidth]{../book/_static/generated/figures/en/pca_projection.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{PCA on real data: NCI60 (6830 genes)}
-  \footnotesize
-  From 6830 genes down to just 3 principal components: lines of the same cancer type (same color) cluster together despite the huge original dimensionality.
+  A real example of PCA's usefulness appears in the \textit{NCI60} dataset, where each sample has 6830 genes (dimensions). Projecting these samples onto their first three principal components, cell lines of the same cancer type (same color) tend to cluster together, despite the huge original dimensionality.
   \begin{center}
-    \includegraphics[width=0.62\textwidth]{../book/_static/book_figures/islr_fig10_15_nci60_pca.png}
+    \includegraphics[width=0.55\textwidth]{../book/_static/book_figures/islr_fig10_15_nci60_pca.png}
   \end{center}
   \fuente{James, Witten, Hastie \& Tibshirani (2013), \textit{An Introduction to Statistical Learning}, Fig. 10.15.}
 \end{frame}
 
 \begin{frame}{Manifold learning: when data isn't flat}
-  \begin{itemize}
-    \item PCA assumes the interesting structure is \textbf{linear} --- it fails on curved structures
-    \item The \textbf{manifold hypothesis}: real-world data (images, voices...) lives on a low-dimensional curved surface embedded in a high-dimensional space
-  \end{itemize}
+  \small
+  PCA is fast and robust, but it assumes the interesting structure in the data is \textbf{linear}. When relationships are intrinsically non-linear (as in the classic Swiss roll example, a curved sheet of paper rolled in 3D), PCA's linear projection collapses points that are actually far apart.
+
+  The \textbf{manifold hypothesis} assumes that real-world data (images, voices, text) lives on a curved, low-dimensional surface (a \textbf{manifold}) embedded within the original high-dimensional space.
   \begin{center}
-    \includegraphics[width=0.7\textwidth]{../book/_static/generated/figures/en/swiss_roll_manifold.png}
+    \includegraphics[width=0.54\textwidth]{../book/_static/generated/figures/en/swiss_roll_manifold.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Kernel PCA: the kernel trick}
-  \begin{itemize}
-    \item Maps the data into a higher-dimensional space where it \textit{is} linearly separable
-    \item Useful when the original data can't be split by a straight line
-  \end{itemize}
+  To extend PCA to non-linear problems, \textbf{kernel PCA} implicitly maps the input data into a much higher-dimensional space, where relationships that were non-linear in the original space become \textbf{linearly separable}.
+
+  The classic example below illustrates this: two classes arranged in concentric circles (left) cannot be separated by a straight line in 2D; after applying the mapping, they sit at different heights and a simple plane separates them perfectly.
   \begin{center}
-    \includegraphics[width=0.72\textwidth]{../book/_static/generated/figures/en/kernel_pca_trick.png}
+    \includegraphics[width=0.5\textwidth]{../book/_static/generated/figures/en/kernel_pca_trick.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{t-SNE: preserving local neighborhoods}
-  \begin{itemize}
-    \item Turns distances into neighborhood probabilities: nearby points should stay close after projection
-    \item Excellent for \textbf{visualizing} complex clusters in 2D; slower on large datasets
-  \end{itemize}
+\begin{frame}{$t$-SNE: preserving local neighborhoods}
+  \small
+  Proposed by Maaten and Hinton (2008), $t$-SNE converts distances between samples into \textbf{neighborhood probabilities}: nearby points should stay close after the 2D projection, and distant ones should stay distant. It is the preferred technique for the \textbf{qualitative visualization} of complex groupings, though it is slow on very large datasets.
   \begin{center}
-    \includegraphics[width=0.78\textwidth]{../book/_static/generated/figures/en/pca_vs_tsne.png}
+    \includegraphics[width=0.68\textwidth]{../book/_static/generated/figures/en/pca_vs_tsne.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{UMAP: fast and accurate}
-  \begin{itemize}
-    \item Preserves both \textbf{local} and \textbf{global} structure, unlike t-SNE
-    \item Much faster: suitable for datasets with millions of samples
-  \end{itemize}
+  \small
+  UMAP is one of the most powerful manifold learning techniques available today. Unlike $t$-SNE, which focuses almost exclusively on preserving very local neighborhoods, UMAP is able to preserve both \textbf{local} and \textbf{global} structure, and it also runs substantially faster on massive datasets with millions of samples.
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{../book/_static/external_images/umap_digits_projection.png}
+    \includegraphics[width=0.36\textwidth]{../book/_static/external_images/umap_digits_projection.png}
   \end{center}
   \fuente{umap-learn docs, Copyright (c) 2017 Leland McInnes, BSD-3 license.}
-\end{frame}
-
-\begin{frame}{Summary: 3.2 Dimensionality reduction}
-  \begin{itemize}
-    \item \textbf{PCA}: fast, linear, interpretable
-    \item \textbf{Kernel PCA}: extends PCA to non-linear structures
-    \item \textbf{t-SNE}: excellent visualization, non-linear, slow on large data
-    \item \textbf{UMAP}: the best balance of speed and quality
-  \end{itemize}
 \end{frame}
 
 % ============================================================
 \section{3.3 Anomaly detection}
 
 \begin{frame}{Philosophy of anomaly detection}
+  \small
+  Anomaly detection is an unsupervised task of great industrial relevance: identifying unusual patterns or suspicious events within a stream of data. It is applied in financial fraud detection, network intrusion prevention, manufacturing quality control, and automated dataset cleaning.
+
+  Conceptually, it rests on the premise that normal behaviors (\textit{inliers}) are highly frequent and consistent, while anomalies (\textit{outliers}) are rare events that deviate significantly from the norm. Two scenarios are distinguished based on how ``clean'' the training data is:
   \begin{itemize}
-    \item \textit{Inliers} (normal): frequent, with consistent patterns
-    \item \textit{Outliers} (anomalies): rare, deviate significantly from the norm
-    \item \textbf{Anomaly detection}: training data may contain noise
-    \item \textbf{Novelty detection}: training data is completely clean
+    \item \textbf{Anomaly detection}: the training set may contain unclean noise or outliers.
+    \item \textbf{Novelty detection}: the training set is completely clean; the goal is to detect patterns never seen before.
   \end{itemize}
-  \ejemplo{bank fraud, failures on a production line, or a sensor giving strange readings: in none of these cases do we know in advance what the next anomaly will look like.}
+  \ejemplo{bank fraud, failures on a production line, or a sensor giving strange readings: in none of these cases do we know in advance what the next anomaly will look like, which is why this is treated as an unsupervised problem.}
 \end{frame}
 
 \begin{frame}{Gaussian approach}
-  \begin{itemize}
-    \item A Gaussian distribution is fit to the normal data
-    \item Points with \textbf{low probability density} are flagged as anomalies
-    \item The threshold can be set from the known historical rate of rare cases
-  \end{itemize}
+  \small
+  Normal observations are assumed to concentrate in regions of the feature space with \textbf{high probability density}. A Gaussian distribution is fit to the normal data, and any point with a probability density below a threshold is flagged as an anomaly. The threshold can be set, for example, from the known historical rate of rare cases (say, 4\% defective products).
   \begin{center}
-    \includegraphics[width=0.4\textwidth]{../book/_static/generated/figures/en/gaussian_anomaly_detection.png}
+    \includegraphics[width=0.36\textwidth]{../book/_static/generated/figures/en/gaussian_anomaly_detection.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{PCA reconstruction}
-  \begin{itemize}
-    \item Data is projected to a low dimension with PCA and then reconstructed back
-    \item Anomalies don't follow the main structure, so their \textbf{reconstruction error} is much larger
-  \end{itemize}
+\begin{frame}{PCA reconstruction approach}
+  This technique relies on the fact that PCA's principal components capture the directions characterizing the system's \textbf{normal} behavior. The data is projected to a low dimension with PCA and reconstructed back to the original space: since the principal components don't capture unusual deviations, anomalies will show a much larger \textbf{reconstruction error} than normal instances.
   \begin{center}
     \includegraphics[width=0.36\textwidth]{../book/_static/generated/figures/en/pca_reconstruction_anomaly.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Isolation Forest}
-  \begin{itemize}
-    \item Instead of modeling what's normal, it tries to \textbf{isolate} each point using random partitions
-    \item Anomalies, being far from the rest, get isolated with very few partitions
-  \end{itemize}
+  \small
+  Unlike the previous methods, which model the density of normal data, \textbf{Isolation Forest} directly tries to \textbf{isolate} each observation through random partitions: at each node of a tree, a feature and a cutoff threshold are chosen at random, splitting the data in two.
+
+  The intuition is simple: anomalies, being far from the rest, require \textbf{very few partitions} to be isolated in their own leaf, while a normal point needs many more splits.
   \begin{center}
-    \includegraphics[width=0.85\textwidth]{../book/_static/generated/figures/en/isolation_forest_concept.png}
+    \includegraphics[width=0.68\textwidth]{../book/_static/generated/figures/en/isolation_forest_concept.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Local Outlier Factor (LOF)}
-  \begin{itemize}
-    \item Compares a point's \textbf{local density} with that of its neighbors
-    \item Detects \textbf{local anomalies}: points that aren't extreme in absolute terms, but are unusual in their neighborhood
-  \end{itemize}
-  \ejemplo{a 200 m\textsuperscript{2} house isn't unusual nationwide, but it is in a neighborhood where every house is 60 m\textsuperscript{2}: that's exactly what LOF detects.}
+  \small
+  LOF compares a sample's \textbf{local density} with that of its nearest neighbors. A normal instance has a density similar to its surroundings; a \textit{local outlier} shows a much lower density than its immediate neighbors.
+
+  This method is very useful for detecting \textbf{local anomalies} that wouldn't stand out in a global analysis, because their absolute values aren't extreme, yet they are unusual within their specific neighborhood.
+  \ejemplo{\footnotesize a 200 m\textsuperscript{2} house isn't unusual nationwide, but it is in a neighborhood where every house is 60 m\textsuperscript{2}: that's exactly what LOF detects.}
   \begin{center}
-    \includegraphics[width=0.32\textwidth]{../book/_static/generated/figures/en/lof_concept.png}
+    \includegraphics[width=0.26\textwidth]{../book/_static/generated/figures/en/lof_concept.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{One-class SVM}
-  \begin{itemize}
-    \item Designed for novelty detection: trained on clean data
-    \item Finds the \textbf{minimum-volume} region that encloses nearly all the training data
-    \item Any new observation falling outside that boundary is flagged as an anomaly
-  \end{itemize}
+  \small
+  This algorithm is optimized for novelty detection, when a clean training dataset is available. Instead of finding a hyperplane that separates two classes, it projects the data into a high-dimensional space via a kernel and looks for the \textbf{minimum-volume} region enclosing nearly all the training samples.
+
+  Any new observation falling outside that bounded region is automatically classified as an anomaly or novelty.
   \begin{center}
-    \includegraphics[width=0.36\textwidth]{../book/_static/generated/figures/en/one_class_svm_boundary.png}
+    \includegraphics[width=0.34\textwidth]{../book/_static/generated/figures/en/one_class_svm_boundary.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Summary: 3.3 Anomaly detection}
+% ============================================================
+\begin{frame}{Chapter summary}
+  \small
   \begin{itemize}
-    \item Anomalies can be rare, contextual, or collective events
-    \item \textbf{Simple methods}: Gaussian, PCA reconstruction
-    \item \textbf{Advanced methods}: Isolation Forest, LOF, one-class SVM
+    \item Unsupervised learning works \textbf{without labels}, discovering the latent structure of the data itself.
+    \item \textbf{$K$-means} groups by centroids (fast, needs a known $K$); \textbf{hierarchical} clustering needs no $K$ and gives a visual dendrogram; \textbf{DBSCAN} detects arbitrary shapes and isolates noise.
+    \item The \textbf{silhouette coefficient} and the \textbf{gap statistic} are the most common tools for evaluating a clustering without labels.
+    \item The \textbf{curse of dimensionality} motivates reducing the number of variables before analyzing or visualizing data.
+    \item \textbf{PCA} is fast and linear; \textbf{kernel PCA}, \textbf{$t$-SNE}, and \textbf{UMAP} capture non-linear structure, with different trade-offs between speed and fidelity.
+    \item Anomaly detection combines statistical approaches (Gaussian, PCA reconstruction) and specific algorithms (Isolation Forest, LOF, one-class SVM).
   \end{itemize}
 \end{frame}
 
-% ============================================================
-\begin{frame}{Course summary}
-  \begin{columns}
-    \begin{column}{0.33\textwidth}
-      \textbf{1. Foundations}
-      \begin{itemize}
-        \footnotesize
-        \item History of ML
-        \item Overfitting/underfitting
-        \item Cross-validation
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \textbf{2. Supervised}
-      \begin{itemize}
-        \footnotesize
-        \item Regression, regularization
-        \item Classification, SVM
-        \item Neural networks
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.33\textwidth}
-      \textbf{3. Unsupervised}
-      \begin{itemize}
-        \footnotesize
-        \item Clustering
-        \item PCA, manifold learning
-        \item Anomaly detection
-      \end{itemize}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-\begin{frame}
-  \centering
-  {\Huge Thank you!}\\[1em]
-  {\large Universidad de Salamanca}
-\end{frame}
+\titleslide
 
 \end{document}

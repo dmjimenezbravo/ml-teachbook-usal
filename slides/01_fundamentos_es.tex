@@ -10,83 +10,116 @@
 \usepackage{booktabs}
 \usepackage{xcolor}
 
-\definecolor{ejemplocolor}{RGB}{180,83,9}
+\definecolor{usalred}{RGB}{140,21,21}
+\definecolor{usalreddark}{RGB}{80,10,10}
+\usecolortheme[named=usalred]{structure}
+\setbeamercolor{title}{bg=usalred,fg=white}
+\setbeamercolor{frametitle}{bg=usalred,fg=white}
+\setbeamercolor{palette primary}{bg=usalred,fg=white}
+\setbeamercolor{palette secondary}{bg=usalreddark,fg=white}
+\setbeamercolor{palette tertiary}{bg=usalreddark,fg=white}
+\setbeamercolor{palette quaternary}{bg=usalred,fg=white}
+\setbeamercolor{block title}{bg=usalred,fg=white}
+\setbeamercolor{section in toc}{fg=usalred}
 
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
 \setbeamerfont{footnote}{size=\tiny}
 
+\setbeamercolor{footlinebox}{bg=usalreddark,fg=white}
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{%
+  \begin{beamercolorbox}[wd=.55\paperwidth,ht=2.6ex,dp=1.2ex,left,leftskip=1em]{footlinebox}
+    \usebeamerfont{footline}\tiny Fundamentos e introducción al aprendizaje automático --- Cap. 1
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.32\paperwidth,ht=2.6ex,dp=1.2ex,center]{footlinebox}
+    \usebeamerfont{footline}\tiny \insertsectionhead
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.13\paperwidth,ht=2.6ex,dp=1.2ex,right,rightskip=1em]{footlinebox}
+    \usebeamerfont{footline}\tiny \insertframenumber{}/\inserttotalframenumber
+  \end{beamercolorbox}%
+  }
+}
+
 \newcommand{\fuente}[1]{{\footnotesize\textit{Fuente: #1}}}
-\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{ejemplocolor}\textbf{Ejemplo:} #1}}
+\newcommand{\ejemplo}[1]{\par\vspace{0.4em}{\small\color{usalreddark}\textbf{Ejemplo:} #1}}
 
 \title[1. Fundamentos]{Capítulo 1: Fundamentos del\\Aprendizaje Automático}
-\subtitle{Material del curso}
+\subtitle{Material de estudio}
 \author{Universidad de Salamanca}
-\institute{Facultades de Ciencias y Ciencias Químicas}
+\institute{Facultad de Ciencias}
 \date{\today}
+
+\AtBeginSection[]{
+  \begin{frame}{Contenidos}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\newcommand{\titleslide}{%
+\begin{frame}
+  \titlepage
+  \vspace{-0.5em}
+  {\footnotesize Diego M. Jiménez-Bravo \quad$\cdot$\quad \texttt{dmjimenez@usal.es}}
+\end{frame}
+}
 
 \begin{document}
 
-% ============================================================
-\begin{frame}
-  \titlepage
+\titleslide
+
+\begin{frame}{Índice}
+  \tableofcontents
 \end{frame}
 
-\begin{frame}{En este capítulo}
-  \begin{enumerate}
-    \item \textbf{1.1 Historia y evolución} del aprendizaje automático
-    \begin{itemize}
-      \item De los mínimos cuadrados (1805) a la IA Generativa
-      \item Los ``inviernos de la IA'' y por qué ocurrieron
-    \end{itemize}
-    \item \textbf{1.2 Conceptos fundamentales}
-    \begin{itemize}
-      \item Datos, \textit{features} y etiquetas
-      \item \textit{Overfitting}, validación cruzada y métricas
-      \item El \textit{pipeline} de ML de principio a fin
-    \end{itemize}
-  \end{enumerate}
-  \vspace{0.5em}
-  Estos fundamentos son la base para todo lo que viene después: sin ellos, es difícil entender por qué un modelo funciona o falla.
+% ============================================================
+\section{Introducción}
+
+\begin{frame}{¿Por qué aprender aprendizaje automático?}
+  En la programación \textbf{tradicional}, una persona programadora escribe explícitamente todas las reglas que un programa debe seguir. Por ejemplo:
+  \begin{center}
+    \small\texttt{si temperatura > 30: encender\_aire\_acondicionado()}
+  \end{center}
+  Este enfoque funciona bien para problemas simples, pero muchos problemas del mundo real son demasiado complejos para describirlos con reglas fijas: ¿cómo distinguir automáticamente un gato de un perro en una fotografía? ¿Cómo predecir si una transacción bancaria es fraudulenta? ¿Cómo clasificar correos como \textit{spam} o no \textit{spam}?
+
+  \textbf{El aprendizaje automático invierte el paradigma}: en lugar de escribir las reglas a mano, se le enseña al programa a \textit{aprender} esas reglas a partir de ejemplos.
+
+  \ejemplo{nadie puede escribir a mano una regla que distinga un gato de un perro en una foto, pero un modelo puede \textit{aprenderla} viendo miles de fotos ya etiquetadas como ``gato'' o ``perro''.}
 \end{frame}
 
 % ============================================================
 \section{1.1 Historia y evolución}
 
-\begin{frame}{¿Por qué aprender aprendizaje automático?}
-  \begin{itemize}
-    \item En programación \textbf{tradicional}, un humano escribe todas las reglas a mano:
-    \begin{itemize}
-      \small
-      \item \texttt{si temperatura > 30: encender\_aire\_acondicionado()}
-    \end{itemize}
-    \item Pero muchos problemas son demasiado complejos para reglas fijas
-    \item El \textbf{aprendizaje automático invierte el paradigma}: en vez de escribir las reglas, se le enseña a la máquina a \textit{aprender} las reglas a partir de ejemplos
-  \end{itemize}
-  \ejemplo{nadie puede escribir a mano una regla que distinga un gato de un perro en una foto, pero un modelo puede \textit{aprenderla} viendo miles de fotos ya etiquetadas.}
+\begin{frame}{Definición y el cambio de paradigma}
+  La \textbf{Inteligencia Artificial} se define de forma concisa como el esfuerzo por automatizar tareas intelectuales que normalmente realizan los seres humanos. Es un campo amplio que incluye tanto el aprendizaje automático y el aprendizaje profundo, como métodos más antiguos como la \textbf{IA simbólica}, que dominó el campo desde los años 50 hasta finales de los 80.
+
+  El aspecto más revolucionario del aprendizaje automático es que representa un \textbf{nuevo paradigma de programación}: en vez de que una persona escriba las reglas, la máquina analiza los datos de entrada y las respuestas esperadas para inferir cuáles deberían ser esas reglas.
+
+  Para que este aprendizaje ocurra hacen falta \textbf{tres elementos clave}:
+  \begin{enumerate}
+    \item Datos de entrada.
+    \item Ejemplos de la salida esperada (\textbf{etiquetas}).
+    \item Una forma de medir si el sistema lo está haciendo bien (\textbf{función de pérdida}).
+  \end{enumerate}
 \end{frame}
 
-\begin{frame}{El nuevo paradigma de programación}
+\begin{frame}{Raíces matemáticas y pioneros (1805-1943)}
+  Aunque el término ``aprendizaje automático'' es moderno, muchos de sus conceptos estadísticos se desarrollaron hace más de dos siglos:
   \begin{itemize}
-    \item Para que una máquina aprenda hacen falta \textbf{tres elementos}:
-    \begin{enumerate}
-      \item Datos de entrada
-      \item Ejemplos de la salida esperada (\textbf{etiquetas})
-      \item Una forma de medir si lo está haciendo bien (\textbf{función de pérdida})
-    \end{enumerate}
-    \item La IA no es un concepto nuevo: convive con la IA simbólica (reglas lógicas escritas a mano), que dominó el campo entre los años 50 y finales de los 80
+    \item \textbf{1805}: Legendre y Gauss publican el \textbf{método de mínimos cuadrados}, la forma más temprana de regresión lineal --- todavía hoy la base de multitud de modelos.
+    \item \textbf{1936}: Ronald Fisher propone el \textbf{análisis discriminante lineal}, una de las primeras técnicas para predecir una categoría (valor cualitativo) a partir de datos numéricos.
+    \item \textbf{1943}: Warren McCulloch y Walter Pitts presentan el \textbf{primer modelo computacional de neurona biológica}: una simplificación matemática de cómo se activa una neurona, germen de las redes neuronales actuales.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Raíces matemáticas y el Test de Turing (1805-1950)}
+\begin{frame}{El Test de Turing (1950)}
   \begin{columns}
     \begin{column}{0.6\textwidth}
-      \begin{itemize}
-        \item 1805: Legendre y Gauss publican los \textbf{mínimos cuadrados} --- la forma más temprana de regresión lineal
-        \item 1936: Fisher propone el análisis discriminante lineal
-        \item 1943: McCulloch y Pitts presentan el primer modelo de neurona artificial
-        \item 1950: Alan Turing publica \textit{``Computing Machinery and Intelligence''} e introduce el \textbf{Test de Turing}
-      \end{itemize}
+      En 1950, Alan Turing publicó su artículo fundacional \textit{``Computing Machinery and Intelligence''}, donde se preguntaba: \textbf{¿pueden pensar las máquinas?}
+
+      Para evitar entrar en el debate filosófico de qué es ``pensar'', propuso un experimento práctico conocido como el \textbf{Test de Turing}: una persona conversa por escrito con un humano y con una máquina, sin saber cuál es cuál. Si no logra distinguirlos de forma fiable, se dice que la máquina ha superado el test.
+
+      Aunque hoy se discute su validez como medida real de inteligencia, marcó durante décadas el horizonte al que aspiraba la IA.
     \end{column}
     \begin{column}{0.35\textwidth}
       \centering
@@ -96,69 +129,69 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{El nacimiento formal y la era simbólica (1956-1980)}
-  \begin{itemize}
-    \item 1956: John McCarthy organiza el \textbf{seminario de Dartmouth} --- nace formalmente la IA como campo de investigación
-    \item Durante décadas se creyó que bastaría con codificar a mano un conjunto masivo de reglas lógicas (\textbf{IA simbólica})
-    \item Este enfoque alcanzó su auge con los \textbf{sistemas expertos} en los años 80
-  \end{itemize}
-  \ejemplo{un sistema experto médico de los años 80 contenía miles de reglas del tipo ``si fiebre y tos y dolor de pecho, entonces sospechar neumonía'', escritas a mano por médicos.}
+\begin{frame}{El nacimiento formal: el seminario de Dartmouth (1956)}
+  La IA cristalizó formalmente como campo de investigación en \textbf{1956}, cuando John McCarthy organizó el \textbf{seminario de Dartmouth}, un encuentro de varias semanas que reunió a los principales investigadores del momento.
+
+  McCarthy propuso una conjetura muy ambiciosa: cada aspecto del aprendizaje o de la inteligencia podía describirse con tal precisión que una máquina llegaría a simularlo.
+
+  Durante las siguientes décadas, la mayoría de expertos creyó que la inteligencia de nivel humano se alcanzaría codificando a mano un conjunto masivo de \textbf{reglas lógicas explícitas}. Este enfoque, conocido como \textbf{IA simbólica}, alcanzó su punto álgido con los \textbf{sistemas expertos} de los años 80.
+
+  \ejemplo{un sistema experto médico típico de los años 80 contenía miles de reglas del tipo ``si fiebre y tos y dolor de pecho, entonces sospechar neumonía'', escritas a mano por médicos y programadores.}
 \end{frame}
 
-\begin{frame}{El Perceptrón y los inviernos de la IA}
+\begin{frame}{El Perceptrón y los ``inviernos de la IA''}
   \begin{columns}
     \begin{column}{0.6\textwidth}
+      En \textbf{1958}, Frank Rosenblatt creó el \textbf{Perceptrón}, el primer modelo de neurona artificial capaz de \textit{aprender} ajustando sus propios parámetros a partir de ejemplos, en vez de tenerlos programados a mano.
+
+      La historia de la IA no ha sido un progreso constante, sino una sucesión de ciclos de entusiasmo extremo seguidos de desilusión y recortes de financiación, conocidos como \textbf{``inviernos de la IA''}:
       \begin{itemize}
-        \item 1958: Frank Rosenblatt crea el \textbf{Perceptrón}, el primer modelo entrenable de neurona artificial
-        \item \textbf{Primer invierno} (años 70): el Perceptrón no puede resolver problemas no lineales; el entusiasmo se desploma
-        \item \textbf{Segundo invierno} (años 90): los sistemas expertos resultan caros de mantener, difíciles de escalar y limitados
-        \item El ML despega de verdad en los 90, gracias a hardware más rápido y más datos disponibles
+        \item \textbf{Primer invierno} (años 70): se descubrió que el Perceptrón, en su forma simple, no podía resolver problemas que no fueran linealmente separables.
+        \item \textbf{Segundo invierno} (años 90): los sistemas expertos resultaron caros de mantener, difíciles de escalar y limitados a dominios muy concretos.
       \end{itemize}
     \end{column}
     \begin{column}{0.35\textwidth}
       \centering
-      \includegraphics[width=\textwidth]{../book/_static/external_images/frank_rosenblatt.jpg}\\
+      \includegraphics[width=0.88\textwidth]{../book/_static/external_images/frank_rosenblatt.jpg}\\
       \fuente{Heinz Nixdorf MuseumsForum, CC BY-SA 4.0}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Línea temporal completa}
-  \footnotesize
-  Ciclos de ``verano'' (avances, financiación) e ``invierno'' (desilusión, recortes de fondos).
+  El aprendizaje automático despegó de verdad en los años 90, impulsado por hardware más rápido y por la disponibilidad de grandes cantidades de datos. A diferencia de la IA simbólica ---apta para problemas lógicos como el ajedrez---, el ML permitió abordar problemas ``difusos'' como el reconocimiento de voz o la clasificación de imágenes.
   \begin{center}
-    \includegraphics[width=0.62\textwidth]{../book/_static/generated/diagrams_pdf/es/00_fundamentos_01_historia_evolucion_01.png}
+    \includegraphics[width=0.48\textwidth]{../book/_static/generated/diagrams_pdf/es/00_fundamentos_01_historia_evolucion_01.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Del \textit{Deep Learning} a la era de los LLM (2010-hoy)}
-  \begin{itemize}
-    \item El \textbf{Aprendizaje Profundo} (\textit{Deep Learning}) aprende representaciones en capas sucesivas, cada vez más útiles para la tarea
-    \item 2012: la victoria de Hinton en el desafío \textbf{ImageNet} marca el punto de inflexión
-    \item \textbf{MNIST} (dígitos manuscritos 0-9) se convierte en el banco de pruebas clásico
-    \item 2017: la arquitectura \textbf{Transformer} revoluciona el procesamiento de lenguaje natural
-    \item 2020s: la \textbf{IA Generativa} (ChatGPT, Gemini) escala a miles de millones de parámetros
-  \end{itemize}
+\begin{frame}{El auge del \textit{Deep Learning} (2010-2016)}
+  El \textbf{Aprendizaje Profundo} (\textit{Deep Learning}) es una rama especializada del ML que aprende \textbf{representaciones sucesivas en capas}: cada capa de la red neuronal recibe la salida de la anterior y extrae patrones cada vez más útiles para la tarea.
+
+  El punto de inflexión ocurrió en \textbf{2012}, cuando el equipo de Geoffrey Hinton ganó por un amplio margen el desafío \textbf{ImageNet} de clasificación de imágenes, usando una red neuronal profunda en lugar de los métodos estadísticos tradicionales que dominaban hasta entonces.
+
+  Durante esta época, el conjunto de datos \textbf{MNIST} (dígitos manuscritos del 0 al 9) se convirtió en el banco de pruebas por excelencia para comparar algoritmos de clasificación.
   \begin{center}
-    \includegraphics[width=0.42\textwidth]{../book/_static/external_images/mnist_dataset_example.png}\\
+    \includegraphics[width=0.34\textwidth]{../book/_static/external_images/mnist_dataset_example.png}\\
     \fuente{Suvanjanprasai (2024), Wikimedia Commons, CC BY-SA 4.0}
   \end{center}
 \end{frame}
 
-\begin{frame}{Resumen: 1.1 Historia y evolución}
-  \begin{itemize}
-    \item El ML nació de una pregunta: ¿pueden las máquinas aprender?
-    \item Ha pasado por ciclos de entusiasmo (\textit{hype}) y desencanto
-    \item Los avances recientes vienen de más datos, mejor hardware y algoritmos nuevos
-    \item El \textit{Deep Learning} y los LLM son el estado del arte actual
-  \end{itemize}
+\begin{frame}{La era de los LLM (2017-hoy)}
+  A partir de \textbf{2017}, la arquitectura \textbf{Transformer} ---que utiliza un mecanismo de ``atención'' para procesar secuencias de texto sin necesidad de capas recurrentes--- desató una revolución en el procesamiento de lenguaje natural.
+
+  Esto permitió entrenar \textbf{modelos fundacionales} mediante \textbf{aprendizaje auto-supervisado} sobre cantidades ingentes de texto de internet: el modelo aprende prediciendo palabras que él mismo se oculta, sin necesidad de etiquetas creadas por humanos.
+
+  La era actual está marcada por la \textbf{IA Generativa} (como ChatGPT o Gemini), que lleva la tecnología a una escala de miles de millones de parámetros y permite no solo clasificar datos, sino \textbf{generar} contenido nuevo: texto, imágenes, código o audio, gracias a los \textbf{LLM} (\textit{Large Language Models}).
 \end{frame}
 
 % ============================================================
 \section{1.2 Conceptos fundamentales}
 
 \begin{frame}{Datos, \textit{features} y etiquetas}
+  El éxito de cualquier sistema de ML depende de cómo se represente la información. Consideremos una tabla típica:
   \begin{center}
+    \small
     \begin{tabular}{lcccc}
       \toprule
       Muestra & Feature 1 & Feature 2 & Feature 3 & Label \\
@@ -169,87 +202,114 @@
       \bottomrule
     \end{tabular}
   \end{center}
-  \vspace{0.5em}
   \begin{itemize}
-    \item \textbf{Muestra}: un punto de datos individual (una fila de la tabla)
-    \item \textbf{\textit{Features}}: los atributos que describen la muestra
-    \item \textbf{Etiqueta}: lo que queremos predecir --- la ``verdad fundamental''
+    \item \textbf{Muestra}: la unidad básica de información (una fila de la tabla), también llamada instancia o punto de datos.
+    \item \textbf{\textit{Features}}: los atributos que describen cada muestra (columnas de entrada).
+    \item \textbf{Etiqueta} (\textit{label}): la respuesta correcta asociada a cada muestra; el conjunto de todas las etiquetas constituye la \textbf{``verdad fundamental''} (\textit{ground-truth}).
   \end{itemize}
-  \ejemplo{para predecir el precio de una vivienda, las \textit{features} serían m\textsuperscript{2}, número de habitaciones y ubicación; la etiqueta sería el precio.}
 \end{frame}
 
 \begin{frame}{\textit{Overfitting} vs. \textit{underfitting}}
+  El problema fundamental del aprendizaje automático es la tensión entre ajustar el modelo a los datos conocidos y su capacidad de funcionar bien con datos nuevos:
   \begin{itemize}
-    \item \textbf{\textit{Underfitting}} (alto sesgo): el modelo es demasiado simple, no capta el patrón real
-    \item \textbf{\textit{Overfitting}} (alta varianza): el modelo memoriza el ruido de entrenamiento en vez de aprender la tendencia
-    \item El objetivo es el equilibrio sesgo-varianza que mejor generaliza a datos nuevos
+    \item \textbf{\textit{Underfitting}} (subajuste): el modelo es demasiado simple para capturar el patrón real de los datos. Tanto el error de entrenamiento como el de validación son altos.
+    \item \textbf{\textit{Overfitting}} (sobreajuste): el modelo es demasiado complejo y termina memorizando el ruido del entrenamiento. El error de entrenamiento es muy bajo, pero el de validación es alto.
+    \item El objetivo es encontrar el equilibrio \textbf{sesgo-varianza}: poco sesgo (el modelo no simplifica de más) y poca varianza (el modelo no es demasiado sensible a los datos concretos de entrenamiento).
   \end{itemize}
-  \ejemplo{es como estudiar para un examen memorizando las respuestas exactas de un simulacro (\textit{overfitting}) en vez de entender el tema: fallarás en cuanto cambien las preguntas.}
+  \ejemplo{\footnotesize es como estudiar para un examen memorizando las respuestas de un simulacro concreto (\textit{overfitting}) en vez de entender el tema: fallarás en cuanto cambien las preguntas.}
   \begin{center}
-    \includegraphics[width=0.62\textwidth]{../book/_static/generated/figures/es/overfitting_underfitting.png}
+    \includegraphics[width=0.26\textwidth]{../book/_static/generated/figures/es/overfitting_underfitting.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{Validación cruzada $K$-\textit{fold}}
+  Para medir la generalización de forma fiable no basta con evaluar el modelo sobre los mismos datos con los que se entrenó. La práctica estándar es dividir los datos en tres conjuntos:
   \begin{itemize}
-    \item División estándar: \textbf{entrenamiento} (ajustar pesos), \textbf{validación} (elegir hiperparámetros) y \textbf{prueba} (evaluación final imparcial)
-    \item $K$-\textit{fold}: se divide en $K$ partes; se entrena $K$ veces usando cada vez una parte distinta como validación
-    \item La métrica final es la media de los $K$ resultados --- reduce la varianza de la estimación
-    \item \textbf{Estratificación}: cada partición debe conservar la proporción de clases del conjunto original
+    \item \textbf{Entrenamiento}: para ajustar los pesos del modelo.
+    \item \textbf{Validación}: para elegir los hiperparámetros y comparar modelos.
+    \item \textbf{Prueba} (\textit{test}): reservado para una evaluación final e imparcial.
   \end{itemize}
+  Cuando los datos son escasos, la validación cruzada $K$-\textit{fold} aprovecha mejor la información: se divide en $K$ partes, se entrena $K$ veces (usando cada vez una parte distinta como validación) y la métrica final es la \textbf{media} de los $K$ resultados. La \textbf{estratificación} asegura que cada partición mantenga la misma proporción de clases que el conjunto original.
   \begin{center}
-    \includegraphics[width=0.55\textwidth]{../book/_static/generated/figures/es/kfold_cross_validation.png}
+    \includegraphics[width=0.42\textwidth]{../book/_static/generated/figures/es/kfold_cross_validation.png}
   \end{center}
 \end{frame}
 
-\begin{frame}{Matriz de confusión y métricas}
+\begin{frame}{Matriz de confusión}
+  Para evaluar un clasificador se usa una tabla llamada \textbf{matriz de confusión}, que compara las etiquetas reales con las predichas por el modelo:
   \begin{columns}
-    \begin{column}{0.48\textwidth}
-      \includegraphics[width=0.75\textwidth]{../book/_static/generated/figures/es/confusion_matrix.png}
+    \begin{column}{0.5\textwidth}
+      \includegraphics[width=0.6\textwidth]{../book/_static/generated/figures/es/confusion_matrix.png}
     \end{column}
     \begin{column}{0.5\textwidth}
-      \footnotesize
-      \begin{align*}
-        \text{Precisión} &= \frac{TP}{TP+FP} \\
-        \text{Recall} &= \frac{TP}{TP+FN} \\
-        F1 &= 2\cdot\frac{P \times R}{P + R}
-      \end{align*}
+      \small
+      \begin{itemize}
+        \item \textbf{VP} (verdadero positivo): acierto positivo.
+        \item \textbf{VN} (verdadero negativo): acierto negativo.
+        \item \textbf{FP} (falso positivo): ``falsa alarma'' (error de tipo I).
+        \item \textbf{FN} (falso negativo): ``omisión'' (error de tipo II).
+      \end{itemize}
     \end{column}
   \end{columns}
-  \ejemplo{\footnotesize en un diagnóstico médico, un \textbf{falso negativo} (decir ``sano'' a un paciente enfermo) suele ser más grave que un falso positivo. Por eso a veces se prioriza el \textit{recall} sobre la precisión.}
+  \ejemplo{\footnotesize en un diagnóstico médico, un falso negativo (decir ``sano'' a alguien enfermo) suele ser mucho más grave que un falso positivo.}
+\end{frame}
+
+\begin{frame}{Métricas derivadas de la matriz de confusión}
+  \small
+  \begin{itemize}
+    \item \textbf{Exactitud} (\textit{accuracy}): porcentaje de predicciones correctas sobre el total. Puede ser engañosa si las clases están desbalanceadas.
+    \item \textbf{Precisión}: de todo lo que el modelo predijo como positivo, ¿cuánto acertó de verdad?
+    \item \textbf{\textit{Recall}} (sensibilidad): de todos los positivos reales que había, ¿cuántos encontró el modelo?
+    \item \textbf{F1}: combina precisión y \textit{recall} en un solo número; útil cuando nos importan ambas por igual.
+    \item \textbf{AUC-ROC}: mide qué tan bien distingue el modelo los positivos de los negativos, sin depender de un umbral fijo. 1.0 es perfecto, 0.5 equivale al azar.
+  \end{itemize}
+  \ejemplo{si el 90\% de los correos no son \textit{spam}, un modelo que siempre diga ``no es \textit{spam}'' tendría un 90\% de exactitud sin haber aprendido nada útil: por eso a veces conviene mirar precisión y \textit{recall} en vez de solo la exactitud.}
 \end{frame}
 
 \begin{frame}{El \textit{pipeline} de ML: 10 etapas}
+  \small El desarrollo de un proyecto de aprendizaje automático sigue un flujo de trabajo universal, desde la recolección de datos hasta el despliegue en producción. Es un proceso \textbf{iterativo}: la evaluación suele obligar a volver a etapas anteriores antes de dar el proyecto por terminado.
   \begin{columns}
-    \begin{column}{0.4\textwidth}
+    \begin{column}{0.42\textwidth}
       \footnotesize
-      \begin{itemize}
-        \item Proceso \textbf{iterativo}: la evaluación puede obligar a volver a etapas anteriores
-        \item Gran parte del esfuerzo real está en las etapas 2-3 (datos) y 7-8 (ajuste)
-        \item El despliegue no es el final: requiere monitorización continua, porque los datos reales cambian con el tiempo (\textit{concept drift})
-      \end{itemize}
+      \begin{enumerate}
+        \item Recolección de datos
+        \item Exploración y limpieza
+        \item Ingeniería de características
+        \item División \textit{train}/\textit{test}
+        \item Selección del modelo
+        \item Entrenamiento
+      \end{enumerate}
     \end{column}
-    \begin{column}{0.57\textwidth}
-      \centering
-      \includegraphics[height=0.75\textheight]{../book/_static/generated/diagrams_pdf/es/00_fundamentos_02_conceptos_fundamentales_01.png}
+    \begin{column}{0.42\textwidth}
+      \footnotesize
+      \begin{enumerate}
+        \setcounter{enumi}{6}
+        \item Evaluación
+        \item Ajuste de hiperparámetros
+        \item Evaluación final
+        \item Despliegue (y monitorización continua)
+      \end{enumerate}
     \end{column}
   \end{columns}
+  \begin{center}
+    \includegraphics[height=0.26\textheight]{../book/_static/generated/diagrams_pdf/es/00_fundamentos_02_conceptos_fundamentales_01.png}
+  \end{center}
 \end{frame}
 
-\begin{frame}{Resumen: 1.2 Conceptos fundamentales}
+% ============================================================
+\begin{frame}{Resumen del capítulo}
+  \small
   \begin{itemize}
-    \item \textbf{Muestra / \textit{feature} / etiqueta}: las piezas básicas de cualquier dataset
-    \item \textbf{\textit{Overfitting} / \textit{underfitting}}: la tensión central del aprendizaje automático
-    \item \textbf{Validación cruzada}: evaluar sin sesgo cuando los datos escasean
-    \item \textbf{Métricas}: elegir la adecuada según lo que importe (precisión o \textit{recall})
-    \item \textbf{\textit{Pipeline} de ML}: 10 etapas, de la recolección de datos al despliegue
+    \item El aprendizaje automático nació de una pregunta muy simple: \textbf{¿pueden las máquinas aprender?}
+    \item Su historia no ha sido lineal: ha pasado por ciclos de entusiasmo (\textit{hype}) e ``inviernos'' de desilusión y recortes.
+    \item El estado del arte actual son el \textbf{aprendizaje profundo} y los \textbf{LLM}, posibles gracias a más datos, mejor hardware y algoritmos más eficientes.
+    \item \textbf{Muestra}, \textit{\textbf{feature}} y \textbf{etiqueta} son las piezas básicas de cualquier conjunto de datos.
+    \item El \textbf{\textit{overfitting}}/\textbf{\textit{underfitting}} y la \textbf{validación cruzada} son las herramientas para saber si un modelo generaliza bien.
+    \item La \textbf{matriz de confusión} y sus métricas derivadas permiten elegir la medida de éxito adecuada según el problema.
+    \item El \textbf{\textit{pipeline} de ML} organiza todo el proceso en 10 etapas iterativas, de los datos al despliegue.
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-  \centering
-  {\Huge Fin del Capítulo 1}\\[1em]
-  {\large Siguiente: Capítulo 2 --- Aprendizaje Supervisado}
-\end{frame}
+\titleslide
 
 \end{document}

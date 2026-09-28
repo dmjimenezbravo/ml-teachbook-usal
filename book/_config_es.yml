@@ -1,5 +1,5 @@
 title: |
-  Introducción al aprendiaje automático
+  Fundamentos e introducción al aprendiaje automático
 author: Diego M. Jiménez-Bravo
 copyright: "2026"
 logo: "_static/logo.png"
@@ -47,9 +47,9 @@ latex_docclass:
 latex:
   latex_engine: xelatex
   options: "spanish"
-  subtitle: "Contenido para los estudiantes de la asignatura de Programación Avanzada del gredo en Ingeniería Informática de la Universidad de Salamanca"    # Opcional: subtítulo del libro
+  subtitle: "Contenido para los estudiantes de la asignatura de Programación Avanzada del grado en Ingeniería Informática de la Universidad de Salamanca"    # Opcional: subtítulo del libro
   header_title: |
-    Introducción al aprendiaje automático
+    Fundamentos e introducción al aprendizaje automático
   institution: "Universidad de Salamanca"  # Opcional
   edition: "1ª Edición"               # Opcional
   cover_logo: "_static/usal_logo.png"  # Logo de la portada PDF; el logo web se configura arriba en `logo`

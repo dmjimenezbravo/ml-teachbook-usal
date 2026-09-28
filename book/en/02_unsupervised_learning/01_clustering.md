@@ -12,7 +12,7 @@ Several **clustering** algorithms exist. The most relevant ones today are explai
 
 ### The $K$-means algorithm
 
-$K$-means is a grouping algorithm that performs partitions based on centroids. The algorithm is an iterative grouping technique that seeks to partition a set of observations into $K$ distinct clusters. It is a geometric approach based on the concept of centroids, which act as the center of gravity of each group.
+$K$-means {cite:p}`macqueen1967kmeans` is a grouping algorithm that performs partitions based on centroids. The algorithm is an iterative grouping technique that seeks to partition a set of observations into $K$ distinct clusters. It is a geometric approach based on the concept of centroids, which act as the center of gravity of each group.
 
 {numref}`fig-kmeans-flow` summarizes the algorithm's cycle: after assigning each sample to its centroid and computing the inertia (WCSS), the centroids are updated and the process repeats until convergence.
 
@@ -138,12 +138,12 @@ It is a robust criterion that balances the stability of complete linkage with th
 :align: center
 
 Hierarchical clustering of the *NCI60* dataset with complete, average, and single linkage.
-Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.17. Springer. Freely distributed for educational use (statlearning.com).
+Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.17. Springer. Freely distributed for educational use (statlearning.com) {cite:p}`james2013islr`.
 ```
 
 ### DBSCAN: density-based clustering
 
-The DBSCAN algorithm (Density-Based Spatial Clustering of Applications with Noise) offers a radically different approach from $K$-means and hierarchical **clustering** by defining groups based on the local density of the data in the feature space. This allows it to discover clusters of arbitrary geometric shapes and naturally isolate noisy samples.
+The DBSCAN algorithm (Density-Based Spatial Clustering of Applications with Noise) {cite:p}`ester1996dbscan` offers a radically different approach from $K$-means and hierarchical **clustering** by defining groups based on the local density of the data in the feature space. This allows it to discover clusters of arbitrary geometric shapes and naturally isolate noisy samples.
 
 #### Foundations and critical parameters
 
@@ -199,7 +199,7 @@ These analyze the spatial arrangement of points in the feature space to measure 
 
 #### Silhouette coefficient and score
 
-The silhouette coefficient ($sc$) evaluates the quality of each sample's assignment individually, serving as a diagnostic for predominantly spherical groupings. For an instance $i$, it is computed as:
+The silhouette coefficient ($sc$) {cite:p}`rousseeuw1987silhouette` evaluates the quality of each sample's assignment individually, serving as a diagnostic for predominantly spherical groupings. For an instance $i$, it is computed as:
 
 $sc(i) = \frac{b_i - a_i}{\max(a_i, b_i)}$
 
@@ -230,7 +230,7 @@ Silhouette diagram: each "knife" represents a cluster and its grouping quality.
 
 #### Gap statistic
 
-Proposed by Tibshirani et al. (2001b), the **gap statistic** mathematically formalizes the search for the optimal number of clusters ($K$), overcoming the visual vagueness of the heuristic elbow method.
+Proposed by Tibshirani et al. {cite:p}`tibshirani2001gapstatistic`, the **gap statistic** mathematically formalizes the search for the optimal number of clusters ($K$), overcoming the visual vagueness of the heuristic elbow method.
 
 It compares the log of the observed inertia curve of your data ($\log W_K$) with the mathematical expectation of the inertia computed over multiple artificially generated samples drawn from a uniform distribution (with no grouping structure, i.e., the null hypothesis) over the hyper-rectangle enclosing the real data:
 
