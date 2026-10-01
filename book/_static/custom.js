@@ -263,8 +263,8 @@ function injectPDFButton(languages, rootPrefix) {
         });
 
         const pdfFilenames = {
-            "es": "ElaboracionDeLibrosElectronicosMedianteCodigoYAsistentesDeInteligenciaArtificial.pdf",
-            "en": "CreatingElectronicBooksWithCodeAndArtificialIntelligenceAssistants.pdf"
+            "es": "FundamentosEIntroduccionAlAprendizajeAutomatico.pdf",
+            "en": "FundamentalsAndIntroductionToMachineLearning.pdf"
         };
         const pdfFilename = pdfFilenames[lang] || `TeachBook_${lang}.pdf`;
         const pdfUrl = rootPrefix + `_static/${pdfFilename}`;

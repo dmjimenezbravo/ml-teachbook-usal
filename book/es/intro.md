@@ -49,7 +49,7 @@ Aunque el libro es autónomo, es útil tener:
 
 Cada capítulo incluye:
 - **Conceptos teóricos** explicados de forma clara.
-- **Ejemplos prácticos** con código Python ejecutable.
+- **Ejemplos prácticos** con código Java ejecutable.
 - **Visualizaciones** para entender mejor los resultados.
 
 Se recomienda seguir el orden establecido, aunque puedes consultar secciones específicas según tus necesidades.

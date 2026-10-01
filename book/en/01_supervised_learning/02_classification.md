@@ -43,7 +43,7 @@ Sigmoid function used in logistic regression.
 :align: center
 
 Linear regression (left) vs. logistic regression (right) on the *Default* dataset.
-Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 4.2. Springer. Freely distributed for educational use (statlearning.com) {cite:p}`james2013islr`.
+Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 4.2. Springer. Freely distributed for educational use (statlearning.com).
 ```
 
 ## Classic classification algorithms
@@ -204,6 +204,73 @@ Evaluation does not only happen at the end — it should guide the entire develo
 - **Early stopping**: a strategy that uses a callback to automatically halt training when the validation metric stops improving, saving time and preventing overfitting.
 - **Error analysis**: manually inspecting the samples where the model fails helps understand which specific patterns the system is confusing (for example, confusing a "3" with a "5" in digit recognition).
 - **A/B testing**: after deployment, randomized tests are recommended to measure the model's real impact compared to the previous process.
+
+## Hands-on example in Java with SMILE
+
+The [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) repository includes the full example [`Ejemplo03Clasificacion.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo03Clasificacion.java), which trains several classifiers on the *Iris* dataset with the [SMILE](https://haifengl.github.io/) library. The following fragment summarizes its main steps (comments translated into English).
+
+SMILE offers two API styles: **formula-based** (`fit(Formula, DataFrame)`, used by tree-based models, which accept categorical variables without encoding) and **array-based** (`fit(double[][] x, int[] y)`, used by KNN, SVM, logistic regression, or neural networks).
+
+```java
+import smile.classification.KNN;
+import smile.classification.LogisticRegression;
+import smile.classification.RandomForest;
+import smile.data.DataFrame;
+import smile.data.formula.Formula;
+import smile.io.Read;
+import smile.math.MathEx;
+import smile.validation.CrossValidation;
+import smile.validation.metric.Accuracy;
+import smile.validation.metric.ConfusionMatrix;
+
+MathEx.setSeed(42);   // global seed: reproducible splits and models
+
+DataFrame iris = Read.csv("data/iris.csv", "header=true").factorize("species");
+Formula formula = Formula.lhs("species");   // species ~ all other columns
+
+Utiles.Particion particion = Utiles.split(iris, 0.7);
+DataFrame train = particion.train();
+DataFrame test = particion.test();
+
+// 1. Random Forest (formula API): works directly on the DataFrame
+RandomForest bosque = RandomForest.fit(formula, train, new RandomForest.Options(200));
+
+int[] yTest = formula.y(test).toIntArray();
+int[] prediccion = new int[test.nrow()];
+for (int i = 0; i < test.nrow(); i++) {
+    prediccion[i] = bosque.predict(test.get(i));
+}
+System.out.printf("Accuracy = %.2f%%%n", 100.0 * Accuracy.of(yTest, prediccion));
+System.out.println(ConfusionMatrix.of(yTest, prediccion));
+
+// 2. Array-based models: KNN and logistic regression
+double[][] xTrain = formula.x(train).toArray();
+int[] yTrain = formula.y(train).toIntArray();
+double[][] xTest = formula.x(test).toArray();
+
+KNN<double[]> knn = KNN.fit(xTrain, yTrain, 5);
+LogisticRegression logistica = LogisticRegression.fit(xTrain, yTrain,
+        new LogisticRegression.Options(0.1, 1E-5, 500));   // lambda, tolerance, iterations
+System.out.printf("KNN (k=5)           accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(yTest, knn.predict(xTest)));
+System.out.printf("Logistic regression accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(yTest, logistica.predict(xTest)));
+
+// 3. 10-fold cross-validation: the honest estimate of performance
+var cv = CrossValidation.classification(10, formula, iris,
+        (f, datos) -> RandomForest.fit(f, datos, new RandomForest.Options(200)));
+System.out.printf("Mean accuracy = %.4f (std. %.4f)%n",
+        cv.avg().accuracy(), cv.std().accuracy());
+```
+
+A few things worth noticing when you run it:
+
+- `factorize("species")` turns the text column with the species into a categorical variable with integer codes, which is what the classifiers expect.
+- `ConfusionMatrix.of` builds the confusion matrix seen in this section, and `Accuracy.of` computes accuracy from the true and predicted labels.
+- The first parameter of `LogisticRegression.Options` is $\lambda$, the strength of the $L_2$ regularization applied to the model's weights.
+- The full example also shows soft prediction (posterior probabilities per class), saving the model to disk, and the use of encoders (`LEVEL`, `ONE_HOT`) for categorical variables on a second dataset.
+
+To run it from the root of the repository: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo03Clasificacion`.
 
 ## Summary
 

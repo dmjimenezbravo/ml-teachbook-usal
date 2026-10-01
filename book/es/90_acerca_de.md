@@ -1,6 +1,6 @@
 # Acerca de
 
-Este libro es el material del curso **Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial**. Está pensado para que el profesorado de las Facultades de Ciencias y de Ciencias Químicas de la Universidad de Salamanca pueda crear, adaptar y publicar libros docentes interactivos con una barrera técnica mínima.
+Este libro es el material del bloque de **Fundamentos e introducción al aprendizaje automático** de la asignatura de Programación Avanzada del grado en Ingeniería Informática de la Universidad de Salamanca (USAL).
 
 La información de cita, BibTeX, DOI y metadatos de Zenodo está reunida en la página [Cómo citar](92_como_citar.md).
 
@@ -10,35 +10,24 @@ Este sitio está escrito en archivos Markdown y notebooks de Jupyter, y se convi
 
 Los archivos fuente están en un repositorio público de GitHub:
 
-- https://github.com/elloza/teachbook_usal_template
+- https://github.com/dmjimenezbravo/ml-teachbook-usal
 
 La versión publicada del libro puede consultarse en:
 
-- https://elloza.com/teachbook_usal_template/
+- https://dmjimenezbravo.github.io/ml-teachbook-usal/
 
-## Sobre los autores
+## Sobre el autor
 
 ```{raw} html
 <div class="author-profile-grid">
   <article class="author-profile-card">
-    <img src="../_static/authors/alvaro_lozano_murciego.jpg" alt="Retrato de Álvaro Lozano Murciego" loading="lazy">
+    <img src="../_static/authors/diego_m_jimenez_bravo.jpg" alt="Retrato de Diego M. Jiménez Bravo" loading="lazy">
     <div>
-      <h3>Álvaro Lozano Murciego</h3>
-      <p class="author-profile-role">Profesor Titular de Universidad, Informática y Automática</p>
+      <h3>Diego M. Jiménez Bravo</h3>
+      <p class="author-profile-role">Profesor Permanente Laboral, Informática y Automática</p>
       <div class="author-profile-links">
-        <a href="https://produccioncientifica.usal.es/investigadores/148041/detalle">Perfil USAL</a>
-        <a href="https://orcid.org/0000-0002-0493-4471">ORCID</a>
-      </div>
-    </div>
-  </article>
-  <article class="author-profile-card">
-    <img src="../_static/authors/andre_filipe_sales_mendes.jpg" alt="Retrato de André Filipe Sales Mendes" loading="lazy">
-    <div>
-      <h3>André Filipe Sales Mendes</h3>
-      <p class="author-profile-role">Profesor Ayudante Doctor, Informática y Automática</p>
-      <div class="author-profile-links">
-        <a href="https://produccioncientifica.usal.es/investigadores/147997/detalle?lang=en">Perfil USAL</a>
-        <a href="https://orcid.org/0000-0003-0976-2784">ORCID</a>
+        <a href="https://produccioncientifica.usal.es/investigadores/148175/detalle">Perfil USAL</a>
+        <a href="https://orcid.org/0000-0002-0291-7627">ORCID</a>
       </div>
     </div>
   </article>
@@ -46,33 +35,21 @@ La versión publicada del libro puede consultarse en:
 ```
 
 ````{container} pdf-author-fallback
-```{image} ../_static/authors/alvaro_lozano_murciego.jpg
-:alt: Retrato de Álvaro Lozano Murciego
+```{image} ../_static/authors/diego_m_jimenez_bravo.jpg
+:alt: Retrato de Diego M. Jiménez Bravo
 :width: 35%
 :align: center
 ```
 
-**Álvaro Lozano Murciego**  
-Profesor Titular de Universidad, Informática y Automática
+**Diego M. Jiménez Bravo**  
+Profesor Permanente Laboral, Informática y Automática
 
-- Perfil USAL: https://produccioncientifica.usal.es/investigadores/148041/detalle
-- ORCID: https://orcid.org/0000-0002-0493-4471
-
-```{image} ../_static/authors/andre_filipe_sales_mendes.jpg
-:alt: Retrato de André Filipe Sales Mendes
-:width: 35%
-:align: center
-```
-
-**André Filipe Sales Mendes**  
-Profesor Ayudante Doctor, Informática y Automática
-
-- Perfil USAL: https://produccioncientifica.usal.es/investigadores/147997/detalle?lang=en
-- ORCID: https://orcid.org/0000-0003-0976-2784
+- Perfil USAL: https://produccioncientifica.usal.es/investigadores/148175/detalle
+- ORCID: https://orcid.org/0000-0002-0291-7627
 ````
 
 ### Institución
 
-Facultades de Ciencias y de Ciencias Químicas, Universidad de Salamanca (USAL).
+Facultad de Ciencias, Universidad de Salamanca (USAL).
 
 Las fotografías y los perfiles académicos proceden del portal de producción científica de la Universidad de Salamanca.

@@ -134,6 +134,12 @@
       "format": "svg"
     },
     {
+      "source": "diagram_sources\\en\\02_unsupervised_learning_03_anomaly_detection_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\en\\02_unsupervised_learning_03_anomaly_detection_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
       "source": "diagram_sources\\en\\05_basic_content_mermaid_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\en\\05_basic_content_mermaid_01.svg",
       "type": "mermaid",
@@ -214,6 +220,12 @@
     {
       "source": "diagram_sources\\es\\02_aprendizaje_no_supervisado_02_reduccion_dimensionalidad_01.mermaid",
       "output": "book\\_static\\generated\\diagrams\\es\\02_aprendizaje_no_supervisado_02_reduccion_dimensionalidad_01.svg",
+      "type": "mermaid",
+      "format": "svg"
+    },
+    {
+      "source": "diagram_sources\\es\\02_aprendizaje_no_supervisado_03_deteccion_anomalias_01.mermaid",
+      "output": "book\\_static\\generated\\diagrams\\es\\02_aprendizaje_no_supervisado_03_deteccion_anomalias_01.svg",
       "type": "mermaid",
       "format": "svg"
     },

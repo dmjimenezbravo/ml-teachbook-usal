@@ -20,3 +20,8 @@ parts:
   - caption: Bibliography
     chapters:
     - file: en/95_course_bibliography
+  - caption: About this book
+    chapters:
+    - file: en/90_about
+    - file: en/91_licenses
+    - file: en/92_how_to_cite

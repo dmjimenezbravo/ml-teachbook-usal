@@ -1,6 +1,6 @@
 PDF_FILENAMES = {
-    "es": "ElaboracionDeLibrosElectronicosMedianteCodigoYAsistentesDeInteligenciaArtificial.pdf",
-    "en": "CreatingElectronicBooksWithCodeAndArtificialIntelligenceAssistants.pdf",
+    "es": "FundamentosEIntroduccionAlAprendizajeAutomatico.pdf",
+    "en": "FundamentalsAndIntroductionToMachineLearning.pdf",
 }
 
 DEFAULT_PDF_FILENAME = PDF_FILENAMES["es"]

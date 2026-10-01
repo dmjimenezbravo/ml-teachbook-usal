@@ -130,7 +130,7 @@ La {numref}`fig-islr-nci60-dendrogram` compara los tres criterios de enlace sobr
 :align: center
 
 Clustering jerárquico del conjunto de datos *NCI60* con enlace completo, promedio y simple.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.17. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.17. Springer. Libro de libre distribución para uso educativo (statlearning.com).
 ```
 
 ### DBSCAN: agrupamiento basado en densidad
@@ -333,6 +333,65 @@ El RI oscila entre $0$ (desacuerdo total) y $1$ (concordancia perfecta). Sin emb
 Popularizado por suites de software clásico como Weka, este enfoque entrena el modelo de *clustering* ignorando por completo el atributo de clase. Una vez que el espacio se ha segmentado, el evaluador examina la composición de cada *cluster* para asignarle de forma retrospectiva la etiqueta de la clase mayoritaria.
 
 A partir de esta asignación, es posible mapear las fronteras geométricas como si fueran un clasificador supervisado y construir una matriz de confusión clásica que revele las tasas exactas de falsos positivos, falsos negativos y precisión global por clase.
+
+## Ejemplo práctico en Java con SMILE
+
+El repositorio [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) incluye el ejemplo completo [`Ejemplo05Clustering.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo05Clustering.java), que aplica los tres algoritmos de esta sección con la librería [SMILE](https://haifengl.github.io/). Se usa el conjunto *Iris* **quitando la columna de la especie**: el algoritmo no ve las etiquetas, pero como sabemos que hay tres especies podemos comparar la partición obtenida con la real mediante un índice externo (ARI).
+
+```java
+import java.util.Arrays;
+import smile.clustering.CentroidClustering;
+import smile.clustering.Clustering;
+import smile.clustering.DBSCAN;
+import smile.clustering.HierarchicalClustering;
+import smile.clustering.KMeans;
+import smile.clustering.linkage.WardLinkage;
+import smile.data.DataFrame;
+import smile.io.Read;
+import smile.math.MathEx;
+import smile.validation.metric.AdjustedRandIndex;
+
+MathEx.setSeed(42);
+
+DataFrame iris = Read.csv("data/iris.csv", "header=true").factorize("species");
+double[][] x = iris.drop("species").toArray();          // sin etiquetas
+int[] especieReal = iris.column("species").toIntArray(); // solo para evaluar
+
+// 1. K-means con k = 3: fit(datos, k, maxIteraciones)
+CentroidClustering<double[], double[]> kmeans = KMeans.fit(x, 3, 100);
+int[] grupos = kmeans.group();
+System.out.printf("Distorsion (inercia) = %.3f%n", kmeans.distortion());
+System.out.printf("ARI frente a las especies reales = %.4f%n",
+        AdjustedRandIndex.of(especieReal, grupos));
+
+// Asignar una muestra nueva al centroide mas cercano
+double[] nueva = { 5.9, 3.0, 5.1, 1.8 };
+System.out.printf("La muestra cae en el cluster %d%n", kmeans.predict(nueva));
+
+// 2. Metodo del codo: distorsion para distintos valores de k
+for (int k = 2; k <= 8; k++) {
+    System.out.printf("k = %d  distorsion = %.3f%n", k, KMeans.fit(x, k, 100).distortion());
+}
+
+// 3. DBSCAN: fit(datos, minPts, epsilon). No hay que fijar k y detecta ruido
+DBSCAN<double[]> dbscan = DBSCAN.fit(x, 5, 0.8);
+long ruido = Arrays.stream(dbscan.group()).filter(g -> g == Clustering.OUTLIER).count();
+System.out.printf("DBSCAN: %d clusters, %d puntos de ruido%n", dbscan.k(), ruido);
+
+// 4. Clustering jerarquico aglomerativo (enlace de Ward) y corte en 3 grupos
+HierarchicalClustering jerarquico = HierarchicalClustering.fit(WardLinkage.of(x));
+int[] particion3 = jerarquico.partition(3);
+System.out.printf("Jerarquico: ARI = %.4f%n", AdjustedRandIndex.of(especieReal, particion3));
+```
+
+Algunas ideas que conviene observar al ejecutarlo:
+
+- `kmeans.distortion()` es la inercia intracluster (WCSS) que minimiza $K$-*means*; el bucle sobre $k$ genera los valores que se representarían en la gráfica del método del codo.
+- Los puntos que DBSCAN considera ruido reciben la etiqueta especial `Clustering.OUTLIER` en lugar de un número de *cluster*.
+- En el *clustering* jerárquico, primero se construye el criterio de enlace (`WardLinkage`, aunque también existen `SingleLinkage`, `CompleteLinkage` o `UPGMALinkage` para el enlace promedio) y después se corta el dendrograma con `partition(k)`.
+- El ejemplo completo compara también *X-means* (elección automática de $k$ mediante BIC) y muestra el efecto de estandarizar las variables antes de agrupar.
+
+Para ejecutarlo desde la raíz del repositorio: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo05Clustering`.
 
 ## Resumen
 

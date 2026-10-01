@@ -240,8 +240,8 @@ Genera los PDF del libro en todos los idiomas y comprueba que se han creado bien
 La plantilla genera normalmente un PDF por idioma y los deja en `book/_static/`, por ejemplo:
 
 ```text
-book/_static/ElaboracionDeLibrosElectronicosMedianteCodigoYAsistentesDeInteligenciaArtificial.pdf
-book/_static/CreatingElectronicBooksWithCodeAndArtificialIntelligenceAssistants.pdf
+book/_static/FundamentosEIntroduccionAlAprendizajeAutomatico.pdf
+book/_static/FundamentalsAndIntroductionToMachineLearning.pdf
 ```
 
 El motivo de la espera inicial es que el proyecto necesita un motor de LaTeX para convertir el libro a PDF. LaTeX es el sistema que produce documentos académicos con buena tipografía, ecuaciones, índices y referencias. No hace falta aprender LaTeX para usar la plantilla, pero sí hay que dejar instalado el motor que compila el documento.
