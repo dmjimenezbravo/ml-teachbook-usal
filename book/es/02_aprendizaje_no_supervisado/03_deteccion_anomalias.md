@@ -21,11 +21,16 @@ La detección de anomalías se aborda fundamentalmente mediante aprendizaje no s
 
 ## Enfoques estadísticos y de reconstrucción
 
-Antes de recurrir a modelos más complejos, existen dos aproximaciones clásicas muy eficientes basadas en la estimación de densidad y en la proyección lineal de los datos.  
+Antes de recurrir a modelos más complejos, existen dos aproximaciones clásicas muy eficientes basadas en la estimación de densidad y en la proyección lineal de los datos. La {numref}`fig-anomaly-threshold-flow` resume el esquema común a ambas: con los datos normales se ajusta un modelo (de densidad o de proyección) y se fija un umbral; cada observación nueva se puntúa frente a ese umbral y, si presenta baja densidad o un alto error de reconstrucción, se marca como anomalía.
 
-[Datos Normales (Inliers)] ──▶ Modelado de Densidad/Proyección ──▶ Umbral Establecido
-                                                                           │
-  [Anomalía (Baja Densidad/Alto Error)] ───────────────────────────────────▼──▶ Alerta / Outlier
+```{figure} ../../_static/generated/diagrams/es/02_aprendizaje_no_supervisado_03_deteccion_anomalias_01.svg
+:name: fig-anomaly-threshold-flow
+:alt: Diagrama de flujo de la detección de anomalías estadística: los datos normales alimentan un modelado de densidad o proyección que establece un umbral; cada nueva observación se compara con el umbral y se clasifica como normal (alta densidad o bajo error) o como anomalía (baja densidad o alto error)
+:width: 100%
+:align: center
+
+Esquema general de los enfoques estadísticos y de reconstrucción: modelar lo normal, fijar un umbral y marcar lo que queda fuera.
+```
 
 ### Modelado de densidad mediante mezclas gaussianas (GMM)
 

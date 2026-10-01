@@ -21,11 +21,16 @@ Anomaly detection is fundamentally addressed through unsupervised learning becau
 
 ## Statistical and reconstruction-based approaches
 
-Before resorting to more complex models, there are two highly efficient classic approaches based on density estimation and the linear projection of the data.
+Before resorting to more complex models, there are two highly efficient classic approaches based on density estimation and the linear projection of the data. {numref}`fig-anomaly-threshold-flow` summarizes the scheme shared by both: a model (density-based or projection-based) is fit on the normal data and a threshold is set; each new observation is scored against that threshold and, if it shows low density or a high reconstruction error, it is flagged as an anomaly.
 
-[Normal Data (Inliers)] ──▶ Density Modeling/Projection ──▶ Established Threshold
-                                                                           │
-  [Anomaly (Low Density/High Error)] ───────────────────────────────────▼──▶ Alert / Outlier
+```{figure} ../../_static/generated/diagrams/en/02_unsupervised_learning_03_anomaly_detection_01.svg
+:name: fig-anomaly-threshold-flow
+:alt: Flowchart of statistical anomaly detection: normal data feeds a density modeling or projection step that establishes a threshold; each new observation is compared against the threshold and classified as normal (high density or low error) or as an anomaly (low density or high error)
+:width: 100%
+:align: center
+
+General scheme of the statistical and reconstruction-based approaches: model what is normal, set a threshold, and flag whatever falls outside.
+```
 
 ### Density modeling via Gaussian mixtures (GMM)
 

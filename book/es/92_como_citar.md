@@ -14,28 +14,27 @@ Si utilizas este material, por favor cítalo de la siguiente manera.
 
 ## Cita recomendada (APA 7.ª edición)
 
-> Lozano Murciego, Á., & Sales Mendes, A. F. (2026). *Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial*. Universidad de Salamanca. https://doi.org/10.5281/zenodo.20449102
+> Jiménez-Bravo, D. M. (2026). *Fundamentos e introducción al aprendizaje automático*. Universidad de Salamanca. https://doi.org/10.5281/zenodo.20449102
 
 ## BibTeX
 
 También puedes usar el archivo BibTeX descargable: {download}`citation.bib <../_static/citation.bib>`.
 
 ```bibtex
-@book{lozano_murciego_elaboracion_2026,
-  author = {Lozano Murciego, Álvaro and Sales Mendes, André Filipe},
-  title = {Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial},
+@book{jimenez_bravo_fundamentos_2026,
+  author = {Jiménez-Bravo, Diego M.},
+  title = {Fundamentos e introducción al aprendizaje automático},
   year = {2026},
   publisher = {Universidad de Salamanca},
   doi = {10.5281/zenodo.20449102},
   url = {https://doi.org/10.5281/zenodo.20449102},
-  note = {Código fuente: https://github.com/elloza/teachbook_usal_template}
+  note = {Código fuente: https://github.com/dmjimenezbravo/ml-teachbook-usal}
 }
 ```
 
-## Autores
+## Autor
 
-- Álvaro Lozano Murciego, ORCID: https://orcid.org/0000-0002-0493-4471
-- André Filipe Sales Mendes, ORCID: https://orcid.org/0000-0003-0976-2784
+- Diego M. Jiménez Bravo, ORCID: https://orcid.org/0000-0002-0291-7627
 
 ## DOI
 

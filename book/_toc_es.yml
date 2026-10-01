@@ -20,3 +20,8 @@ parts:
   - caption: Bibliografía
     chapters:
     - file: es/95_bibliografia_curso
+  - caption: Acerca de este libro
+    chapters:
+    - file: es/90_acerca_de
+    - file: es/91_licencias
+    - file: es/92_como_citar

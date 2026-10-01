@@ -117,6 +117,64 @@ Evaluar un modelo de regresión requiere métricas específicas y el análisis d
       - **Sobreajuste** (*high varianza*): error de entrenamiento muy bajo pero error de validación muy alto; existe una brecha significativa entre ambas curvas.
     - **Regla de la desviación estándar**: en la práctica, se suele elegir el modelo más simple que esté dentro de una desviación estándar del error mínimo en la curva de validación para asegurar la parsimonia.
 
+## Ejemplo práctico en Java con SMILE
+
+Los conceptos de esta sección se pueden poner en práctica con [SMILE](https://haifengl.github.io/) (*Statistical Machine Intelligence and Learning Engine*), una librería de aprendizaje automático para Java. El repositorio [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) de la asignatura de Programación Avanzada incluye el ejemplo completo [`Ejemplo04Regresion.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo04Regresion.java), del que se extrae el siguiente fragmento.
+
+El conjunto `viviendas.csv` es sintético: el precio se ha generado con una relación lineal conocida más ruido gaussiano ($precio = 1.8 \cdot superficie + 12 \cdot habitaciones + 9 \cdot banos - 1.1 \cdot antiguedad - 6.5 \cdot distancia\_centro + 55 + \varepsilon$), de modo que se puede comprobar si OLS recupera los coeficientes reales.
+
+```java
+import smile.data.DataFrame;
+import smile.data.formula.Formula;
+import smile.io.Read;
+import smile.regression.LASSO;
+import smile.regression.LinearModel;
+import smile.regression.OLS;
+import smile.regression.RidgeRegression;
+import smile.validation.CrossValidation;
+import smile.validation.metric.R2;
+import smile.validation.metric.RMSE;
+
+DataFrame viviendas = Read.csv("data/viviendas.csv", "header=true");
+Formula formula = Formula.lhs("precio");   // precio ~ resto de columnas
+
+// Utiles.split permuta las filas y las reparte en entrenamiento/test
+Utiles.Particion particion = Utiles.split(viviendas, 0.75);
+DataFrame train = particion.train();
+DataFrame test = particion.test();
+
+// 1. Minimos cuadrados ordinarios: solucion exacta en un solo paso
+LinearModel ols = OLS.fit(formula, train);
+System.out.println(ols);   // coeficientes, p-valores, R2... (como summary() en R)
+System.out.printf("Termino independiente: %.3f (real: 55)%n", ols.intercept());
+
+// 2. Evaluacion sobre el conjunto de test
+double[] yTest = formula.y(test).toDoubleArray();
+double[] prediccion = ols.predict(test);
+System.out.printf("RMSE = %.3f%n", RMSE.of(yTest, prediccion));
+System.out.printf("R2   = %.4f%n", R2.of(yTest, prediccion));
+
+// 3. Regularizacion: Ridge encoge los coeficientes, LASSO puede anularlos
+LinearModel ridge = RidgeRegression.fit(formula, train, 0.1);
+LinearModel lasso = LASSO.fit(formula, train, new LASSO.Options(0.5));
+System.out.printf("Ridge RMSE = %.3f%n", RMSE.of(yTest, ridge.predict(test)));
+System.out.printf("LASSO RMSE = %.3f%n", RMSE.of(yTest, lasso.predict(test)));
+
+// 4. Validacion cruzada de 10 pliegues
+var cv = CrossValidation.regression(10, formula, viviendas,
+        (f, datos) -> OLS.fit(f, datos));
+System.out.printf("OLS RMSE medio = %.3f | R2 medio = %.4f%n",
+        cv.avg().rmse(), cv.avg().r2());
+```
+
+Algunas ideas que conviene observar al ejecutarlo:
+
+- `Formula.lhs("precio")` declara la variable objetivo; el resto de columnas del `DataFrame` se usan como predictoras.
+- `OLS.fit` resuelve la ecuación normal de mínimos cuadrados de forma exacta, y el modelo resultante imprime los coeficientes estimados junto a su error estándar y su $p$-valor.
+- El ejemplo completo compara también OLS con *Random Forest* y *Gradient Boosting*: con datos generados por un modelo lineal, OLS gana a los modelos basados en árboles, lo que ilustra que «más complejo» no significa «mejor».
+
+Para ejecutarlo desde la raíz del repositorio: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo04Regresion`.
+
 ## Resumen
 
 - **Regresión Lineal**: modelo simple pero poderoso.

@@ -138,7 +138,7 @@ It is a robust criterion that balances the stability of complete linkage with th
 :align: center
 
 Hierarchical clustering of the *NCI60* dataset with complete, average, and single linkage.
-Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.17. Springer. Freely distributed for educational use (statlearning.com) {cite:p}`james2013islr`.
+Source: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figure 10.17. Springer. Freely distributed for educational use (statlearning.com).
 ```
 
 ### DBSCAN: density-based clustering
@@ -341,6 +341,65 @@ RI ranges between $0$ (total disagreement) and $1$ (perfect agreement). However,
 Popularized by classic software suites such as Weka, this approach trains the clustering model while completely ignoring the class attribute. Once the space has been segmented, the evaluator examines the composition of each cluster to retrospectively assign it the majority class label.
 
 From this assignment, it is possible to map the geometric boundaries as if they were a supervised classifier and build a classic confusion matrix that reveals the exact rates of false positives, false negatives, and overall per-class accuracy.
+
+## Hands-on example in Java with SMILE
+
+The [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) repository includes the full example [`Ejemplo05Clustering.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo05Clustering.java), which applies the three algorithms from this section with the [SMILE](https://haifengl.github.io/) library (comments translated into English). It uses the *Iris* dataset **with the species column removed**: the algorithm never sees the labels, but since we know there are three species we can compare the resulting partition against the true one using an external index (ARI).
+
+```java
+import java.util.Arrays;
+import smile.clustering.CentroidClustering;
+import smile.clustering.Clustering;
+import smile.clustering.DBSCAN;
+import smile.clustering.HierarchicalClustering;
+import smile.clustering.KMeans;
+import smile.clustering.linkage.WardLinkage;
+import smile.data.DataFrame;
+import smile.io.Read;
+import smile.math.MathEx;
+import smile.validation.metric.AdjustedRandIndex;
+
+MathEx.setSeed(42);
+
+DataFrame iris = Read.csv("data/iris.csv", "header=true").factorize("species");
+double[][] x = iris.drop("species").toArray();          // no labels
+int[] especieReal = iris.column("species").toIntArray(); // only for evaluation
+
+// 1. K-means with k = 3: fit(data, k, maxIterations)
+CentroidClustering<double[], double[]> kmeans = KMeans.fit(x, 3, 100);
+int[] grupos = kmeans.group();
+System.out.printf("Distortion (inertia) = %.3f%n", kmeans.distortion());
+System.out.printf("ARI against the true species = %.4f%n",
+        AdjustedRandIndex.of(especieReal, grupos));
+
+// Assign a new sample to the nearest centroid
+double[] nueva = { 5.9, 3.0, 5.1, 1.8 };
+System.out.printf("The sample falls in cluster %d%n", kmeans.predict(nueva));
+
+// 2. Elbow method: distortion for different values of k
+for (int k = 2; k <= 8; k++) {
+    System.out.printf("k = %d  distortion = %.3f%n", k, KMeans.fit(x, k, 100).distortion());
+}
+
+// 3. DBSCAN: fit(data, minPts, epsilon). No need to fix k, and it detects noise
+DBSCAN<double[]> dbscan = DBSCAN.fit(x, 5, 0.8);
+long ruido = Arrays.stream(dbscan.group()).filter(g -> g == Clustering.OUTLIER).count();
+System.out.printf("DBSCAN: %d clusters, %d noise points%n", dbscan.k(), ruido);
+
+// 4. Agglomerative hierarchical clustering (Ward linkage), cut into 3 groups
+HierarchicalClustering jerarquico = HierarchicalClustering.fit(WardLinkage.of(x));
+int[] particion3 = jerarquico.partition(3);
+System.out.printf("Hierarchical: ARI = %.4f%n", AdjustedRandIndex.of(especieReal, particion3));
+```
+
+A few things worth noticing when you run it:
+
+- `kmeans.distortion()` is the within-cluster inertia (WCSS) that $K$-means minimizes; the loop over $k$ produces the values that would be plotted in the elbow-method chart.
+- Points that DBSCAN considers noise receive the special label `Clustering.OUTLIER` instead of a cluster number.
+- In hierarchical clustering, the linkage criterion is built first (`WardLinkage`, though `SingleLinkage`, `CompleteLinkage`, or `UPGMALinkage` for average linkage are also available) and the dendrogram is then cut with `partition(k)`.
+- The full example also compares X-means (automatic choice of $k$ via BIC) and shows the effect of standardizing the variables before clustering.
+
+To run it from the root of the repository: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo05Clustering`.
 
 ## Summary
 

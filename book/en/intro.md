@@ -49,9 +49,8 @@ While the book is self-contained, it helps to have:
 
 Each chapter includes:
 - **Theoretical concepts** explained clearly
-- **Practical examples** with executable Python code
+- **Practical examples** with executable Java code
 - **Visualizations** to better understand results
-- **Exercises** to reinforce learning
 
 It's recommended to follow the established order, though you can consult specific sections as needed.
 

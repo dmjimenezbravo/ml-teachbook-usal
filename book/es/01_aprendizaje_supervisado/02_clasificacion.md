@@ -43,7 +43,7 @@ La {numref}`fig-islr-default` muestra por qué es necesaria esta transformación
 :align: center
 
 Regresión lineal (izquierda) frente a regresión logística (derecha) sobre el conjunto de datos *Default*.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 4.2. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 4.2. Springer. Libro de libre distribución para uso educativo (statlearning.com).
 ```
 
 ## Algoritmos clásicos de clasificación
@@ -205,6 +205,73 @@ La evaluación no solo ocurre al final, sino que debe guiar todo el proceso de d
 - **Parada temprana** (*early stopping*): estrategia que utiliza un *callback* para interrumpir el entrenamiento automáticamente cuando la métrica de validación deja de mejorar, ahorrando tiempo y evitando el sobreajuste.
 - **Análisis de errores**: inspeccionar manualmente las muestras donde el modelo falla ayuda a entender qué patrones específicos está confundiendo el sistema (por ejemplo, confundir un "3" con un "5" en reconocimiento de dígitos).
 - **A/B *testing***: tras el despliegue, se recomienda realizar pruebas aleatorizadas para medir el impacto real del modelo en comparación con el proceso anterior.
+
+## Ejemplo práctico en Java con SMILE
+
+El repositorio [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) incluye el ejemplo completo [`Ejemplo03Clasificacion.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo03Clasificacion.java), que entrena varios clasificadores sobre el conjunto de datos *Iris* con la librería [SMILE](https://haifengl.github.io/). El siguiente fragmento resume sus pasos principales.
+
+SMILE ofrece dos estilos de API: **con fórmula** (`fit(Formula, DataFrame)`, usado por los modelos basados en árboles, que aceptan variables categóricas sin codificar) y **con *arrays*** (`fit(double[][] x, int[] y)`, usado por KNN, SVM, regresión logística o redes neuronales).
+
+```java
+import smile.classification.KNN;
+import smile.classification.LogisticRegression;
+import smile.classification.RandomForest;
+import smile.data.DataFrame;
+import smile.data.formula.Formula;
+import smile.io.Read;
+import smile.math.MathEx;
+import smile.validation.CrossValidation;
+import smile.validation.metric.Accuracy;
+import smile.validation.metric.ConfusionMatrix;
+
+MathEx.setSeed(42);   // semilla global: particiones y modelos reproducibles
+
+DataFrame iris = Read.csv("data/iris.csv", "header=true").factorize("species");
+Formula formula = Formula.lhs("species");   // species ~ resto de columnas
+
+Utiles.Particion particion = Utiles.split(iris, 0.7);
+DataFrame train = particion.train();
+DataFrame test = particion.test();
+
+// 1. Random Forest (API con formula): trabaja directamente sobre el DataFrame
+RandomForest bosque = RandomForest.fit(formula, train, new RandomForest.Options(200));
+
+int[] yTest = formula.y(test).toIntArray();
+int[] prediccion = new int[test.nrow()];
+for (int i = 0; i < test.nrow(); i++) {
+    prediccion[i] = bosque.predict(test.get(i));
+}
+System.out.printf("Accuracy = %.2f%%%n", 100.0 * Accuracy.of(yTest, prediccion));
+System.out.println(ConfusionMatrix.of(yTest, prediccion));
+
+// 2. Modelos que trabajan con arrays: KNN y regresion logistica
+double[][] xTrain = formula.x(train).toArray();
+int[] yTrain = formula.y(train).toIntArray();
+double[][] xTest = formula.x(test).toArray();
+
+KNN<double[]> knn = KNN.fit(xTrain, yTrain, 5);
+LogisticRegression logistica = LogisticRegression.fit(xTrain, yTrain,
+        new LogisticRegression.Options(0.1, 1E-5, 500));   // lambda, tolerancia, iteraciones
+System.out.printf("KNN (k=5)           accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(yTest, knn.predict(xTest)));
+System.out.printf("Regresion logistica accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(yTest, logistica.predict(xTest)));
+
+// 3. Validacion cruzada de 10 pliegues: la estimacion honesta del rendimiento
+var cv = CrossValidation.classification(10, formula, iris,
+        (f, datos) -> RandomForest.fit(f, datos, new RandomForest.Options(200)));
+System.out.printf("Accuracy media = %.4f (desv. %.4f)%n",
+        cv.avg().accuracy(), cv.std().accuracy());
+```
+
+Algunas ideas que conviene observar al ejecutarlo:
+
+- `factorize("species")` convierte la columna de texto con la especie en una variable categórica con códigos enteros, que es lo que esperan los clasificadores.
+- `ConfusionMatrix.of` construye la matriz de confusión vista en esta sección, y `Accuracy.of` calcula la exactitud a partir de las etiquetas reales y las predichas.
+- El primer parámetro de `LogisticRegression.Options` es $\lambda$, la fuerza de la regularización $L_2$ aplicada a los pesos del modelo.
+- El ejemplo completo muestra además la predicción «blanda» (probabilidades a posteriori de cada clase), la persistencia del modelo en disco y el uso de *encoders* (`LEVEL`, `ONE_HOT`) para variables categóricas con un segundo conjunto de datos.
+
+Para ejecutarlo desde la raíz del repositorio: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo03Clasificacion`.
 
 ## Resumen
 

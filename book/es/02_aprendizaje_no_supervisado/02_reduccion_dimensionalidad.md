@@ -111,7 +111,7 @@ Un ejemplo real de la utilidad de PCA aparece en el conjunto de datos *NCI60*, d
 :align: center
 
 Proyección de las líneas celulares de cáncer *NCI60* (6830 genes) sobre sus tres primeras componentes principales.
-Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.15. Springer. Libro de libre distribución para uso educativo (statlearning.com) {cite:p}`james2013islr`.
+Fuente: James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). *An Introduction to Statistical Learning*, Figura 10.15. Springer. Libro de libre distribución para uso educativo (statlearning.com).
 ```
 
 ## Métodos no lineales y aprendizaje de variedades (*manifold learning*)
@@ -199,6 +199,69 @@ La {numref}`fig-umap-digits` muestra una proyección UMAP a 2D del conjunto de d
 Proyección UMAP del conjunto de datos *Digits*.
 Fuente: documentación de umap-learn, «How to Use UMAP» (umap-learn.readthedocs.io). Copyright (c) 2017, Leland McInnes. Licencia BSD de 3 cláusulas.
 ```
+
+## Ejemplo práctico en Java con SMILE
+
+El repositorio [programacion-avanzada-smile](https://github.com/dmjimenezbravo/programacion-avanzada-smile) incluye el ejemplo completo [`Ejemplo06PCA.java`](https://github.com/dmjimenezbravo/programacion-avanzada-smile/blob/main/src/main/java/es/usal/smile/Ejemplo06PCA.java), que aplica PCA al conjunto *Iris* (cuatro variables) con la librería [SMILE](https://haifengl.github.io/). El siguiente fragmento resume sus pasos principales.
+
+```java
+import java.util.Arrays;
+import smile.classification.KNN;
+import smile.data.DataFrame;
+import smile.feature.extraction.PCA;
+import smile.io.Read;
+import smile.tensor.Vector;
+import smile.validation.metric.Accuracy;
+
+DataFrame iris = Read.csv("data/iris.csv", "header=true").factorize("species");
+double[][] x = iris.drop("species").toArray();
+int[] y = iris.column("species").toIntArray();
+
+// 1. Ajuste del PCA sobre la matriz de covarianzas.
+//    PCA.cor(x) usaria la matriz de correlaciones (equivale a estandarizar antes).
+PCA pca = PCA.fit(x);
+
+// 2. Varianza explicada por cada componente (el "scree plot" en forma de tabla)
+Vector proporcion = pca.varianceProportion();
+Vector acumulada = pca.cumulativeVarianceProportion();
+for (int i = 0; i < proporcion.size(); i++) {
+    System.out.printf("PC%d: %.2f%% (acumulada %.2f%%)%n",
+            i + 1, 100 * proporcion.get(i), 100 * acumulada.get(i));
+}
+System.out.println(pca.loadings());   // cargas: peso de cada variable en cada componente
+
+// 3. Proyeccion de 4 dimensiones a 2
+PCA proyeccion2D = pca.getProjection(2);
+double[][] x2 = proyeccion2D.apply(x);
+System.out.println("Primera muestra proyectada: " + Arrays.toString(x2[0]));
+
+// Alternativa: pedir las componentes necesarias para retener el 95% de la varianza
+int componentes95 = pca.getProjection(0.95).apply(x)[0].length;
+
+// 4. PCA como paso previo a un clasificador.
+//    El PCA se ajusta SOLO con entrenamiento y se aplica despues al test:
+//    ajustarlo con todos los datos seria una fuga de informacion.
+Utiles.ParticionArrays particion = Utiles.split(x, y, 0.7);
+PCA pcaTrain = PCA.fit(particion.xTrain()).getProjection(2);
+double[][] xTrain2 = pcaTrain.apply(particion.xTrain());
+double[][] xTest2 = pcaTrain.apply(particion.xTest());
+
+KNN<double[]> knnCompleto = KNN.fit(particion.xTrain(), particion.yTrain(), 5);
+KNN<double[]> knnReducido = KNN.fit(xTrain2, particion.yTrain(), 5);
+System.out.printf("KNN con 4 variables    accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(particion.yTest(), knnCompleto.predict(particion.xTest())));
+System.out.printf("KNN con 2 componentes  accuracy = %.2f%%%n",
+        100.0 * Accuracy.of(particion.yTest(), knnReducido.predict(xTest2)));
+```
+
+Algunas ideas que conviene observar al ejecutarlo:
+
+- `varianceProportion()` y `cumulativeVarianceProportion()` son el equivalente numérico del gráfico de sedimentación (*scree plot*) y permiten decidir cuántas componentes conservar.
+- `getProjection(2)` fija el número de componentes, mientras que `getProjection(0.95)` lo elige automáticamente a partir de la varianza que se quiere retener.
+- Al usar PCA como preprocesado, ajustarlo con todos los datos (entrenamiento y test) sería una **fuga de información**: el PCA debe ajustarse solo con el conjunto de entrenamiento.
+- El ejemplo completo incluye también *kernel* PCA (`KernelPCA` con un núcleo gaussiano) y PCA probabilístico; SMILE ofrece además $t$-SNE y UMAP en el paquete `smile.manifold`.
+
+Para ejecutarlo desde la raíz del repositorio: `mvn exec:java -Dexec.mainClass=es.usal.smile.Ejemplo06PCA`.
 
 ## Resumen
 

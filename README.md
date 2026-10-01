@@ -97,7 +97,7 @@ Se abrirá tu navegador en `localhost:8000` y los cambios se reflejarán automá
 
 > **"Genera los PDFs del libro"** o **"Exportar a PDF"**
 
-El agente instalará LaTeX (Tectonic) si es necesario y generará `ElaboracionDeLibrosElectronicosMedianteCodigoYAsistentesDeInteligenciaArtificial.pdf` y `CreatingElectronicBooksWithCodeAndArtificialIntelligenceAssistants.pdf`.
+El agente instalará LaTeX (Tectonic) si es necesario y generará `FundamentosEIntroduccionAlAprendizajeAutomatico.pdf` y `FundamentalsAndIntroductionToMachineLearning.pdf`.
 
 ### 5️⃣ Guardar cambios en GitHub
 

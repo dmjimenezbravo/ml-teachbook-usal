@@ -1,0 +1,16 @@
+flowchart LR
+    A["Normal data<br/>(inliers)"] --> B["Density modeling<br/>or projection (PCA)"]
+    B --> C["Established<br/>threshold"]
+    D["New<br/>observation"] --> C
+    C -->|"High density /<br/>low error"| E["Normal"]
+    C -->|"Low density /<br/>high error"| F["Alert:<br/>anomaly (outlier)"]
+
+    classDef low fill:#dbeafe,stroke:#3b82f6,color:#1e3a8a
+    classDef high fill:#fed7aa,stroke:#f97316,color:#7c2d12
+    classDef ok fill:#dcfce7,stroke:#22c55e,color:#14532d
+    classDef effect fill:#fecaca,stroke:#ef4444,color:#7f1d1d
+
+    class A,B,C low
+    class D high
+    class E ok
+    class F effect
