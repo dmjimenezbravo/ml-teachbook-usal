@@ -2,21 +2,27 @@ format: jb-book
 root: en/intro
 parts:
   - caption: Section 1 - Fundamentals
+    numbered: true
     chapters:
     - file: en/00_fundamentals/intro
-    - file: en/00_fundamentals/01_history_evolution
-    - file: en/00_fundamentals/02_fundamental_concepts
+      sections:
+      - file: en/00_fundamentals/01_history_evolution
+      - file: en/00_fundamentals/02_fundamental_concepts
   - caption: Section 2 - Supervised Learning
+    numbered: true
     chapters:
     - file: en/01_supervised_learning/intro
-    - file: en/01_supervised_learning/01_regression
-    - file: en/01_supervised_learning/02_classification
+      sections:
+      - file: en/01_supervised_learning/01_regression
+      - file: en/01_supervised_learning/02_classification
   - caption: Section 3 - Unsupervised Learning
+    numbered: true
     chapters:
     - file: en/02_unsupervised_learning/intro
-    - file: en/02_unsupervised_learning/01_clustering
-    - file: en/02_unsupervised_learning/02_dimensionality_reduction
-    - file: en/02_unsupervised_learning/03_anomaly_detection
+      sections:
+      - file: en/02_unsupervised_learning/01_clustering
+      - file: en/02_unsupervised_learning/02_dimensionality_reduction
+      - file: en/02_unsupervised_learning/03_anomaly_detection
   - caption: Bibliography
     chapters:
     - file: en/95_course_bibliography

@@ -2,21 +2,27 @@ format: jb-book
 root: es/intro
 parts:
   - caption: Sección 1 - Fundamentos
+    numbered: true
     chapters:
     - file: es/00_fundamentos/intro
-    - file: es/00_fundamentos/01_historia_evolucion
-    - file: es/00_fundamentos/02_conceptos_fundamentales
+      sections:
+      - file: es/00_fundamentos/01_historia_evolucion
+      - file: es/00_fundamentos/02_conceptos_fundamentales
   - caption: Sección 2 - Aprendizaje supervisado
+    numbered: true
     chapters:
     - file: es/01_aprendizaje_supervisado/intro
-    - file: es/01_aprendizaje_supervisado/01_regresion
-    - file: es/01_aprendizaje_supervisado/02_clasificacion
+      sections:
+      - file: es/01_aprendizaje_supervisado/01_regresion
+      - file: es/01_aprendizaje_supervisado/02_clasificacion
   - caption: Sección 3 - Aprendizaje no supervisado
+    numbered: true
     chapters:
     - file: es/02_aprendizaje_no_supervisado/intro
-    - file: es/02_aprendizaje_no_supervisado/01_clustering
-    - file: es/02_aprendizaje_no_supervisado/02_reduccion_dimensionalidad
-    - file: es/02_aprendizaje_no_supervisado/03_deteccion_anomalias
+      sections:
+      - file: es/02_aprendizaje_no_supervisado/01_clustering
+      - file: es/02_aprendizaje_no_supervisado/02_reduccion_dimensionalidad
+      - file: es/02_aprendizaje_no_supervisado/03_deteccion_anomalias
   - caption: Bibliografía
     chapters:
     - file: es/95_bibliografia_curso

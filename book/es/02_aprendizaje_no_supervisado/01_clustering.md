@@ -1,4 +1,4 @@
-# 3.1 *Clustering*
+# *Clustering*
 
 ## Introducción
 

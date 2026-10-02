@@ -1,4 +1,4 @@
-# 3.2 Reducción de dimensionalidad
+# Reducción de dimensionalidad
 
 ## Introducción
 
