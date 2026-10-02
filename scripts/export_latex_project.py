@@ -371,6 +371,8 @@ def build_latex_project(lang: str, output_dir: Path, keep_temp: bool, make_zip: 
             shutil.rmtree(temp_root)
         return False
     export_pdf.mirror_shared_asset_paths_for_latex(str(latex_build_dir))
+    export_pdf.mark_unnumbered_back_matter(str(latex_build_dir), str(temp_root / "_toc.yml"))
+    export_pdf.place_latex_bibliography(str(latex_build_dir))
 
     lang_output = output_dir / lang
     if lang_output.exists():

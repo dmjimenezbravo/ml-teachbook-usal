@@ -1,4 +1,4 @@
-# 2.1 Regresión
+# Regresión
 
 ## Introducción
 

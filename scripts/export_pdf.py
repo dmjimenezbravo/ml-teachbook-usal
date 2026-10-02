@@ -34,7 +34,12 @@ except ModuleNotFoundError as exc:
         print("   .venv/bin/python scripts/setup_env.py --yes --extras pdf")
     raise SystemExit(1)
 
-from collect_used_bibliography import BibliographyError, collect_used_bibliography
+from collect_used_bibliography import (
+    BibliographyError,
+    collect_used_bibliography,
+    load_bib_database,
+    write_used_bib,
+)
 from pdf_names import DEFAULT_PDF_FILENAME, pdf_filename_for_lang
 
 
@@ -512,10 +517,7 @@ def find_global_bibliography_page(content_dir):
         return matches[0][0]
 
     if not matches:
-        raise BibliographyError(
-            "No se encontró una página global de bibliografía con "
-            f"`{{bibliography}}` y `:cited:` o `:all:` en {content_path}."
-        )
+        return None
 
     details = ", ".join(
         f"{path.relative_to(content_path).as_posix()}:{line_number}"
@@ -555,6 +557,186 @@ def rewrite_global_bibliography_to_all(reference_page):
     reference_page.write_text(new_text, encoding="utf-8", newline="\n")
 
 
+CURATED_KEY_FILTER = re.compile(r"\bkey\s+in\s+\{([^}]*)\}")
+
+
+def curated_bibliography_keys(options_text):
+    """Return the keys of a `:filter: key in {...}` bibliography, or None.
+
+    Filters on `docname` belong to per-page HTML bibliographies, so they never
+    count as a curated book bibliography.
+    """
+    for line in options_text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith(":filter:"):
+            continue
+        if "docname" in stripped:
+            return None
+        match = CURATED_KEY_FILTER.search(stripped)
+        if match:
+            return re.findall(r"[\"']([^\"']+)[\"']", match.group(1))
+    return None
+
+
+def find_curated_bibliography_page(content_dir):
+    """Find a final bibliography page built from `:filter: key in {...}` lists.
+
+    Some books group their references by hand (textbooks, cited papers...)
+    instead of printing every citation with `:cited:`. Such a page is kept as
+    written in the PDF. Returns (page, keys per directive) or None.
+    """
+    content_path = Path(content_dir)
+    matches = []
+
+    for candidate in sorted(content_path.rglob("*.md")):
+        text = candidate.read_text(encoding="utf-8")
+        groups = []
+        directives = list(iter_bibliography_directives(text))
+        for _, options in directives:
+            keys = curated_bibliography_keys(options)
+            if keys is None:
+                break
+            groups.append(keys)
+        else:
+            if directives:
+                matches.append((candidate, groups))
+
+    if len(matches) == 1:
+        return matches[0]
+    if not matches:
+        return None
+
+    details = ", ".join(path.relative_to(content_path).as_posix() for path, _ in matches)
+    raise BibliographyError(
+        "Se encontró más de una bibliografía curada con `:filter: key in {...}`. "
+        f"Mantén una sola página final de bibliografía. Coincidencias: {details}"
+    )
+
+
+def iter_toc_docs(toc_path):
+    """Return the docnames a jb-book TOC lists: root, chapters and sections."""
+    with open(toc_path, "r", encoding="utf-8") as f:
+        toc = yaml.safe_load(f) or {}
+    docs = [toc["root"]] if toc.get("root") else []
+
+    def walk(entries):
+        for entry in entries or []:
+            if entry.get("file"):
+                docs.append(entry["file"])
+            walk(entry.get("sections"))
+
+    for part in toc.get("parts") or []:
+        walk(part.get("chapters"))
+    walk(toc.get("chapters"))
+    walk(toc.get("sections"))
+    return [os.path.splitext(doc)[0].replace("\\", "/") for doc in docs]
+
+
+def remove_pages_outside_toc(temp_root):
+    """Delete the pages the TOC does not list from a temporary PDF source tree.
+
+    Sphinx still reads pages that are outside the TOC, and in LaTeX every
+    reference is printed in a single bibliography. A stray `{bibliography}` on
+    one of those pages (template examples, an old global page) takes the
+    entries and leaves the book's own bibliography empty.
+    """
+    temp_path = Path(temp_root)
+    toc_path = temp_path / "_toc.yml"
+    if not toc_path.is_file():
+        return
+    keep = set(iter_toc_docs(toc_path))
+    removed = 0
+    for source in sorted(temp_path.rglob("*.md")) + sorted(temp_path.rglob("*.ipynb")):
+        rel = source.relative_to(temp_path)
+        if any(part.startswith(("_", ".")) for part in rel.parts[:-1]):
+            continue
+        if rel.with_suffix("").as_posix() not in keep:
+            source.unlink()
+            removed += 1
+    if removed:
+        print(f"🧹 PDF: {removed} página(s) fuera del TOC excluidas del build temporal.")
+
+
+BIBLIOGRAPHY_SLOT = "%TEACHBOOK-BIBSLOT:"
+BIBLIOGRAPHY_SLOT_RE = re.compile(r"^%TEACHBOOK-BIBSLOT:(\*|\d+)[ \t]*\n", re.M)
+LATEX_BIBLIOGRAPHY_RE = re.compile(
+    r"(\\begin\{sphinxthebibliography\}\{[^}]*\}\n)(.*?)\\end\{sphinxthebibliography\}\n?",
+    re.S,
+)
+
+
+def add_latex_bibliography_slots(reference_page, sizes):
+    """Mark, in the temporary page, where each bibliography must be printed.
+
+    Sphinx's LaTeX writer moves every reference to one list at the very end of
+    the document, after the last page. A raw LaTeX marker after each
+    `{bibliography}` directive records its position and how many entries it
+    prints ("*" = the rest), so `place_latex_bibliography` can move them back.
+    """
+    lines = reference_page.read_text(encoding="utf-8").splitlines(keepends=True)
+    out = []
+    pending = list(sizes)
+    closing = None
+    for line in lines:
+        out.append(line)
+        if closing is None:
+            match = re.match(r"^\s*(`{3,}|~{3,})\{bibliography\}", line)
+            if match and pending:
+                closing = match.group(1)
+            continue
+        stripped = line.strip()
+        if stripped and set(stripped) == {closing[0]} and len(stripped) >= len(closing):
+            if not line.endswith("\n"):
+                out.append("\n")
+            out.append(f"\n```{{raw}} latex\n{BIBLIOGRAPHY_SLOT}{pending.pop(0)}\n```\n")
+            closing = None
+    reference_page.write_text("".join(out), encoding="utf-8", newline="\n")
+
+
+def place_latex_bibliography(latex_build_dir):
+    """Move the references Sphinx printed at the end back into their slots.
+
+    Entries come out in directive order, so each slot takes its count from the
+    list; the last slot also takes any leftover (citations missing from every
+    list).
+    """
+    for tex_path in glob.glob(os.path.join(latex_build_dir, "*.tex")):
+        with open(tex_path, "r", encoding="utf-8") as f:
+            text = f.read()
+        slots = list(BIBLIOGRAPHY_SLOT_RE.finditer(text))
+        if not slots:
+            continue
+        block = LATEX_BIBLIOGRAPHY_RE.search(text)
+        items = []
+        head = ""
+        if block:
+            head = block.group(1)
+            items = [
+                item
+                for item in re.split(r"(?=\\bibitem)", block.group(2))
+                if item.lstrip().startswith("\\bibitem")
+            ]
+            text = text[:block.start()] + text[block.end():]
+
+        chunks = []
+        start = 0
+        for index, slot in enumerate(BIBLIOGRAPHY_SLOT_RE.finditer(text)):
+            last = index == len(slots) - 1
+            size = slot.group(1)
+            end = len(items) if last or size == "*" else start + int(size)
+            chunk = items[start:end]
+            start = end
+            chunks.append(
+                head + "".join(chunk) + "\\end{sphinxthebibliography}\n" if chunk else ""
+            )
+
+        chunk_iter = iter(chunks)
+        text = BIBLIOGRAPHY_SLOT_RE.sub(lambda _: next(chunk_iter), text)
+        with open(tex_path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        print(f"   📚 Bibliografía colocada en su página: {len(items)} entrada(s), {len(slots)} lista(s).")
+
+
 def prepare_bibliography_for_pdf(temp_root, lang, config_path):
     """Generate a used-only BibTeX file and wire it into the temporary PDF build."""
     temp_path = Path(temp_root)
@@ -563,19 +745,59 @@ def prepare_bibliography_for_pdf(temp_root, lang, config_path):
     output_rel = Path("_static") / "generated" / "bibliography" / f"references_used_{lang}.bib"
     output_file = temp_path / output_rel
 
+    remove_pages_outside_toc(temp_path)
     result = collect_used_bibliography(
         content_dir=content_dir,
         bib_file=bib_file,
         output_file=output_file,
     )
     update_bibtex_config_for_pdf(str(config_path), output_rel.as_posix())
+    used_keys = result.used_keys
     reference_page = find_global_bibliography_page(content_dir)
-    rewrite_global_bibliography_to_all(reference_page)
+    if reference_page is not None:
+        rewrite_global_bibliography_to_all(reference_page)
+        add_latex_bibliography_slots(reference_page, ["*"])
+    else:
+        curated = find_curated_bibliography_page(content_dir)
+        if curated is None:
+            raise BibliographyError(
+                "No se encontró una página global de bibliografía con "
+                f"`{{bibliography}}` y `:cited:` o `:all:`, ni una bibliografía "
+                f"curada con `:filter: key in {{...}}`, en {content_dir}."
+            )
+        reference_page, groups = curated
+        listed_keys = list(dict.fromkeys(key for group in groups for key in group))
+        bib_data = load_bib_database(bib_file)
+        unknown = [key for key in listed_keys if key not in bib_data.entries]
+        if unknown:
+            raise BibliographyError(
+                f"{reference_page.name} lista claves que no existen en "
+                f"{bib_file.name}: {', '.join(unknown)}"
+            )
+        unlisted = [key for key in used_keys if key not in listed_keys]
+        if unlisted:
+            print(
+                f"⚠️  Citas que no aparecen en ninguna lista de {reference_page.name} "
+                f"y quedarán sin entrada en el PDF: {', '.join(unlisted)}"
+            )
+        # The page also lists references that are never cited (course
+        # textbooks), so the PDF .bib must hold them as well.
+        used_keys = list(dict.fromkeys(used_keys + listed_keys))
+        write_used_bib(bib_data, used_keys, output_file)
+        # A key listed twice is printed only in its first list.
+        seen = set()
+        sizes = []
+        for group in groups:
+            new_keys = [key for key in dict.fromkeys(group) if key not in seen]
+            seen.update(new_keys)
+            sizes.append(str(len(new_keys)))
+        add_latex_bibliography_slots(reference_page, sizes)
 
     print(
         f"📚 Bibliografía PDF {lang}: "
         f"{result.citation_count} cita(s), "
-        f"{len(result.used_keys)} clave(s) en {output_rel.as_posix()}."
+        f"{len(used_keys)} clave(s) en {output_rel.as_posix()} "
+        f"(página: {reference_page.relative_to(content_dir).as_posix()})."
     )
 
 
@@ -878,6 +1100,64 @@ def mirror_shared_asset_paths_for_latex(latex_build_dir):
             )
 
 
+BACK_MATTER_MARKER = "% TeachBook: back matter (unnumbered parts and chapters)"
+
+
+def find_back_matter_doc(toc_path):
+    """Return the first document of the unnumbered parts that close a jb-book TOC.
+
+    Content parts carry `numbered: true`, so HTML and LaTeX agree on 1, 1.1,
+    1.2... The parts after the last numbered one (bibliography, about,
+    licenses...) are back matter. Returns None when there is no such tail.
+    """
+    with open(toc_path, "r", encoding="utf-8") as f:
+        toc = yaml.safe_load(f) or {}
+    parts = toc.get("parts") or []
+    numbered = [i for i, part in enumerate(parts) if part.get("numbered")]
+    if not numbered:
+        return None
+    for part in parts[numbered[-1] + 1:]:
+        for chapter in part.get("chapters") or []:
+            if chapter.get("file"):
+                return os.path.splitext(chapter["file"])[0].replace("\\", "/")
+    return None
+
+
+def mark_unnumbered_back_matter(latex_build_dir, toc_path):
+    """Stop LaTeX numbering before the back matter declared in the TOC.
+
+    Sphinx numbers every \\part and \\chapter, including the bibliography and
+    the about pages, which the HTML leaves unnumbered. The `sphinxmanual`
+    class has no \\backmatter, so secnumdepth is lowered right before the
+    first back-matter part instead.
+    """
+    doc = find_back_matter_doc(toc_path)
+    if not doc:
+        return
+    label = "\\label{\\detokenize{" + doc + "::doc}}"
+    for tex_path in glob.glob(os.path.join(latex_build_dir, "*.tex")):
+        with open(tex_path, "r", encoding="utf-8") as f:
+            text = f.read()
+        pos = text.find(label)
+        if pos < 0 or BACK_MATTER_MARKER in text:
+            continue
+        start = text.rfind("\\part{", 0, pos)
+        if start < 0:
+            start = text.rfind("\\chapter{", 0, pos)
+        if start < 0:
+            continue
+        start = text.rfind("\n", 0, start) + 1
+        text = (
+            text[:start]
+            + BACK_MATTER_MARKER + "\n\\setcounter{secnumdepth}{-2}\n"
+            + text[start:]
+        )
+        with open(tex_path, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        print(f"   🔢 Material final sin numerar desde: {doc}")
+        return
+
+
 def copy_root_latex_support_files(latex_build_dir):
     """Copy top-level helper files like latexmkrc into the build dir."""
     templates_root = os.path.abspath("latex_templates")
@@ -1015,6 +1295,8 @@ def build_pdf_for_lang(lang, engine_name):
     if not prepare_svg_images_for_latex(latex_build_dir):
         return False
     mirror_shared_asset_paths_for_latex(latex_build_dir)
+    mark_unnumbered_back_matter(latex_build_dir, os.path.join(BOOK_DIR, toc_file))
+    place_latex_bibliography(latex_build_dir)
 
     print(f"📂 Compilando PDF en {latex_build_dir}...")
     current_dir = os.getcwd()

@@ -1,8 +1,9 @@
-# Section 1: Fundamentals
+# Fundamentals
 
 Welcome to the first section of the course. Here we will understand the basic principles of machine learning and how it differs from the traditional programming approach.
 
-## Why Learn Machine Learning?
+```{rubric} Why Learn Machine Learning?
+```
 
 In traditional programming, a programmer explicitly writes all the rules that a program must follow:
 
@@ -20,7 +21,8 @@ But many real-world problems are too complex to describe with fixed rules. For e
 
 **Machine learning inverts the paradigm**: instead of writing the rules, we teach the program to *learn* the rules from examples.
 
-## What Will You Find in This Section?
+```{rubric} What Will You Find in This Section?
+```
 
 1. **History and Evolution**: We'll learn how AI was born and evolved to reach the modern models we use today.
 2. **Fundamental Concepts**: We'll learn the essential technical vocabulary for working with machine learning models.

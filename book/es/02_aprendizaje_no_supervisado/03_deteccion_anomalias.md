@@ -1,4 +1,4 @@
-# 3.3 Detección de anomalías
+# Detección de anomalías
 
 ## Introducción
 

@@ -1,4 +1,4 @@
-# 1.2 Conceptos fundamentales
+# Conceptos fundamentales
 
 ## Introducción
 
