@@ -1,4 +1,4 @@
-# 1.1 Historia y evolución del aprendizaje automático
+# Historia y evolución del aprendizaje automático
 
 ## Introducción
 

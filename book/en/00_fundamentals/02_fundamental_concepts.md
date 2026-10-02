@@ -1,4 +1,4 @@
-# 1.2 Fundamental Concepts
+# Fundamental Concepts
 
 ## Introduction
 

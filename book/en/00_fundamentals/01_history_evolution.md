@@ -1,4 +1,4 @@
-# 1.1 History and Evolution of Machine Learning
+# History and Evolution of Machine Learning
 
 ## Introduction
 

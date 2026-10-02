@@ -1,8 +1,9 @@
-# Sección 1: Fundamentos
+# Fundamentos
 
 Bienvenido a la primera sección del curso. Aquí comprenderemos los principios básicos del aprendizaje automático y cómo difiere del enfoque tradicional de programación.
 
-## ¿Por qué aprender aprendizaje automático?
+```{rubric} ¿Por qué aprender aprendizaje automático?
+```
 
 En la programación tradicional, un programador escribe explícitamente todas las reglas que un programa debe seguir:
 
@@ -20,7 +21,8 @@ Pero muchos problemas del mundo real son demasiado complejos para describirlos c
 
 **El aprendizaje automático invierte el paradigma**: en lugar de escribir las reglas, le enseñamos al programa a *aprender* las reglas a partir de ejemplos.
 
-## ¿Qué encontrarás en esta sección?
+```{rubric} ¿Qué encontrarás en esta sección?
+```
 
 - **Historia y evolución**: conoceremos cómo nació la IA y cómo evolucionó hasta llegar a los modelos modernos que usamos hoy.
 - **Conceptos fundamentales**: aprenderemos el vocabulario técnico esencial para trabajar con modelos de aprendizaje automático.

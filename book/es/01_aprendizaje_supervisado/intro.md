@@ -1,8 +1,9 @@
-# Sección 2: Aprendizaje supervisado
+# Aprendizaje supervisado
 
 Bienvenido a la segunda sección del curso. Aquí aprenderemos a construir modelos que aprenden a partir de ejemplos etiquetados.
 
-## ¿Qué es el aprendizaje supervisado?
+```{rubric} ¿Qué es el aprendizaje supervisado?
+```
 
 En aprendizaje supervisado, tenemos:
 - **Datos**: características de entrada (X).
@@ -11,9 +12,11 @@ En aprendizaje supervisado, tenemos:
 
 Es como aprender con un "supervisor" que te dice si tus respuestas son correctas.
 
-## Dos tipos de problemas
+```{rubric} Dos tipos de problemas
+```
 
-### 1. Regresión
+```{rubric} 1. Regresión
+```
 Predecimos un **valor continuo** (un número real):
 
 - Predecir el precio de una casa.
@@ -21,7 +24,8 @@ Predecimos un **valor continuo** (un número real):
 - Predecir la cantidad de lluvia.
 - Predecir el crecimiento de una población.
 
-### 2. Clasificación
+```{rubric} 2. Clasificación
+```
 Predecimos una **categoría** o **clase**:
 
 - Diagnosticar si una persona tiene una enfermedad (sí/no).
@@ -29,7 +33,8 @@ Predecimos una **categoría** o **clase**:
 - Reconocer si una imagen es un gato, perro o pájaro.
 - Predecir si un cliente va a abandonar.
 
-## ¿Qué encontrarás en esta sección?
+```{rubric} ¿Qué encontrarás en esta sección?
+```
 
 - **Regresión**:
   - Regresión lineal: el modelo más simple y fundamental.

@@ -1,8 +1,9 @@
-# Section 2: supervised learning
+# Supervised Learning
 
 Welcome to the second section of the course. Here we will learn to build models that learn from labeled examples.
 
-## What is supervised learning?
+```{rubric} What is supervised learning?
+```
 
 In supervised learning, we have:
 - **Data**: input features (X).
@@ -11,9 +12,11 @@ In supervised learning, we have:
 
 It is like learning with a "supervisor" who tells you whether your answers are correct.
 
-## Two types of problems
+```{rubric} Two types of problems
+```
 
-### 1. Regression
+```{rubric} 1. Regression
+```
 We predict a **continuous value** (a real number):
 
 - Predicting the price of a house.
@@ -21,7 +24,8 @@ We predict a **continuous value** (a real number):
 - Predicting rainfall amount.
 - Predicting population growth.
 
-### 2. Classification
+```{rubric} 2. Classification
+```
 We predict a **category** or **class**:
 
 - Diagnosing whether a person has a disease (yes/no).
@@ -29,7 +33,8 @@ We predict a **category** or **class**:
 - Recognizing whether an image is a cat, dog, or bird.
 - Predicting whether a customer will churn.
 
-## What Will You Find in This Section?
+```{rubric} What Will You Find in This Section?
+```
 
 - **Regression**:
   - Linear regression: the simplest and most fundamental model.
