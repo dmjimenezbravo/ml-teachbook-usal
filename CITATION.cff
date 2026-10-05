@@ -24,7 +24,7 @@ keywords:
 license: CC-BY-4.0
 repository-code: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
 url: 'https://dmjimenezbravo.github.io/ml-teachbook-usal/'
-doi: '10.5281/zenodo.20449102'
+doi: '10.5281/zenodo.23159335'
 contact:
   - family-names: 'Jiménez-Bravo'
     given-names: 'Diego M.'
@@ -41,12 +41,12 @@ preferred-citation:
   year: 2026
   publisher:
     name: 'Universidad de Salamanca'
-  doi: '10.5281/zenodo.20449102'
+  doi: '10.5281/zenodo.23159335'
   url: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
   identifiers:
     - type: url
       value: 'https://github.com/dmjimenezbravo/ml-teachbook-usal'
       description: 'Repositorio fuente en GitHub'
     - type: doi
-      value: '10.5281/zenodo.20449102'
+      value: '10.5281/zenodo.23159335'
       description: 'DOI de Zenodo'
