@@ -1,12 +1,12 @@
 # How to Cite
 
 ```{only} html
-[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20449102-blue.svg)](https://doi.org/10.5281/zenodo.20449102)
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.23159335-blue.svg)](https://doi.org/10.5281/zenodo.23159335)
 ```
 
 ```{raw} latex
 \begin{center}
-\textbf{Zenodo DOI:} \url{https://doi.org/10.5281/zenodo.20449102}
+\textbf{Zenodo DOI:} \url{https://doi.org/10.5281/zenodo.23159335}
 \end{center}
 ```
 
@@ -14,7 +14,7 @@ If you use this material, please cite it as follows.
 
 ## Recommended Citation (APA 7th edition)
 
-> Jiménez-Bravo, D. M. (2026). *Fundamentos e introducción al aprendizaje automático* [Fundamentals and introduction to machine learning]. Universidad de Salamanca. https://doi.org/10.5281/zenodo.20449102
+> Jiménez-Bravo, D. M. (2026). *Fundamentos e introducción al aprendizaje automático* [Fundamentals and introduction to machine learning]. Universidad de Salamanca. https://doi.org/10.5281/zenodo.23159335
 
 ## BibTeX
 
@@ -26,8 +26,8 @@ You can also use the downloadable BibTeX file: {download}`citation.bib <../_stat
   title = {Fundamentos e introducción al aprendizaje automático},
   year = {2026},
   publisher = {Universidad de Salamanca},
-  doi = {10.5281/zenodo.20449102},
-  url = {https://doi.org/10.5281/zenodo.20449102},
+  doi = {10.5281/zenodo.23159335},
+  url = {https://doi.org/10.5281/zenodo.23159335},
   note = {Source code: https://github.com/dmjimenezbravo/ml-teachbook-usal}
 }
 ```
@@ -38,4 +38,4 @@ You can also use the downloadable BibTeX file: {download}`citation.bib <../_stat
 
 ## DOI
 
-Final Zenodo DOI for this version: https://doi.org/10.5281/zenodo.20449102.
+Final Zenodo DOI for this version: https://doi.org/10.5281/zenodo.23159335.
