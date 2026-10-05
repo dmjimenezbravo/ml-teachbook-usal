@@ -1297,6 +1297,25 @@ def get_tlmgr_command():
     return None
 
 
+def run_tlmgr(cmd, env, timeout, attempts=3, check=True):
+    """Run a tlmgr command, retrying when a CTAN mirror is slow or fails.
+
+    The `ctan` repository is the mirror.ctan.org redirector, which sends each
+    run to a different mirror, so retrying usually gets past a slow one
+    instead of hanging the whole CI job.
+    """
+    for attempt in range(1, attempts + 1):
+        try:
+            print(f"$ {' '.join(cmd)}")
+            subprocess.run(cmd, check=check, env=env, timeout=timeout)
+            return
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as exc:
+            if attempt == attempts:
+                raise
+            print(f"⚠️  Intento {attempt}/{attempts} fallido: {exc}")
+            print("   Reintentando con otro espejo de CTAN...")
+
+
 def install_tinytex_packages():
     """Install the LaTeX packages needed by this TeachBook fallback."""
     forbidden = sorted(HEAVY_TINYTEX_COLLECTIONS.intersection(TINYTEX_PACKAGES))
@@ -1320,8 +1339,8 @@ def install_tinytex_packages():
     print(f"   Paquetes explícitos: {', '.join(TINYTEX_PACKAGES)}")
     try:
         subprocess.run([tlmgr, "option", "repository", "ctan"], check=False, env=env, timeout=60)
-        subprocess.run([tlmgr, "update", "--self"], check=False, env=env, timeout=600)
-        run([tlmgr, "install", *TINYTEX_PACKAGES], env=env)
+        run_tlmgr([tlmgr, "update", "--self"], env=env, timeout=300, check=False)
+        run_tlmgr([tlmgr, "install", *TINYTEX_PACKAGES], env=env, timeout=900)
         subprocess.run([tlmgr, "postaction", "install", "script", "xetex"], check=False, env=env, timeout=300)
     except Exception as exc:
         print(f"❌ Error instalando paquetes TinyTeX: {exc}")
@@ -1367,7 +1386,13 @@ En Windows usa siempre el Python del proyecto:
         if not full_mode:
             return True
         print("ℹ️  Modo completo: preparando también el fallback latexmk + XeLaTeX usado por CI/CD.")
-        return install_full_latex_ci()
+        if install_full_latex_ci():
+            return True
+        # TinyTeX is only a safety net: Tectonic and the SVG converter already
+        # work, so a slow or unreachable CTAN mirror must not block the PDFs.
+        print("⚠️  No se pudo preparar el fallback TinyTeX (latexmk + XeLaTeX).")
+        print("   Se continúa con Tectonic, el motor principal, que ya funciona.")
+        return True
 
     if is_tectonic_installed():
         if verify_tectonic():
