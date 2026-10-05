@@ -15,6 +15,7 @@ venv/
 .python-version
 .preview.pid
 .preview.log
+.server.log
 .preview.json
 
 # --- Jupyter ---
