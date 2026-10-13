@@ -1,262 +1,113 @@
-# Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial 🎓
+# Fundamentos e introducción al aprendizaje automático
 
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.23159335-blue.svg)](https://doi.org/10.5281/zenodo.23159335)
 [![Licencia: CC BY 4.0](https://img.shields.io/badge/Licencia-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![Libro web](https://img.shields.io/badge/Libro-web-8c1515.svg)](https://dmjimenezbravo.github.io/ml-teachbook-usal/)
 
-Material y plantilla del curso **Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial**, dirigido a las **Facultades de Ciencias y de Ciencias Químicas de la USAL** y diseñado para que profesores sin conocimientos de informática puedan crear y publicar libros digitales usando **agentes de código con IA**.
+Libro de texto abierto del bloque de **aprendizaje automático** de la asignatura **Programación Avanzada** del Grado en Ingeniería Informática de la **Universidad de Salamanca**. Recorre el camino desde los conceptos estadísticos clásicos hasta los modelos actuales, con ejemplos prácticos en **Java** usando la biblioteca [SMILE](https://haifengl.github.io/).
 
----
+El libro está disponible en **español** e **inglés**, como web y como PDF, y se acompaña de un juego de diapositivas por capítulo.
 
-## Cita y DOI
+## Leer el libro
 
-La cita recomendada está en formato APA 7.ª edición. También hay metadatos reutilizables en [`CITATION.cff`](CITATION.cff), [`CITATION.bib`](CITATION.bib) y [`.zenodo.json`](.zenodo.json).
-
-> Lozano Murciego, Á., & Sales Mendes, A. F. (2026). *Elaboración de libros electrónicos mediante código y asistentes de Inteligencia Artificial*. Universidad de Salamanca. https://doi.org/10.5281/zenodo.23159335
-
-DOI definitivo de Zenodo para esta versión:
-
-- https://doi.org/10.5281/zenodo.23159335
-
-Autores:
-
-- Álvaro Lozano Murciego — ORCID: https://orcid.org/0000-0002-0493-4471
-- André Filipe Sales Mendes — ORCID: https://orcid.org/0000-0003-0976-2784
-
----
-
-## 🤖 Herramientas compatibles
-
-Puedes usar esta plantilla con cualquiera de estos agentes de código:
-
-| Herramienta | Requisito | Tipo |
+| | Español | English |
 |---|---|---|
-| **VS Code + GitHub Copilot** | [VS Code](https://code.visualstudio.com/) + extensión GitHub Copilot (requiere suscripción **Copilot Pro**) | Editor de código |
-| **Antigravity IDE** | Cuenta Google | App de escritorio de Google |
-| **OpenAI Codex** | Suscripción **ChatGPT Plus** o superior | App de escritorio de OpenAI |
+| Web | [Abrir el libro](https://dmjimenezbravo.github.io/ml-teachbook-usal/es/intro.html) | [Open the book](https://dmjimenezbravo.github.io/ml-teachbook-usal/en/intro.html) |
+| PDF | [FundamentosEIntroduccionAlAprendizajeAutomatico.pdf](https://dmjimenezbravo.github.io/ml-teachbook-usal/_static/FundamentosEIntroduccionAlAprendizajeAutomatico.pdf) | [FundamentalsAndIntroductionToMachineLearning.pdf](https://dmjimenezbravo.github.io/ml-teachbook-usal/_static/FundamentalsAndIntroductionToMachineLearning.pdf) |
 
-> **¿Cuál elegir?** Si ya usas VS Code, ve con Copilot. Si prefieres la app de Google, Antigravity IDE. Si usas ChatGPT Plus, la app de escritorio Codex de OpenAI.
+## Contenido
 
----
+| Sección | Capítulo | Temas principales |
+|---|---|---|
+| **1. Fundamentos** | 1.1 Historia y evolución del aprendizaje automático | Cambio de paradigma, pioneros, era simbólica, inviernos de la IA, *deep learning* y LLM |
+| | 1.2 Conceptos fundamentales | Datos, *features* y etiquetas; *overfitting*/*underfitting*; validación cruzada; métricas; *pipeline* de ML |
+| **2. Aprendizaje supervisado** | 2.1 Regresión | Regresión lineal, mínimos cuadrados, descenso del gradiente, regresión polinomial y regularización |
+| | 2.2 Clasificación | Regresión logística, algoritmos clásicos, métodos de ensamble, introducción a las redes neuronales, evaluación |
+| **3. Aprendizaje no supervisado** | 3.1 *Clustering* | Algoritmos de agrupamiento y técnicas de evaluación |
+| | 3.2 Reducción de dimensionalidad | Maldición de la dimensionalidad, PCA, *manifold learning* (t-SNE, UMAP) |
+| | 3.3 Detección de anomalías | Enfoques estadísticos y de reconstrucción, algoritmos no supervisados |
 
-## 📋 Requisitos previos
+Los capítulos 2.1, 2.2, 3.1 y 3.2 incluyen un **ejemplo práctico en Java con SMILE**. El libro termina con la bibliografía del curso: libros de referencia y artículos originales citados.
 
-Antes de abrir la plantilla con tu agente de IA, necesitas tener instalado **como mínimo**:
+## Diapositivas
 
-### Imprescindible
-1. **Python 3.12** → [Descargar](https://www.python.org/downloads/)
-   - ⚠️ **En Windows**: marca la casilla **"Add Python to PATH"** durante la instalación
-   - Para verificar: abre una terminal y escribe `python --version` (o `py --version` en Windows)
+La carpeta [`slides/`](slides/) contiene una presentación Beamer por sección y por idioma, con su fuente LaTeX y el PDF compilado:
 
-### Recomendado (no obligatorio, el agente te ayudará a instalarlo)
-2. **Git** → [Descargar](https://git-scm.com/) (necesario para publicar en GitHub)
-3. **uv** (gestor de paquetes ultrarrápido) → El agente te preguntará si quieres instalarlo
+| Sección | Español | English |
+|---|---|---|
+| 1. Fundamentos | [`01_fundamentos_es.pdf`](slides/01_fundamentos_es.pdf) | [`01_fundamentos_en.pdf`](slides/01_fundamentos_en.pdf) |
+| 2. Aprendizaje supervisado | [`02_aprendizaje_supervisado_es.pdf`](slides/02_aprendizaje_supervisado_es.pdf) | [`02_aprendizaje_supervisado_en.pdf`](slides/02_aprendizaje_supervisado_en.pdf) |
+| 3. Aprendizaje no supervisado | [`03_aprendizaje_no_supervisado_es.pdf`](slides/03_aprendizaje_no_supervisado_es.pdf) | [`03_aprendizaje_no_supervisado_en.pdf`](slides/03_aprendizaje_no_supervisado_en.pdf) |
 
-### Para publicar en la web
-4. **Cuenta en GitHub** → [Crear cuenta](https://github.com/signup)
-5. **Un repositorio** creado a partir de esta plantilla (botón "Use this template" en GitHub)
+## Cómo citar
 
----
+> Jiménez-Bravo, D. M. (2026). *Fundamentos e introducción al aprendizaje automático*. Universidad de Salamanca. https://doi.org/10.5281/zenodo.23159335
 
-## 🚀 Guía de inicio — Qué decirle al agente
+Los metadatos de cita están en [`CITATION.cff`](CITATION.cff), [`CITATION.bib`](CITATION.bib) y [`.zenodo.json`](.zenodo.json), y en la página [Cómo citar](https://dmjimenezbravo.github.io/ml-teachbook-usal/es/92_como_citar.html) del libro.
 
-Abre tu herramienta (VS Code, Antigravity o Codex) en la carpeta del proyecto y dile lo siguiente:
+## Licencia
 
-### 1️⃣ Primera vez: configurar el entorno
+- **Libro** (web y PDF): [Creative Commons Reconocimiento 4.0 (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.es). Puedes compartirlo y adaptarlo, también con fines comerciales, siempre que cites la autoría.
+- **Diapositivas**: [Creative Commons Reconocimiento-NoComercial 4.0 (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/deed.es). Igual que la anterior, pero sin uso comercial.
 
-Dile al agente:
+Las figuras y recursos de terceros indican su fuente y licencia en la página donde aparecen.
 
-> **"Prepara el entorno del proyecto. Es la primera vez que lo abro."**
+## Autor
 
-O también puedes decir:
-- *"Configura el proyecto"*
-- *"Instala todo lo necesario"*
-- *"No me funciona, falta algo"*
-
-El agente:
-- Detectará tu sistema operativo (Windows o Mac)
-- Instalará `uv` (gestor de paquetes rápido) si no lo tienes
-- Creará el entorno virtual `.venv`
-- Instalará todas las dependencias
-- Sincronizará las instrucciones para que funcione con tu herramienta
-
-⏱️ **Tarda 1-3 minutos** la primera vez.
-
-### 2️⃣ Compilar el libro (generar la web)
-
-> **"Compila el libro"** o **"Genera la web"**
-
-Esto crea la versión HTML navegable en `book/_build/html/`. Puedes abrirla en cualquier navegador.
-
-### 3️⃣ Ver cambios en tiempo real (desarrollo)
-
-> **"Quiero ver el libro en vivo"** o **"Abre la vista previa"**
-
-Se abrirá tu navegador en `localhost:8000` y los cambios se reflejarán automáticamente al guardar los archivos.
-
-### 4️⃣ Generar los PDFs
-
-> **"Genera los PDFs del libro"** o **"Exportar a PDF"**
-
-El agente instalará LaTeX (Tectonic) si es necesario y generará `FundamentosEIntroduccionAlAprendizajeAutomatico.pdf` y `FundamentalsAndIntroductionToMachineLearning.pdf`.
-
-### 5️⃣ Guardar cambios en GitHub
-
-> **"Guarda y publica los cambios"** o **"Haz commit y push"**
-
-El agente hará `git add` + `commit` + `push` automáticamente con un mensaje descriptivo.
-
-### 6️⃣ Publicar en GitHub Pages (solo la primera vez)
-
-**Esto lo haces tú manualmente, una sola vez:**
-
-1. Ve a tu repositorio en [github.com](https://github.com)
-2. Ve a **Settings** → **Pages**
-3. En **Source**, selecciona: **GitHub Actions**
-4. ¡Listo! A partir de ahora, cada vez que hagas push, el libro se publicará automáticamente
-
-> La URL de tu libro será: `https://<tu-usuario>.github.io/<nombre-del-repo>/`
-
-### 7️⃣ Empezar con un libro mínimo sin borrar los ejemplos
-
-Si al principio quieres que el libro muestre **solo una parte** (por ejemplo, un único capítulo que te interese), no hace falta borrar todo el contenido de ejemplo.
-
-La opción recomendada es decirle al agente algo como:
-
-> **"Quiero dejar visible solo este capítulo y ocultar el resto como referencia"**
-
-o:
-
-> **"Oculta temporalmente los capítulos de ejemplo que no voy a usar todavía"**
-
-El agente puede:
-
-- quitar esos capítulos del menú
-- comentarlos en los `_toc_es.yml` y `_toc_en.yml`
-- dejar los archivos intactos en el repositorio
-
-Así tienes una plantilla limpia para empezar, pero conservas material reutilizable para más adelante.
-
-### ¿Por qué es mejor ocultar que borrar?
-
-- puedes volver a activar ejemplos en cualquier momento
-- sigues teniendo páginas de referencia para copiar estructura, estilo y recursos
-- reduces el riesgo de borrar cosas útiles demasiado pronto
-
-**Recomendación**: al principio, **oculta primero**. Borra solo cuando ya tengas claro que no vas a necesitar ese contenido.
+**Diego M. Jiménez-Bravo**, Universidad de Salamanca — [ORCID 0000-0002-0291-7627](https://orcid.org/0000-0002-0291-7627)
 
 ---
 
-## 📂 Estructura del proyecto (no hace falta tocarla)
+## Para mantener el libro
+
+### Estructura del repositorio
 
 ```
-teachbook_usal_template/
-├── book/                    # ← Contenido del libro (aquí editas)
-│   ├── es/                  # Contenido en español
-│   │   ├── intro.md         # Página de inicio
-│   │   ├── 01_tutorial/     # Tutoriales
-│   │   └── 02_grados/       # Ejemplos por grado
-│   ├── en/                  # Contenido en inglés (misma estructura)
-│   ├── _config_es.yml       # Configuración español
-│   ├── _toc_es.yml          # Índice español
-│   └── _static/             # Imágenes, CSS, logos
-├── scripts/                 # Scripts de automatización (no editar)
-├── latex_templates/         # Plantillas PDF (personalizable)
-├── AGENTS.md                # Instrucciones para el agente de IA
-└── .github/skills/          # Skills del agente (no editar)
+ml-teachbook-usal/
+├── book/
+│   ├── es/ , en/            # Contenido del libro (Markdown), misma estructura en ambos idiomas
+│   ├── _toc_es.yml , _toc_en.yml        # Índice: secciones, capítulos y numeración
+│   ├── _config_es.yml , _config_en.yml  # Título, autor, DOI y opciones de web y PDF
+│   └── _static/             # Imágenes, figuras generadas, bibliografía (references.bib) y PDF del libro
+├── slides/                  # Diapositivas Beamer (.tex y .pdf)
+├── diagram_sources/         # Fuentes Mermaid de los diagramas del libro
+├── latex_templates/         # Plantilla LaTeX del PDF (portada, estilos, idioma)
+├── scripts/                 # Compilación, vista previa, exportación a PDF y comprobaciones
+├── tests/                   # Tests unitarios (unittest)
+└── .github/workflows/       # Publicación automática en GitHub Pages
 ```
 
-### Archivos que SÍ puedes editar:
-- `book/es/*.md` y `book/en/*.md` — contenido del libro
-- `book/_toc_es.yml` y `book/_toc_en.yml` — índice del libro
-- `book/_config_es.yml` y `book/_config_en.yml` — título, autor, etc.
-- `book/_static/` — imágenes y logos
-- `book/_static/references.bib` — bibliografía global del libro
+Cualquier página que se añada en un idioma debe existir también en el otro, y ambos `_toc_*.yml` deben tener la misma estructura.
 
-### Archivos que NO debes tocar:
-- `scripts/` — los ejecuta el agente automáticamente
-- `.github/skills/` — instrucciones para el agente
-- `AGENTS.md`, `CLAUDE.md` — configuración del agente
+### Compilar en local
 
----
+Requiere Python 3.12. Todos los comandos se ejecutan desde la raíz del repositorio con el Python del entorno `.venv` (en Windows, `.venv\Scripts\python.exe`; en macOS/Linux, `.venv/bin/python`).
 
-## 🌍 Soporte multi-idioma
-
-El libro genera versiones en **español** e **inglés** automáticamente con un selector de idioma en la web.
-
-**Regla importante**: Si añades contenido en un idioma, DEBE existir en todos los idiomas. Díselo al agente:
-
-> **"Añade un nuevo capítulo de Biología al libro"**
-
-El agente se encargará de crear el contenido en `book/es/` Y `book/en/`, y de actualizar ambos índices.
-
----
-
-## 📚 Bibliografía y referencias
-
-La forma más simple de gestionar bibliografía en esta plantilla es:
-
-1. guardar todas las entradas BibTeX en:
-   - `book/_static/references.bib`
-2. citar en cualquier página con:
-   - `{cite:t}`
-   - `{cite:p}`
-3. usar la página final de:
-   - `Referencias` / `References`
-
-Esa página imprime la bibliografía global del libro y sirve también para la exportación a PDF/LaTeX.
-
----
-
-## 💬 Frases útiles para el agente
-
-| Quiero... | Dile al agente |
+| Tarea | Comando |
 |---|---|
-| Configurar todo | *"Prepara el entorno"* |
-| Compilar la web | *"Compila el libro"* |
-| Ver cambios en vivo | *"Abre la vista previa"* |
-| Generar PDFs | *"Genera los PDFs"* |
-| Guardar cambios | *"Guarda y publica los cambios"* |
-| Añadir un capítulo | *"Añade un capítulo de [tema]"* |
-| Añadir una imagen | *"Inserta una imagen en [sección]"* |
-| Añadir un video | *"Añade un video de YouTube en [sección]"* |
-| Convertir un PDF | *"Convierte este PDF a Markdown"* |
-| Que algo no funciona | *"No me funciona [cosa]"* |
-| Añadir una ecuación | *"Añade la ecuación [ecuación] en [sección]"* |
+| Crear el entorno | `python scripts/setup_env.py --yes` |
+| Vista previa en `localhost:8000` | `python scripts/launch_preview.py --background` |
+| Compilar la web | `python scripts/build_book.py` |
+| Preparar LaTeX para PDF | `python scripts/setup_env.py --yes --extras pdf` y `python scripts/setup_latex.py --yes --full` |
+| Generar los PDF del libro | `python scripts/export_pdf.py --engine auto` |
+| Regenerar los diagramas | `python scripts/render_diagrams.py` |
+| Comprobar idiomas y codificación | `python scripts/check_multilang_integrity.py` |
+| Comprobar imágenes antes de publicar | `python scripts/optimize_static_assets.py --check` (y `--fix` si lo pide) |
+| Tests | `python -m unittest discover -s tests` |
 
----
+Las diapositivas se compilan con Tectonic desde la carpeta `slides/`, porque enlazan las figuras del libro con rutas relativas:
 
-## 🧪 Tests de verificación
+```bash
+cd slides
+../.venv/Scripts/tectonic.exe -X compile 01_fundamentos_es.tex   # macOS/Linux: ../.venv/bin/tectonic
+```
 
-El proyecto incluye tests de verificación en **Windows** y **macOS (Apple Silicon)**, pero **NO se ejecutan automáticamente en cada push**. Esto está hecho así para que el profesorado o alumnado que copie la plantilla no gaste minutos de GitHub Actions innecesariamente.
+### Publicación
 
-Los tests se lanzan **solo manualmente** desde la pestaña **Actions** en GitHub, cuando quieras comprobar que el proyecto arranca bien desde cero.
+Cada `push` a `main` lanza la Action [`deploy.yml`](.github/workflows/deploy.yml), que comprueba las imágenes, regenera los PDF del libro en los dos idiomas, compila la web y la publica en GitHub Pages. Los cambios se integran siguiendo git flow: rama `feature/*` → `develop` → `main`.
 
-Estos tests verifican que:
-- Todos los scripts compilan correctamente
-- El entorno se configura desde cero
-- El libro se compila en ambos idiomas
-- Las skills se sincronizan
+Hay además dos workflows que solo se lanzan a mano desde la pestaña **Actions**: `sftp-deploy-book`, para publicar en un servidor propio, y `Test Clean Setup`, que prueba una instalación limpia en Windows y macOS.
 
-### Cuándo usarlos
+### Créditos
 
-- antes de compartir la plantilla con otros
-- antes de una entrega importante
-- cuando cambies scripts, entorno o skills
-
-### Qué sí se ejecuta automáticamente
-
-El **deploy de GitHub Pages** sí se ejecuta automáticamente al hacer `push` a `main`.
-
----
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo **CC BY 4.0** — eres libre de usar, modificar y redistribuir con atribución.
-
----
-
-## 👥 Créditos
-
-- **Álvaro Lozano Murciego** — Universidad de Salamanca
-- **André Filipe Sales Mendes** — Universidad de Salamanca
-- Basado en [TeachBooks](https://teachbooks.io/) y [Jupyter Book](https://jupyterbook.org/)
+El libro se ha construido a partir de la plantilla [TeachBook USAL](https://github.com/elloza/teachbook_usal_template), de Álvaro Lozano Murciego y André Filipe Sales Mendes, sobre [TeachBooks](https://teachbooks.io/), [Jupyter Book](https://jupyterbook.org/) y [MyST Markdown](https://mystmd.org/). Las instrucciones para asistentes de código con IA están en [`AGENTS.md`](AGENTS.md).
